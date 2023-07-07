@@ -47,6 +47,7 @@ export default {
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
     // baseURL: '/'
+    baseURL: process.env.NODE_ENV === "production" ? "http://myapp-alb-front-91529145.ap-northeast-1.elb.amazonaws.com" : "http://localhost:3000"
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
