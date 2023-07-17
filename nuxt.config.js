@@ -44,9 +44,8 @@ export default {
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  // ↓API側の本番URLに変更必要。frontのになってしまっている。
   axios: {
-    baseURL: process.env.NODE_ENV === "production" ? "http://myapp-alb-front-91529145.ap-northeast-1.elb.amazonaws.com" : "http://localhost"
+    baseURL: process.env.NODE_ENV === "production" ? "http://backend.minnanoevent.com" : "http://localhost"
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
