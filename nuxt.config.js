@@ -45,7 +45,7 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseURL: process.env.NODE_ENV === "production" ? "http://backend.minnanoevent.com" : "http://localhost"
+    baseURL: process.env.NODE_ENV === "production" ? "https://backend.minnanoevent.com" : "http://localhost"
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
