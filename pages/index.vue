@@ -5,7 +5,7 @@
       name="button"
       @click="getMsg"
     >
-      RailsからAPIを取得する
+      RailsからAPIを取得するrrrrrrr
     </button>
     <div
       v-for="(msg, i) in msgs"
