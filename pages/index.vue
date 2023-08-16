@@ -4,7 +4,7 @@
       <v-card-title> Usersテーブルの取得 </v-card-title>
       <v-card-text>
         <v-simple-table dense>
-          <template v-if="users.length" #default>
+          <template v-if="users.length">
             <thead>
               <tr>
                 <th v-for="(key, i) in userKeys" :key="`key-${i}`">
@@ -21,7 +21,13 @@
               </tr>
             </tbody>
           </template>
-          <template v-else> ユーザーが存在しません </template>
+          <template v-else>
+            <tbody>
+              <tr>
+                <td colspan="4">ユーザーが存在しません</td>
+              </tr>
+            </tbody>
+          </template>
         </v-simple-table>
       </v-card-text>
       <v-card-title> Vuetifyの導入（オリジナルカラーの確認） </v-card-title>
