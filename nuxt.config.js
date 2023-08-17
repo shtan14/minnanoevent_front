@@ -59,7 +59,7 @@ export default {
           success: "44c5d6",
           warning: "9e44d6",
           error: "d6447c",
-          background: "f6f6f4",
+          background: "ffffff",
         },
       },
     },
