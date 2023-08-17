@@ -51,11 +51,11 @@ export default {
     theme: {
       themes: {
         light: {
-          primary: "4080BE",
-          info: "4FC1E9",
-          success: "44D69E",
-          warning: "FEB65E",
-          error: "FB8678",
+          primary: "44D69E",
+          info: "447cd6",
+          success: "44c5d6",
+          warning: "9e44d6",
+          error: "d6447c",
           background: "f6f6f4",
         },
       },
