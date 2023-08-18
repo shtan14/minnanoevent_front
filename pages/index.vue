@@ -10,6 +10,16 @@
         </v-row>
       </v-container>
     </v-sheet> -->
+    <!-- <v-col cols="12">
+      <v-card flat>
+        <v-card-title class="justify-center display-1">
+          {{ $t(`menus.${menu.title}`) }}
+        </v-card-title>
+        <v-card-text class="text-center">
+          {{ menu.subtitle }}
+        </v-card-text>
+      </v-card>
+    </v-col> -->
     <app-footer />
   </v-app>
 </template>
@@ -31,17 +41,17 @@ export default {
   },
   data() {
     return {
-      menus: [
-        {
-          title: "about",
-          subtitle:
-            "このサイトはブログ独学プログラマで公開されているチュートリアルのデモアプリケーションです",
-        },
-        { title: "products", subtitle: "他にはない優れた機能の数々" },
-        { title: "price", subtitle: "会社の成長に合わせた3つのプラン" },
-        { title: "contact", subtitle: "お気軽にご連絡を" },
-        { title: "company", subtitle: "私たちの会社" },
-      ],
+      // menus: [
+      //   {
+      //     title: "about",
+      //     subtitle:
+      //       "このサイトはブログ独学プログラマで公開されているチュートリアルのデモアプリケーションです",
+      //   },
+      //   { title: "products", subtitle: "他にはない優れた機能の数々" },
+      //   { title: "price", subtitle: "会社の成長に合わせた3つのプラン" },
+      //   { title: "contact", subtitle: "お気軽にご連絡を" },
+      //   { title: "company", subtitle: "私たちの会社" },
+      // ],
     };
   },
 };
