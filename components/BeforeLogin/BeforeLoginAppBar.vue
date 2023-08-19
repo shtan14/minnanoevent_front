@@ -1,6 +1,9 @@
 <template>
-  <v-app-bar app color="white" elevation="0">
-    <app-logo />
+  <v-app-bar app :height="homeAppBarHeight" color="white" elevation="0">
+    <nuxt-link to="/" class="text-decoration-none">
+      <app-logo />
+    </nuxt-link>
+
     <app-title class="hidden-mobile-and-down primary--text font-weight-bold" />
 
     <v-spacer />
@@ -14,7 +17,6 @@
 export default {
   data({ $store }) {
     return {
-      scrollY: 0,
       homeAppBarHeight: $store.state.styles.homeAppBarHeight,
     };
   },
