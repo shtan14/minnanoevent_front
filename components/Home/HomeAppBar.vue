@@ -4,6 +4,8 @@
     <v-toolbar-title class="primary--text font-weight-bold">
       {{ appName }}
     </v-toolbar-title>
+    <app-signup-button />
+    <app-login-button />
   </v-app-bar>
 </template>
 
