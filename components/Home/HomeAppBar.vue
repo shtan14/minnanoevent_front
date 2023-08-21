@@ -5,8 +5,10 @@
 
     <v-spacer />
 
-    <app-signup-button />
-    <app-login-button />
+    <before-login-app-bar-signup-button />
+    <before-login-app-bar-login-button />
+    <!-- アカウントメニューの表示確認用 -->
+    <logged-in-app-bar-account-menu />
   </v-app-bar>
 </template>
 
