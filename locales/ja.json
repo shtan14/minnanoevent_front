@@ -3,6 +3,8 @@
     "signup": "会員登録",
     "login": "ログイン",
     "logout": "ログアウト",
+    "favourites": "お気に入り",
+    "post": "イベント投稿",
     "account": {
       "settings": "アカウント設定",
       "password": "パスワード変更"

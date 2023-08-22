@@ -1,4 +1,4 @@
-const redirectPath = "projects";
+const redirectPath = "index";
 
 export const state = () => ({
   styles: {

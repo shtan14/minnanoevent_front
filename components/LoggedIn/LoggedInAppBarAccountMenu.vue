@@ -5,7 +5,7 @@
         <v-icon> mdi-account-circle </v-icon>
       </v-btn>
     </template>
-    <v-list dense>
+    <v-list dense color="white">
       <v-subheader> ログイン中のユーザー </v-subheader>
 
       <v-list-item>
@@ -19,11 +19,10 @@
 
       <v-divider />
 
-      <v-subheader> アカウント </v-subheader>
+      <!-- <v-subheader> アカウント </v-subheader> -->
 
       <template v-for="(menu, i) in menus">
         <v-divider v-if="menu.divider" :key="`menu-divider-${i}`" />
-
         <v-list-item :key="`menu-list-${i}`" :to="{ name: menu.name }">
           <v-list-item-icon class="mr-2">
             <v-icon size="22">
@@ -44,11 +43,19 @@ export default {
   data() {
     return {
       menus: [
+        { name: "favourites", icon: "mdi-heart" },
+        { name: "post", icon: "mdi-note-edit-outline" },
         { name: "account-settings", icon: "mdi-account-cog" },
         { name: "account-password", icon: "mdi-lock-outline" },
-        { name: "logout", icon: "mdi-logout-variant", divider: true },
+        { name: "logout", icon: "mdi-logout-variant" },
       ],
     };
   },
 };
 </script>
+
+<style scoped>
+.v-list-item--link:before {
+  background-color: white !important;
+}
+</style>
