@@ -1,12 +1,12 @@
-const redirectPath = "index";
+const homePath = "index";
 
 export const state = () => ({
   styles: {
     homeAppBarHeight: 56,
   },
   loggedIn: {
-    redirectPath: {
-      name: redirectPath,
+    homePath: {
+      name: homePath,
     },
   },
 });

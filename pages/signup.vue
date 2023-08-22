@@ -1,7 +1,7 @@
 <template>
   <user-form-card>
     <template #user-form-card-content>
-      <v-form ref="form" v-model="isValid">
+      <v-form ref="form" v-model="isValid" @submit.prevent="signup">
         <user-form-name :name.sync="params.user.name" />
         <user-form-email :email.sync="params.user.email" placeholder />
         <user-form-password
@@ -9,12 +9,12 @@
           set-validation
         />
         <v-btn
+          type="submit"
           :disabled="!isValid || loading"
           :loading="loading"
           block
           color="primary"
           class="white--text"
-          @click="signup"
         >
           登録する
         </v-btn>

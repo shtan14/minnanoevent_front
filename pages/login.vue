@@ -1,7 +1,7 @@
 <template>
   <user-form-card>
     <template #user-form-card-content>
-      <v-form ref="form" v-model="isValid">
+      <v-form ref="form" v-model="isValid" @submit.prevent="login">
         <user-form-email :email.sync="params.user.email" />
         <user-form-password :password.sync="params.user.password" />
         <v-card-actions>
@@ -11,12 +11,12 @@
         </v-card-actions>
         <v-card-text class="px-0">
           <v-btn
+            type="submit"
             :disabled="!isValid || loading"
             :loading="loading"
             block
             color="primary"
             class="white--text"
-            @click="login"
           >
             ログインする
           </v-btn>
@@ -34,7 +34,7 @@ export default {
       isValid: false,
       loading: false,
       params: { user: { email: "", password: "" } },
-      redirectPath: $store.state.loggedIn.redirectPath,
+      redirectPath: $store.state.loggedIn.homePath,
     };
   },
   methods: {
