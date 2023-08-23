@@ -4,7 +4,9 @@
     "login": "ログイン",
     "logout": "ログアウト",
     "favourites": "お気に入り",
-    "post": "イベント投稿",
+    "create": {
+      "event": "イベント投稿"
+    },
     "account": {
       "settings": "アカウント設定",
       "password": "パスワード変更"

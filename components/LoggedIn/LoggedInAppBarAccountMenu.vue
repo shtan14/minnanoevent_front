@@ -44,7 +44,7 @@ export default {
     return {
       menus: [
         { name: "favourites", icon: "mdi-heart" },
-        { name: "post", icon: "mdi-note-edit-outline" },
+        { name: "create-event", icon: "mdi-note-edit-outline" },
         { name: "account-settings", icon: "mdi-account-cog" },
         { name: "account-password", icon: "mdi-lock-outline" },
         { name: "logout", icon: "mdi-logout-variant" },
