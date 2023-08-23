@@ -35,6 +35,8 @@ jobs:
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
+      with:
+          mask-password: "true"
 
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v2
@@ -42,7 +44,7 @@ jobs:
           platforms: linux/arm64
     
     - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v1
+      uses: docker/setup-buildx-action@v2
 
     - name: Set env
       run: |
@@ -51,7 +53,7 @@ jobs:
 
     - name: Build and push front image to Amazon ECR
       id: build-front-image
-      uses: docker/build-push-action@v2
+      uses: docker/build-push-action@v4
       with:
         context: .
         push: true
