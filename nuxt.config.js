@@ -46,6 +46,7 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
+    credentials: true,
     baseURL:
       process.env.NODE_ENV === "production"
         ? "https://backend.minnanoevent.com"
