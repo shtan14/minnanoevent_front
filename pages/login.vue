@@ -35,7 +35,8 @@ export default {
       isValid: false,
       loading: false,
       params: { auth: { email: "user0@example.com", password: "password" } },
-      redirectPath: $store.state.loggedIn.homePath,
+      redirectPath: $store.state.loggedIn.rememberPath,
+      loggedInHomePath: $store.state.loggedIn.homePath,
     };
   },
   methods: {
@@ -50,15 +51,10 @@ export default {
       this.loading = false;
     },
     authSuccessful(response) {
-      console.log("authSuccessful", response);
       this.$auth.login(response);
-      console.log("token", this.$auth.token);
-      console.log("expires", this.$auth.expires);
-      console.log("payload", this.$auth.payload);
-      console.log("user", this.$auth.user);
       this.$router.push(this.redirectPath);
       // 記憶ルートを初期値に戻す
-      // this.$store.dispatch('getRememberPath', this.loggedInHomePath)
+      this.$store.dispatch("getRememberPath", this.loggedInHomePath);
     },
     authFailure({ response }) {
       if (response && response.status === 404) {
