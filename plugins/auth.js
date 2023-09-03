@@ -37,6 +37,24 @@ class Authentication {
   login(response) {
     this.setAuth(response);
   }
+
+  resetVuex() {
+    this.setAuth({ token: null, expires: 0, user: null });
+    // this.store.dispatch("getCurrentProject", null)
+    // this.store.dispatch("getProjectList", [])
+  }
+
+  // axiosのレスポンス401を許容する
+  resolveUnauthorized(status) {
+    return (status >= 200 && status < 300) || status === 401;
+  }
+
+  async logout() {
+    await this.$axios.$delete("/api/v1/auth_token", {
+      validateStatus: (status) => this.resolveUnauthorized(status),
+    });
+    this.resetVuex();
+  }
 }
 
 export default ({ store, $axios }, inject) => {
