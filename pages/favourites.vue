@@ -6,6 +6,7 @@
 
 <script>
 export default {
+  name: "PagesFavourites",
   layout: "logged-in",
 };
 </script>

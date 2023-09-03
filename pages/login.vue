@@ -62,10 +62,10 @@ export default {
     },
     authFailure({ response }) {
       if (response && response.status === 404) {
-        // const msg = 'ユーザーが見つかりません😢'
-        // return this.$store.dispatch('getToast', { msg })
+        const msg = "ユーザーが見つかりません😢";
+        return this.$store.dispatch("getToast", { msg });
       }
-      // return this.$my.apiErrorHandler(response)
+      return this.$my.apiErrorHandler(response);
     },
   },
 };

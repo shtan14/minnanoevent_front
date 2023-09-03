@@ -17,6 +17,11 @@ export const state = () => ({
     expires: 0,
     payload: {},
   },
+  toast: {
+    msg: null,
+    color: "error",
+    timeoit: 4000,
+  },
 });
 
 export const getters = {};
@@ -34,6 +39,9 @@ export const mutations = {
   setAuthPayload(state, payload) {
     state.auth.payload = payload;
   },
+  setToast(state, payload) {
+    state.toast = payload;
+  },
 };
 
 export const actions = {
@@ -50,5 +58,10 @@ export const actions = {
   getAuthPayload({ commit }, jwtPayload) {
     jwtPayload = jwtPayload || {};
     commit("setAuthPayload", jwtPayload);
+  },
+  getToast({ commit }, { msg, color, timeout }) {
+    color = color || "error";
+    timeout = timeout || 4000;
+    commit("setToast", { msg, color, timeout });
   },
 };
