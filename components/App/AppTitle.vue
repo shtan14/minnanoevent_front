@@ -1,5 +1,5 @@
 <template>
-  <v-toolbar-title>
+  <v-toolbar-title class="my-app-title">
     {{ appName }}
   </v-toolbar-title>
 </template>
@@ -13,3 +13,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.my-app-title {
+  cursor: pointer;
+}
+</style>

@@ -1,10 +1,14 @@
 <template>
-  <v-app-bar app :height="homeAppBarHeight" color="white" elevation="0">
+  <v-app-bar app :height="homeAppBarHeight" elevation="0" color="white">
     <nuxt-link to="/" class="text-decoration-none">
       <app-logo />
     </nuxt-link>
 
-    <app-title class="hidden-mobile-and-down primary--text font-weight-bold" />
+    <nuxt-link to="/" class="text-decoration-none">
+      <app-title
+        class="hidden-mobile-and-down primary--text font-weight-bold"
+      />
+    </nuxt-link>
 
     <v-spacer />
 
