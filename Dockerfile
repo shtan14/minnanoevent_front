@@ -17,7 +17,7 @@ RUN yarn install
 COPY . ./
 
 RUN yarn run build
-# 追記
+
 EXPOSE 3000
-# 追記
+
 CMD [ "yarn", "run", "start" ]
