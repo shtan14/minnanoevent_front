@@ -6,7 +6,7 @@
         <user-form-password :password.sync="params.auth.password" />
         <v-card-actions>
           <nuxt-link to="#" class="body-2 text-decoration-none">
-            パスワードを再設定
+            パスワードを再設定する
           </nuxt-link>
         </v-card-actions>
         <v-card-text class="px-0">
