@@ -8,6 +8,7 @@
     </template>
     <v-main>
       <nuxt />
+      <event-list />
     </v-main>
     <app-footer />
   </v-app>
