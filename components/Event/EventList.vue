@@ -5,7 +5,7 @@
       <li v-for="event in events" :key="event.id">
         {{ event.id }}
         {{ event.title }}
-        {{ event.prefecture }}
+        <!-- {{ event.prefecture }} -->
         {{ event.city }}
         {{ event.location }}
         {{ event.ticket_price }}
