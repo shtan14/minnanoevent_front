@@ -3,14 +3,16 @@
     <h2>イベント一覧</h2>
     <ul>
       <li v-for="event in events" :key="event.id">
-        {{ event.id }}
-        {{ event.title }}
-        <!-- {{ event.prefecture }} -->
-        {{ event.city }}
-        {{ event.location }}
-        {{ event.ticket_price }}
-        {{ event.event_start_datetime }}
-        {{ event.event_end_datetime }}
+        <p>{{ event.id }}</p>
+        <p>{{ event.title }}</p>
+        <p>
+          場所：{{ event.prefecture }} {{ event.city }} {{ event.location }}
+        </p>
+        <p>
+          日時：{{ event.event_start_datetime }} 〜
+          {{ event.event_end_datetime }}
+        </p>
+        <p>費用：{{ event.ticket_price }}円</p>
       </li>
     </ul>
   </div>
