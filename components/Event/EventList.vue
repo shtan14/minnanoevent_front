@@ -4,17 +4,23 @@
     <ul>
       <li v-for="event in events" :key="event.id">
         <p>{{ event.id }}</p>
+        <div v-if="event.event_images && event.event_images.length > 0">
+          <img
+            :src="event.event_images[0].event_image"
+            alt="アイキャッチ写真"
+            style="width: 100px; height: auto"
+          />
+        </div>
+        <p></p>
         <p>{{ event.title }}</p>
         <p>{{ event.description }}</p>
-        <p>
-        <p>日時：{{ formatDatetime(event.event_start_datetime) }} から</p>
-        場所：{{ event.prefecture }} {{ event.city }} {{ event.location }}
-        </p>
-        <img
-          :src="getEventImage(event.id)"
-          alt="イベントサムネイル"
-          style="width: 100px; height: auto"
-        />
+        <p>{{ formatDatetime(event.event_start_datetime) }} から</p>
+        <p>{{ event.prefecture }} {{ event.city }} {{ event.location }}</p>
+        <span v-for="(category, index) in event.categories" :key="index">
+          ＃{{ category.category }}
+          <!-- 最後のカテゴリー以外にはカンマを追加 -->
+          <!-- <span v-if="index < event.categories.length - 1">, </span> -->
+        </span>
       </li>
     </ul>
   </div>
@@ -24,8 +30,7 @@
 export default {
   data() {
     return {
-      events: [], // イベントデータを格納するための空の配列
-      eventImages: [],
+      events: [],
     };
   },
   mounted() {
@@ -33,49 +38,15 @@ export default {
     this.fetchEvents();
   },
   methods: {
-    // APIからイベントデータを取得するメソッド
     fetchEvents() {
-      // axiosを使用してAPIエンドポイントへのリクエストを送信し、データを取得
       this.$axios
         .get("/api/v1/events/")
         .then((response) => {
-          this.events = response.data; // 取得したデータをコンポーネントのデータにセット
-          this.fetchEventImagesForAllEvents();
+          this.events = response.data;
         })
         .catch((error) => {
           console.error("イベントデータの取得に失敗しました", error);
         });
-    },
-    fetchEventImagesForAllEvents() {
-      // 各イベントの写真情報を取得
-      for (const event of this.events) {
-        this.fetchEventImages(event.id);
-      }
-    },
-    fetchEventImages(eventId) {
-      // axiosを使用してAPIエンドポイントへのリクエストを送信し、イメージデータを取得
-      this.$axios
-        .get(`/api/v1/events/${eventId}/event_images`)
-        .then((response) => {
-          // イメージデータをeventImagesオブジェクトに格納
-          this.$set(this.eventImages, eventId, response.data);
-        })
-        .catch((error) => {
-          console.error(
-            `イベントID ${eventId} のイメージデータの取得に失敗しました`,
-            error
-          );
-        });
-    },
-    getEventImage(eventId) {
-      // イベントに対応するイメージのURLを返す
-      const eventImages = this.eventImages[eventId];
-      if (eventImages && eventImages.length > 0) {
-        // イメージが存在する場合、最初のイメージを表示
-        return eventImages[0].event_image;
-      }
-      // イメージが存在しない場合のデフォルトURLを返す
-      return "imageがありません"; // デフォルトのイメージURLを指定
     },
     formatDatetime(datetimeString) {
       const datetime = new Date(datetimeString);
