@@ -5,10 +5,11 @@
       <li v-for="event in events" :key="event.id">
         <p>{{ event.id }}</p>
         <p>{{ event.title }}</p>
+        <p>{{ event.description }}</p>
         <p>
-          場所：{{ event.prefecture }} {{ event.city }} {{ event.location }}
-        </p>
         <p>日時：{{ formatDatetime(event.event_start_datetime) }} から</p>
+        場所：{{ event.prefecture }} {{ event.city }} {{ event.location }}
+        </p>
         <img
           :src="getEventImage(event.id)"
           alt="イベントサムネイル"
