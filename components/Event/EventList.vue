@@ -9,6 +9,7 @@
           場所：{{ event.prefecture }} {{ event.city }} {{ event.location }}
         </p>
         <p>日時：{{ formatDatetime(event.event_start_datetime) }} から</p>
+        <img :src="getEventImage(event.id)" alt="イベントサムネイル" />
       </li>
     </ul>
   </div>
@@ -19,6 +20,7 @@ export default {
   data() {
     return {
       events: [], // イベントデータを格納するための空の配列
+      eventImages: [],
     };
   },
   mounted() {
@@ -30,13 +32,45 @@ export default {
     fetchEvents() {
       // axiosを使用してAPIエンドポイントへのリクエストを送信し、データを取得
       this.$axios
-        .get("/api/v1/events")
+        .get("/api/v1/events/")
         .then((response) => {
           this.events = response.data; // 取得したデータをコンポーネントのデータにセット
+          this.fetchEventImagesForAllEvents();
         })
         .catch((error) => {
           console.error("イベントデータの取得に失敗しました", error);
         });
+    },
+    fetchEventImagesForAllEvents() {
+      // 各イベントの写真情報を取得
+      for (const event of this.events) {
+        this.fetchEventImages(event.id);
+      }
+    },
+    fetchEventImages(eventId) {
+      // axiosを使用してAPIエンドポイントへのリクエストを送信し、イメージデータを取得
+      this.$axios
+        .get(`/api/v1/events/${eventId}/event_images`)
+        .then((response) => {
+          // イメージデータをeventImagesオブジェクトに格納
+          this.$set(this.eventImages, eventId, response.data);
+        })
+        .catch((error) => {
+          console.error(
+            `イベントID ${eventId} のイメージデータの取得に失敗しました`,
+            error
+          );
+        });
+    },
+    getEventImage(eventId) {
+      // イベントに対応するイメージのURLを返す
+      const eventImages = this.eventImages[eventId];
+      if (eventImages && eventImages.length > 0) {
+        // イメージが存在する場合、最初のイメージを表示
+        return eventImages[0].event_image;
+      }
+      // イメージが存在しない場合のデフォルトURLを返す
+      return "imageがありません"; // デフォルトのイメージURLを指定
     },
     formatDatetime(datetimeString) {
       const datetime = new Date(datetimeString);
