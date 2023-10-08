@@ -9,7 +9,11 @@
           場所：{{ event.prefecture }} {{ event.city }} {{ event.location }}
         </p>
         <p>日時：{{ formatDatetime(event.event_start_datetime) }} から</p>
-        <img :src="getEventImage(event.id)" alt="イベントサムネイル" />
+        <img
+          :src="getEventImage(event.id)"
+          alt="イベントサムネイル"
+          style="width: 100px; height: auto"
+        />
       </li>
     </ul>
   </div>
