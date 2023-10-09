@@ -15,10 +15,10 @@
               >
             </v-btn>
           </v-img>
-          <v-card-title style="font-size: 16px; height: 80px; overflow: hidden;">
+          <v-card-title style="font-size: 16px; font-weight: bold; height: 72px; overflow: hidden;">
             {{ event.title }}
           </v-card-title>
-          <v-card-text style="height: 125px; overflow: hidden;">
+          <v-card-text style="height: 115px; overflow: hidden;">
             {{ event.description }}
           </v-card-text>
           <v-card-text style="height: 30px;"> <!-- 日時 -->
