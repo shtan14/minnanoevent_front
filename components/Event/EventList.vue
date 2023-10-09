@@ -2,7 +2,7 @@
   <div>
     <v-row>
       <v-col v-for="event in events" :key="event.id" cols="3" class="mb-4">
-        <v-card class="fill-height">
+        <v-card class="fill-height" style="border-radius: 10px;">
           <v-img
             v-if="event.event_images && event.event_images.length > 0"
             :src="event.event_images[0].event_image"
@@ -27,7 +27,7 @@
           </v-card-text>
           <v-card-text style="height: 55px;"> <!-- 会場 -->
             <v-icon>mdi-map-marker</v-icon>
-            {{ event.prefecture }} {{ event.city }} {{ event.location }}
+            {{ event.prefecture }}{{ event.city }} {{ event.location }}
           </v-card-text>
           <v-card-actions>
             <v-btn
