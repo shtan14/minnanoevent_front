@@ -15,17 +15,17 @@
               >
             </v-btn>
           </v-img>
-          <v-card-title style="font-size: 16px; font-weight: bold; height: 72px; overflow: hidden;">
+          <v-card-title style="font-size: 15px; font-weight: bold; height: 75px; overflow: hidden;">
             {{ event.title }}
           </v-card-title>
-          <v-card-text style="height: 115px; overflow: hidden;">
+          <v-card-text style="height: 90px; overflow: hidden;">
             {{ event.description }}
           </v-card-text>
           <v-card-text style="height: 30px;"> <!-- 日時 -->
             <v-icon>mdi-calendar</v-icon>
             {{ formatDatetime(event.event_start_datetime) }} から
           </v-card-text>
-          <v-card-text style="height: 65px;"> <!-- 会場 -->
+          <v-card-text style="height: 55px;"> <!-- 会場 -->
             <v-icon>mdi-map-marker</v-icon>
             {{ event.prefecture }} {{ event.city }} {{ event.location }}
           </v-card-text>
