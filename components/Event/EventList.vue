@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row>
-      <v-col v-for="event in events" :key="event.id" cols="3" class="mb-3">
+      <v-col v-for="event in events" :key="event.id" cols="3" class="mb-4">
         <v-card class="fill-height">
           <v-img
             v-if="event.event_images && event.event_images.length > 0"
@@ -15,13 +15,17 @@
               >
             </v-btn>
           </v-img>
-          <v-card-title>{{ event.title }}</v-card-title>
-          <v-card-text>{{ event.description }}</v-card-text>
-          <v-card-text>
+          <v-card-title style="font-size: 16px; height: 80px; overflow: hidden;">
+            {{ event.title }}
+          </v-card-title>
+          <v-card-text style="height: 125px; overflow: hidden;">
+            {{ event.description }}
+          </v-card-text>
+          <v-card-text style="height: 30px;"> <!-- 日時 -->
             <v-icon>mdi-calendar</v-icon>
             {{ formatDatetime(event.event_start_datetime) }} から
           </v-card-text>
-          <v-card-text>
+          <v-card-text style="height: 65px;"> <!-- 会場 -->
             <v-icon>mdi-map-marker</v-icon>
             {{ event.prefecture }} {{ event.city }} {{ event.location }}
           </v-card-text>
