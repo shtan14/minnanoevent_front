@@ -6,14 +6,14 @@
           <v-img
             v-if="event.event_images && event.event_images.length > 0"
             :src="event.event_images[0].event_image"
-            style="border-radius: 20px; height: 220px; position: relative"
+            style="border-radius: 10px; height: 220px; position: relative"
             alt="アイキャッチ写真"
           >
-            <!-- <v-btn icon right style="position: absolute; top: 3px; right: 5px">
+            <v-btn icon right style="position: absolute; top: 3px; right: 5px">
               <v-icon style="font-size: 22px; text-stroke: 1.5px white"
                 >mdi-heart</v-icon
               >
-            </v-btn> -->
+            </v-btn>
           </v-img>
           <v-card-title>{{ event.title }}</v-card-title>
           <v-card-text>{{ event.description }}</v-card-text>
