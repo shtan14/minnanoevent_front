@@ -21,11 +21,11 @@
           <v-card-text style="height: 90px; overflow: hidden;">
             {{ event.description }}
           </v-card-text>
-          <v-card-text style="height: 30px;"> <!-- 日時 -->
+          <v-card-text style="height: 30px;">
             <v-icon>mdi-calendar</v-icon>
             {{ formatDatetime(event.event_start_datetime) }} から
           </v-card-text>
-          <v-card-text style="height: 55px;"> <!-- 会場 -->
+          <v-card-text style="height: 55px;">
             <v-icon>mdi-map-marker</v-icon>
             {{ event.prefecture }}{{ event.city }} {{ event.location }}
           </v-card-text>
