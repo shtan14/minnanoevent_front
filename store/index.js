@@ -2,7 +2,7 @@ const homePath = "index";
 
 export const state = () => ({
   styles: {
-    homeAppBarHeight: 56,
+    homeAppBarHeight: 76,
   },
   loggedIn: {
     homePath: {
