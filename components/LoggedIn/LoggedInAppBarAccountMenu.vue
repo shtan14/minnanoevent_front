@@ -2,7 +2,7 @@
   <v-menu app offset-x offset-y max-width="200">
     <template #activator="{ on }">
       <v-btn icon v-on="on">
-        <v-icon> mdi-account-circle </v-icon>
+        <v-icon size="32"> mdi-account-circle </v-icon>
       </v-btn>
     </template>
     <v-list dense color="white">
