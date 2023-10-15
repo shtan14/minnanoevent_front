@@ -2,42 +2,54 @@
   <div>
     <v-row>
       <v-col v-for="event in events" :key="event.id" cols="3" class="mb-4">
-        <v-card class="fill-height" style="border-radius: 10px;">
-          <v-img
-            v-if="event.event_images && event.event_images.length > 0"
-            :src="event.event_images[0].event_image"
-            style="border-radius: 10px; height: 220px; position: relative"
-            alt="アイキャッチ写真"
-          >
-            <v-btn icon right style="position: absolute; top: 3px; right: 5px">
-              <v-icon style="font-size: 22px; text-stroke: 1.5px white"
-                >mdi-heart</v-icon
-              >
-            </v-btn>
-          </v-img>
-          <v-card-title style="font-size: 15px; font-weight: bold; height: 75px; overflow: hidden;">
-            {{ event.title }}
-          </v-card-title>
-          <v-card-text style="height: 90px; overflow: hidden;">
-            {{ event.description }}
-          </v-card-text>
-          <v-card-text style="height: 30px;">
-            <v-icon>mdi-calendar</v-icon>
-            {{ formatDatetime(event.event_start_datetime) }} から
-          </v-card-text>
-          <v-card-text style="height: 55px;">
-            <v-icon>mdi-map-marker</v-icon>
-            {{ event.prefecture }}{{ event.city }} {{ event.location }}
-          </v-card-text>
-          <v-card-actions>
-            <v-btn
-              v-for="(category, index) in event.categories"
-              :key="index"
-              small
+        <v-card class="fill-height" style="border-radius: 10px">
+          <router-link :to="'/event/' + event.id" class="event-card">
+            <v-img
+              v-if="event.event_images && event.event_images.length > 0"
+              :src="event.event_images[0].event_image"
+              style="border-radius: 10px; height: 220px; position: relative"
+              alt="アイキャッチ写真"
             >
-              {{ category.category }}
-            </v-btn>
-          </v-card-actions>
+            </v-img>
+            <v-card-title
+              style="
+                font-size: 15px;
+                font-weight: bold;
+                height: 75px;
+                overflow: hidden;
+              "
+            >
+              {{ event.title }}
+            </v-card-title>
+            <v-card-text style="height: 90px; overflow: hidden">
+              {{ event.description }}
+            </v-card-text>
+            <v-card-text style="height: 30px">
+              <v-icon>mdi-calendar</v-icon>
+              {{ formatDatetime(event.event_start_datetime) }} から
+            </v-card-text>
+            <v-card-text style="height: 55px">
+              <v-icon>mdi-map-marker</v-icon>
+              {{ event.prefecture }}{{ event.city }} {{ event.location }}
+            </v-card-text>
+            <v-card-actions>
+              <!-- カテゴリーボタンに別の遷移先を設定 -->
+              <v-btn
+                v-for="(category, index) in event.categories"
+                :key="index"
+                :to="'/category/' + category.id"
+                class="category-button"
+                small
+              >
+                {{ category.category }}
+              </v-btn>
+            </v-card-actions>
+          </router-link>
+          <v-btn icon right style="position: absolute; top: 3px; right: 5px">
+            <v-icon style="font-size: 22px; text-stroke: 1.5px white"
+              >mdi-heart</v-icon
+            >
+          </v-btn>
         </v-card>
       </v-col>
     </v-row>
@@ -79,3 +91,10 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.event-card {
+  text-decoration: none; /* 下線を非表示にする */
+  color: black;
+}
+</style>
