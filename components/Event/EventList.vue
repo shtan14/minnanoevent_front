@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-row>
+    <v-row dense>
       <v-col v-for="event in events" :key="event.id" cols="3">
         <v-card class="fill-height" style="border-radius: 10px">
           <router-link :to="'/event/' + event.id" class="event-card">
