@@ -8,7 +8,7 @@
               v-if="event.event_images && event.event_images.length > 0"
               :src="event.event_images[0].event_image"
               style="border-radius: 10px; height: 220px; position: relative"
-              alt="アイキャッチ写真"
+              alt="アイキャッチ画像"
             >
             </v-img>
             <v-card-title
