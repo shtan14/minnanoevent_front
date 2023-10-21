@@ -3,7 +3,7 @@
     <v-row dense>
       <v-col v-for="event in events" :key="event.id" cols="3">
         <v-card class="fill-height" style="border-radius: 10px">
-          <!-- <v-card @click="goToEventDetail(event.id)"> -->
+          <v-card @click="goToEventDetail(event.id)">
             <router-link :to="'/event/' + event.id" class="event-card">
               <v-img
                 v-if="event.event_images && event.event_images.length > 0"
@@ -46,7 +46,7 @@
                 </v-btn>
               </v-card-actions>
             </router-link>
-            <!-- </v-card> -->
+            </v-card>
             <v-btn icon right style="position: absolute; top: 3px; right: 5px">
               <v-icon style="font-size: 22px; text-stroke: 1.5px white"
                 >mdi-heart</v-icon
