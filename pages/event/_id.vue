@@ -8,7 +8,6 @@
     </template>
     <v-main>
       <nuxt />
-
     </v-main>
     <app-footer />
   </v-app>
@@ -16,7 +15,7 @@
 
 <script>
 export default {
-  name: "PagesEventDetail",
+  name: "PagesIndex",
   computed: {
     isUserLoggedIn() {
       const loggedIn = this.$auth.loggedIn(); // ログイン状態を呼び出し
