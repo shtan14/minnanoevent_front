@@ -1,21 +1,20 @@
 <template>
   <div>
     <div v-if="event">
-          <h1>{{ event.title }}</h1>
-      <p>{{ event.description }}</p>
-      <p>開催日時: {{ formatDatetime(event.event_start_datetime) }}</p>
-      <p>場所: {{ event.prefecture }}{{ event.city }} {{ event.location }}</p>
-            <v-img
-              :src="event.event_images[0].event_image"
-              style="border-radius: 10px; height: 220px; position: relative"
-              alt="サムネイル写真"
-            >
-            </v-img>
-      <!-- {{ event.comments.comment }} -->
-      <!-- その他の詳細情報を表示 -->
-    </div>
-    <div v-else>
-      <p>イベントが見つかりません。</p>
+      <h1>{{ event.title }}</h1>
+      <v-row class="image-container">
+        <v-col
+          v-for="(image, index) in event.event_images.length"
+          :key="index"
+          cols="4"
+        >
+          <v-img
+            :src="event.event_images[index].event_image"
+            style="height: auto; width: 100%"
+            alt="サムネイル写真"
+          ></v-img>
+        </v-col>
+      </v-row>
     </div>
   </div>
 </template>
