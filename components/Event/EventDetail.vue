@@ -13,7 +13,7 @@
           >
             <v-img
               :src="image.event_image"
-              style="border-radius: 10px; height: auto; width: 100%"
+              style="border-radius: 10px; height: 280px; width: auto; margin: 0;"
               alt="サムネイル写真"
             ></v-img>
           </v-col>
