@@ -5,7 +5,7 @@
 
       <!-- イベント画像 -->
       <div class="image-container">
-        <v-row>
+        <v-row class="mx-4 image-container" no-gutters>
           <v-col
             v-for="(image, index) in event.event_images"
             :key="index"
@@ -13,7 +13,7 @@
           >
             <v-img
               :src="image.event_image"
-              style="border-radius: 10px; height: 280px; width: auto; margin: 0;"
+              class="image-item"
               alt="サムネイル写真"
             ></v-img>
           </v-col>
@@ -115,6 +115,18 @@ export default {
 
 .image-container v-col {
   padding: 0;
+}
+
+.image-item {
+  border-radius: 10px;
+  margin-right: 5px; /* 詰めるためにマイナスの値を試す */
+  height: 280px;
+  width: auto;
+}
+
+.image-container::after {
+  content: "";
+  flex: auto;
 }
 
 .event-description {
