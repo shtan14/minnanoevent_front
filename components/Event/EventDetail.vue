@@ -1,50 +1,58 @@
 <template>
   <div>
-    <div v-if="event">
-      <v-card style="border-radius: 20px; overflow: hidden">
-        <!-- イベント画像スライダー -->
-        <v-carousel cycle hide-delimiters height="280">
-          <v-carousel-item
+    <div v-if="event" class="event-details-container">
+      <h1 class="event-title">{{ event.title }}</h1>
+
+      <!-- イベント画像 -->
+      <div class="image-container">
+        <v-row>
+          <v-col
             v-for="(image, index) in event.event_images"
             :key="index"
+            cols="4"
           >
-            <v-img :src="image.event_image" height="400" contain></v-img>
-          </v-carousel-item>
-        </v-carousel>
+            <v-img
+              :src="image.event_image"
+              style="border-radius: 10px; height: auto; width: 100%"
+              alt="サムネイル写真"
+            ></v-img>
+          </v-col>
+        </v-row>
+      </div>
 
-        <v-card-text class="pa-4">
-          <!-- イベントタイトル -->
-          <v-row justify="space-between" class="mb-4">
-            <v-col cols="12" md="8">
-              <h1 class="text-h4 font-weight-bold">{{ event.title }}</h1>
-            </v-col>
-            <v-col cols="12" md="4">
-              <v-chip color="primary" dark class="ml-md-auto">{{
-                event.ticket_price === 0 ? "無料" : event.ticket_price + "円"
-              }}</v-chip>
-            </v-col>
-          </v-row>
+      <!-- イベント情報テキスト -->
+      <div class="event-description">
+        {{ event.description }}
+      </div>
 
-          <!-- イベント情報 -->
-          <v-row class="mb-4">
-            <v-col cols="12" md="6">
-              <v-icon class="mr-2">mdi-calendar</v-icon>
-              {{ formatDatetime(event.event_start_datetime) }} から
-              {{ formatDatetime(event.event_end_datetime) }}
-            </v-col>
-            <v-col cols="12" md="6">
-              <v-icon class="mr-2">mdi-map-marker</v-icon>
-              {{ event.prefecture }}{{ event.city }} {{ event.location }}
-            </v-col>
-          </v-row>
+      <!-- 日時 -->
+      <div class="event-datetime">
+        <v-icon>mdi-calendar</v-icon>
+        {{ formatDatetime(event.event_start_datetime) }} から
+        {{ formatDatetime(event.event_end_datetime) }}
+      </div>
 
-          <v-row>
-            <v-col cols="12">
-              <div class="body-1">{{ event.description }}</div>
-            </v-col>
-          </v-row>
-        </v-card-text>
-      </v-card>
+      <!-- 場所 -->
+      <div class="event-location">
+        <v-icon>mdi-map-marker</v-icon>
+        {{ event.prefecture }}{{ event.city }} {{ event.location }}
+      </div>
+
+      <!-- 参加費 -->
+      <div class="event-price">
+        <v-icon>mdi-currency-jpy</v-icon>
+        {{
+          event.ticket_price === 0
+            ? "参加費: なし"
+            : "参加費: " + event.ticket_price + "円"
+        }}
+      </div>
+
+      <!-- 連絡先 -->
+      <div class="event-contact">
+        <v-icon>mdi-phone</v-icon>
+        {{ event.phone_number }}
+      </div>
     </div>
   </div>
 </template>
@@ -85,3 +93,47 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.event-details-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  /* border: 1px solid #ccc; */
+  border-radius: 10px;
+}
+
+.event-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.image-container {
+  margin-bottom: 20px;
+}
+
+.image-container v-col {
+  padding: 0;
+}
+
+.event-description {
+  margin-bottom: 20px;
+}
+
+.event-datetime,
+.event-location,
+.event-price,
+.event-contact {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.event-datetime v-icon,
+.event-location v-icon,
+.event-price v-icon,
+.event-contact v-icon {
+  margin-right: 10px;
+}
+</style>
