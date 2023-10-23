@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="event" class="event-details-container">
-      <h1 class="event-title">{{ event.title }}</h1>
+      <h1 class="ml-4 event-title">{{ event.title }}</h1>
 
       <!-- イベント画像 -->
       <div class="image-container">
@@ -21,25 +21,25 @@
       </div>
 
       <!-- イベント情報テキスト -->
-      <div class="event-description">
+      <div class="ml-4 event-description">
         {{ event.description }}
       </div>
 
       <!-- 日時 -->
-      <div class="event-datetime">
+      <div class="ml-4 event-datetime">
         <v-icon>mdi-calendar</v-icon>
         {{ formatDatetime(event.event_start_datetime) }} から
         {{ formatDatetime(event.event_end_datetime) }}
       </div>
 
       <!-- 場所 -->
-      <div class="event-location">
+      <div class="ml-4 event-location">
         <v-icon>mdi-map-marker</v-icon>
         {{ event.prefecture }}{{ event.city }} {{ event.location }}
       </div>
 
       <!-- 参加費 -->
-      <div class="event-price">
+      <div class="ml-4 event-price">
         <v-icon>mdi-currency-jpy</v-icon>
         {{
           event.ticket_price === 0
@@ -49,7 +49,7 @@
       </div>
 
       <!-- 連絡先 -->
-      <div class="event-contact">
+      <div class="ml-4 event-contact">
         <v-icon>mdi-phone</v-icon>
         {{ event.phone_number }}
       </div>
