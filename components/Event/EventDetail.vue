@@ -53,6 +53,12 @@
         <v-icon>mdi-phone</v-icon>
         {{ event.phone_number }}
       </div>
+
+      <!-- お気に入り数 -->
+      <div class="ml-4 event-contact">
+        <v-icon>mdi-heart</v-icon>
+        {{ event.favourites_count }}
+      </div>
     </div>
   </div>
 </template>
