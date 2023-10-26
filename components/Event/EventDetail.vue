@@ -4,7 +4,7 @@
       <h1 class="ml-4 event-title">{{ event.title }}</h1>
 
       <!-- イベント画像 -->
-      <div class="image-container">
+      <div class="mb-5 image-container">
         <v-row class="mx-4 image-container" no-gutters>
           <v-col
             v-for="(image, index) in event.event_images"
@@ -21,42 +21,53 @@
       </div>
 
       <!-- イベント情報テキスト -->
-      <div class="ml-4 event-description">
+      <div class="ml-4 mb-5">
+        <div class="event-description-title">イベントについて</div>
         {{ event.description }}
       </div>
 
       <!-- 日時 -->
-      <div class="ml-4 event-datetime">
-        <v-icon>mdi-calendar</v-icon>
-        {{ formatDatetime(event.event_start_datetime) }} から
-        {{ formatDatetime(event.event_end_datetime) }}
+      <div class="ml-4 mb-5">
+        <div class="event-datetime-title">
+          <v-icon class="mr-2">mdi-calendar</v-icon>
+          日時
+        </div>
+        <div class="event-datetime">
+          {{ formatDatetime(event.event_start_datetime) }} から
+          {{ formatDatetime(event.event_end_datetime) }}
+        </div>
       </div>
 
       <!-- 場所 -->
-      <div class="ml-4 event-location">
-        <v-icon>mdi-map-marker</v-icon>
-        {{ event.prefecture }}{{ event.city }} {{ event.location }}
+      <div class="ml-4 mb-5">
+        <div class="event-location-title">
+          <v-icon class="mr-2">mdi-map-marker</v-icon>
+          場所
+        </div>
+        {{ event.prefecture }} {{ event.city }} {{ event.location }}
       </div>
 
       <!-- 参加費 -->
-      <div class="ml-4 event-price">
-        <v-icon>mdi-currency-jpy</v-icon>
-        {{
-          event.ticket_price === 0
-            ? "参加費: なし"
-            : "参加費: " + event.ticket_price + "円"
-        }}
+      <div class="ml-4 mb-5">
+        <div class="event-price-title">
+          <v-icon class="mr-2">mdi-currency-jpy</v-icon>
+          費用
+        </div>
+        {{ event.ticket_price === 0 ? "なし" : event.ticket_price + "円" }}
       </div>
 
       <!-- 連絡先 -->
-      <div class="ml-4 event-contact">
-        <v-icon>mdi-phone</v-icon>
+      <div class="ml-4 mb-5">
+        <div class="event-contact-title">
+          <v-icon class="mr-2">mdi-phone</v-icon>
+          連絡先
+        </div>
         {{ event.phone_number }}
       </div>
 
       <!-- お気に入り数 -->
       <div class="ml-4 event-contact">
-        <v-icon>mdi-heart</v-icon>
+        <v-icon class="mr-2">mdi-heart</v-icon>
         {{ event.favourites_count }}
       </div>
     </div>
@@ -153,5 +164,16 @@ export default {
 .event-price v-icon,
 .event-contact v-icon {
   margin-right: 10px;
+}
+
+.event-description-title,
+.event-datetime-title,
+.event-location-title,
+.event-price-title,
+.event-contact-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333; /* 任意のテキストカラー */
+  margin-bottom: 5px; /* 必要に応じて調整 */
 }
 </style>
