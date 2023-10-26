@@ -28,8 +28,15 @@
 
       <v-divider class="my-5"></v-divider>
 
+      <div class="ml-4 mb-5">
+        <div class="event-description-title">イベントホスト</div>
+        {{ event.user_id.username }}
+      </div>
+
+      <v-divider class="my-5"></v-divider>
+
       <!-- 日時 -->
-      <div class="ml-4 mb-8">
+      <div class="ml-4 mb-6">
         <div class="event-datetime-title">
           <v-icon class="mr-2">mdi-calendar</v-icon>
           日時
@@ -39,27 +46,33 @@
           {{ formatDatetime(event.event_end_datetime) }}
         </div>
       </div>
+
       <v-divider class="my-5"></v-divider>
+
       <!-- 場所 -->
-      <div class="ml-4 mb-8">
+      <div class="ml-4 mb-6">
         <div class="event-location-title">
           <v-icon class="mr-2">mdi-map-marker</v-icon>
           場所
         </div>
         {{ event.prefecture }} {{ event.city }} {{ event.location }}
       </div>
+
       <v-divider class="my-5"></v-divider>
+
       <!-- 参加費 -->
-      <div class="ml-4 mb-8">
+      <div class="ml-4 mb-6">
         <div class="event-price-title">
           <v-icon class="mr-2">mdi-currency-jpy</v-icon>
           費用
         </div>
         {{ event.ticket_price === 0 ? "なし" : event.ticket_price + "円" }}
       </div>
+
       <v-divider class="my-5"></v-divider>
+
       <!-- 連絡先 -->
-      <div class="ml-4 mb-8">
+      <div class="ml-4 mb-6">
         <div class="event-contact-title">
           <v-icon class="mr-2">mdi-phone</v-icon>
           連絡先
