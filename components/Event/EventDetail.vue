@@ -30,7 +30,14 @@
 
       <div class="ml-4 mb-5">
         <div class="event-description-title">イベントホスト</div>
-        {{ event.user_id.username }}
+        <template v-if="user">
+          {{ user.name }}
+          <v-img
+            :src="user.user_profile.avatar"
+            alt="ユーザーのアバター"
+          ></v-img>
+        </template>
+        <template v-else> ユーザー情報を読み込んでいます... </template>
       </div>
 
       <v-divider class="my-5"></v-divider>
@@ -94,6 +101,7 @@ export default {
   data() {
     return {
       event: null, // イベント情報を格納するデータ
+      user: null,
     };
   },
   mounted() {
@@ -102,16 +110,28 @@ export default {
   },
   methods: {
     fetchEventDetails() {
-      const eventId = this.$route.params.id; // URLからイベントIDを取得
+      const eventId = this.$route.params.id;
       this.$axios
-        .get(`/api/v1/events/${eventId}`) // 特定のイベント情報を取得するAPIのエンドポイント
+        .get(`/api/v1/events/${eventId}`)
         .then((response) => {
-          this.event = response.data; // イベント情報をデータに設定
+          this.event = response.data;
+
+          // ユーザー情報を取得
+          const userId = response.data.user_id;
+          this.$axios
+            .get(`/api/v1/users/${userId}`)
+            .then((userResponse) => {
+              this.user = userResponse.data;
+            })
+            .catch((userError) => {
+              console.error("ユーザー情報の取得に失敗しました", userError);
+            });
         })
         .catch((error) => {
           console.error("イベントデータの取得に失敗しました", error);
         });
     },
+
     formatDatetime(datetimeString) {
       const datetime = new Date(datetimeString);
       const weekdays = ["日", "月", "火", "水", "木", "金", "土"];
