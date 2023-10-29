@@ -20,7 +20,7 @@
         </v-row>
       </div>
 
-      <!-- イベント情報テキスト -->
+      <!-- イベントについて -->
       <div class="ml-4 mb-5">
         <div class="event-description-title">イベントについて</div>
         {{ event.description }}
