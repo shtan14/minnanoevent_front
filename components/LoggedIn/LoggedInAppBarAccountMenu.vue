@@ -1,8 +1,14 @@
 <template>
   <v-menu app offset-x offset-y max-width="200">
     <template #activator="{ on }">
-      <v-btn icon v-on="on">
-        <v-icon size="32"> mdi-account-circle </v-icon>
+      <v-btn style="margin-right: 1px" icon v-on="on">
+        <!-- プロフィールがあり、アバターURLが設定されている場合に画像を表示 -->
+        <v-img
+          v-if="$auth.user.user_profile && $auth.user.user_profile.avatar"
+          :src="$auth.user.user_profile.avatar"
+          class="avatar-circle"
+        ></v-img>
+        <v-icon v-else size="32">mdi-account-circle</v-icon>
       </v-btn>
     </template>
     <v-list dense color="white">
@@ -56,5 +62,12 @@ export default {
 <style scoped>
 .v-list-item--link:before {
   background-color: white !important;
+}
+
+.avatar-circle {
+  height: 45px;
+  width: 45px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 </style>
