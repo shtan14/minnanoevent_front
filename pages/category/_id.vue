@@ -8,16 +8,16 @@
     </template>
     <v-main>
       <nuxt />
-      <event-detail />
+      <events-by-category />
     </v-main>
     <app-footer />
   </v-app>
 </template>
 
 <script>
-import EventDetail from "../../components/Event/EventDetail.vue";
+import EventsByCategory from "../../components/Event/EventsByCategory.vue";
 export default {
-  components: { EventDetail },
+  components: { EventsByCategory },
   computed: {
     isUserLoggedIn() {
       const loggedIn = this.$auth.loggedIn(); // ログイン状態を呼び出し
