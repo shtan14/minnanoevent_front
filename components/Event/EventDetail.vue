@@ -31,7 +31,7 @@
       <div class="ml-4 mb-5">
         <div class="event-description-title">イベントホスト</div>
         <template v-if="user">
-          {{ user.name }}
+          {{ user.name }} さん
           <v-img
             :src="user.user_profile.avatar"
             alt="ユーザーのアバター"
