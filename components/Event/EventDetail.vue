@@ -28,20 +28,6 @@
 
       <v-divider class="my-5"></v-divider>
 
-      <div class="ml-4 mb-5">
-        <div class="event-description-title">イベントホスト</div>
-        <template v-if="user">
-          {{ user.name }} さん
-          <v-img
-            :src="user.user_profile.avatar"
-            alt="ユーザーのアバター"
-          ></v-img>
-        </template>
-        <template v-else> ユーザー情報を読み込んでいます... </template>
-      </div>
-
-      <v-divider class="my-5"></v-divider>
-
       <!-- 日時 -->
       <div class="ml-4 mb-6">
         <div class="event-datetime-title">
@@ -54,7 +40,7 @@
         </div>
       </div>
 
-      <v-divider class="my-5"></v-divider>
+      <!-- <v-divider class="my-5"></v-divider> -->
 
       <!-- 場所 -->
       <div class="ml-4 mb-6">
@@ -65,7 +51,7 @@
         {{ event.prefecture }} {{ event.city }} {{ event.location }}
       </div>
 
-      <v-divider class="my-5"></v-divider>
+      <!-- <v-divider class="my-5"></v-divider> -->
 
       <!-- 参加費 -->
       <div class="ml-4 mb-6">
@@ -76,7 +62,7 @@
         {{ event.ticket_price === 0 ? "なし" : event.ticket_price + "円" }}
       </div>
 
-      <v-divider class="my-5"></v-divider>
+      <!-- <v-divider class="my-5"></v-divider> -->
 
       <!-- 連絡先 -->
       <div class="ml-4 mb-6">
@@ -87,11 +73,27 @@
         {{ event.phone_number }}
       </div>
 
-      <!-- お気に入り数
-      <div class="ml-4 event-contact">
-        <v-icon class="mr-2">mdi-heart</v-icon>
-        {{ event.favourites_count }}
-      </div> -->
+      <v-divider class="my-5"></v-divider>
+
+      <!-- イベントホスト -->
+      <div class="ml-4 mb-5">
+        <template v-if="user">
+          <div class="event-host-title">
+            イベントホストは {{ user.name }} さん
+          </div>
+          <div class="user-profile">
+            <div class="avatar-container">
+              <v-img
+                :src="user.user_profile.avatar"
+                alt="ユーザーのアバター"
+                class="avatar-image"
+              ></v-img>
+            </div>
+            <div class="bio-text">{{ user.user_profile.bio }}</div>
+          </div>
+        </template>
+        <template v-else> ユーザー情報を読み込んでいます... </template>
+      </div>
     </div>
   </div>
 </template>
@@ -152,13 +154,13 @@ export default {
   margin: 0 auto;
   padding: 20px;
   /* border: 1px solid #ccc; */
-  border-radius: 10px;
+  /* border-radius: 10px; */
 }
 
 .event-title {
   font-size: 24px;
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .image-container {
@@ -169,20 +171,16 @@ export default {
   padding: 0;
 }
 
-.image-item {
-  border-radius: 10px;
-  margin-right: 5px; /* 詰めるためにマイナスの値を試す */
-  height: 280px;
-  width: auto;
-}
-
 .image-container::after {
   content: "";
   flex: auto;
 }
 
-.event-description {
-  margin-bottom: 20px;
+.image-item {
+  border-radius: 10px;
+  margin-right: 5px; /* 詰めるためにマイナスの値を試す */
+  height: 280px;
+  width: auto;
 }
 
 .event-datetime,
@@ -202,6 +200,7 @@ export default {
 }
 
 .event-description-title,
+.event-host-title,
 .event-datetime-title,
 .event-location-title,
 .event-price-title,
@@ -209,6 +208,21 @@ export default {
   font-size: 18px;
   font-weight: bold;
   color: #333; /* 任意のテキストカラー */
-  margin-bottom: 5px; /* 必要に応じて調整 */
+  margin-bottom: 15px; /* 必要に応じて調整 */
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+}
+
+.avatar-image {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+}
+
+.bio-text {
+  margin-left: 20px; /* テキストと画像の間隔を調整 */
 }
 </style>
