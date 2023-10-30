@@ -33,7 +33,6 @@
               {{ event.prefecture }}{{ event.city }} {{ event.location }}
             </v-card-text>
             <v-card-actions>
-              <!-- カテゴリーボタンに別の遷移先を設定 -->
               <v-btn
                 v-for="(category, index) in event.categories"
                 :key="index"
