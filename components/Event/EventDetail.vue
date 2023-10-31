@@ -83,11 +83,13 @@
           </div>
           <div class="user-profile">
             <div class="avatar-container">
+              <nuxt-link :to="`/user/${user.id}`">
               <v-img
                 :src="user.user_profile.avatar"
                 alt="ユーザーのアバター"
                 class="avatar-image"
               ></v-img>
+              </nuxt-link>
             </div>
             <div class="bio-text">{{ user.user_profile.bio }}</div>
           </div>
