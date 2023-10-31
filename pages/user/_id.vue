@@ -14,7 +14,7 @@
 <script>
 export default {
   async asyncData({ params, $axios }) {
-    // APIからユーザー情報を取得
+    // APIからユーザー情報取得
     const userProfile = await $axios.$get(`/api/v1/user/${params.id}`);
     return { userProfile };
   },
