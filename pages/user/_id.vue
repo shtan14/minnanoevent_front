@@ -6,7 +6,7 @@
     <template v-else>
       <before-login-app-bar />
     </template>
-    <v-main> </v-main>
+    <v-main><p>ユーザー名: {{ userProfile.name }}</p></v-main>
     <app-footer />
   </v-app>
 </template>
@@ -15,7 +15,7 @@
 export default {
   async asyncData({ params, $axios }) {
     // APIからユーザー情報取得
-    const userProfile = await $axios.$get(`/api/v1/user/${params.id}`);
+    const userProfile = await $axios.$get(`/api/v1/users/${params.id}`);
     return { userProfile };
   },
   computed: {
