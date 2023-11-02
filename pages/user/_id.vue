@@ -9,7 +9,7 @@
     <v-main
       ><p>ユーザー名: {{ userProfile.name }}</p>
       {{ userProfile.user_profile.bio }}
-      {{ userProfile.user_profile.avatar }}</p>
+      {{ userProfile.user_profile.avatar }}
     </v-main>
     <app-footer />
   </v-app>
