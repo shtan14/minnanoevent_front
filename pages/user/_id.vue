@@ -7,9 +7,12 @@
       <before-login-app-bar />
     </template>
     <v-main
-      ><p>ユーザー名 {{ userProfile.name }}</p>
+      >{{ userProfile.name }}
       {{ userProfile.user_profile.bio }}
       {{ userProfile.user_profile.avatar }}
+      x{{ userProfile.user_profile.x_link }}
+      facebook{{ userProfile.user_profile.facebook_link }}
+      instagram{{ userProfile.user_profile.instagram_link }}
     </v-main>
     <app-footer />
   </v-app>
