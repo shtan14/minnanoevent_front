@@ -6,7 +6,11 @@
     <template v-else>
       <before-login-app-bar />
     </template>
-    <v-main><p>ユーザー名: {{ userProfile.name }}</p></v-main>
+    <v-main
+      ><p>ユーザー名: {{ userProfile.name }}</p>
+      {{ userProfile.user_profile.bio }}
+      {{ userProfile.user_profile.avatar }}</p>
+    </v-main>
     <app-footer />
   </v-app>
 </template>
