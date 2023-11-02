@@ -7,7 +7,7 @@
       <before-login-app-bar />
     </template>
     <v-main
-      ><p>ユーザー名: {{ userProfile.name }}</p>
+      ><p>ユーザー名 {{ userProfile.name }}</p>
       {{ userProfile.user_profile.bio }}
       {{ userProfile.user_profile.avatar }}
     </v-main>
