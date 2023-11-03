@@ -79,12 +79,17 @@ export default {
   font-weight: bold;
   font-size: 18px;
   margin-top: 5px;
+  margin-left: 5px;
   margin-bottom: 12px; /* 名前と自己紹介文の間の間隔を調整 */
 }
 
 .bio-text {
   margin-bottom: 12px;
+  margin-left: 5px;
 }
 
-.social-media-icons 
+.social-media-icons {
+  display: flex;
+  justify-content: start;
+}
 </style>
