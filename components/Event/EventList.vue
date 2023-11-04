@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row class="mx-1">
-      <v-col v-for="event in events" :key="event.id" cols="3">
+      <v-col v-for="event in events" :key="event.id" cols="12" sm="6" md="6" lg="3">
         <v-card class="fill-height" style="border-radius: 10px">
           <nuxt-link :to="'/event/' + event.id" class="event-card">
             <v-img
