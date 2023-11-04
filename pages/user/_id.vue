@@ -105,11 +105,28 @@ export default {
   flex-shrink: 0;
 }
 
+@media (max-width: 599px) {
+  .avatar-image {
+    width: 70px; /* スマホでは画像の幅を小さくする */
+    height: 70px; /* スマホでは画像の高さを小さくする */
+    border-radius: 50%;
+    margin-left: 15px;
+    margin-top: 20px;
+  }
+}
+
 .user-details {
   display: flex;
   flex-direction: column; /* 要素を縦に並ばせる */
   margin-left: 15px;
   width: 600px;
+}
+
+@media (max-width: 599px) {
+  .user-details {
+    margin-left: 8px;
+    margin-right: 15px;
+  }
 }
 
 .user-name {
