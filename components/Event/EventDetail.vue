@@ -3,8 +3,22 @@
     <div v-if="event" class="event-details-container">
       <h1 class="ml-4 event-title">{{ event.title }}</h1>
 
-      <!-- イベント画像 -->
-      <div class="mb-7 image-container">
+      <div v-if="$vuetify.breakpoint.xsOnly" class="mb-7 image-container">
+        <v-carousel cycle hide-delimiters>
+          <v-carousel-item
+            v-for="(image, index) in event.event_images"
+            :key="index"
+          >
+            <v-img
+              :src="image.event_image"
+              alt="イベント画像"
+              class="carousel-image"
+            ></v-img>
+          </v-carousel-item>
+        </v-carousel>
+      </div>
+
+      <div v-else class="mb-7 image-container">
         <v-row class="mx-4 image-container" no-gutters>
           <v-col
             v-for="(image, index) in event.event_images"
@@ -20,7 +34,6 @@
         </v-row>
       </div>
 
-      <!-- イベントについて -->
       <div class="ml-4 mb-5">
         <div class="event-description-title">イベントについて</div>
         {{ event.description }}
@@ -28,7 +41,6 @@
 
       <v-divider class="my-5"></v-divider>
 
-      <!-- 日時 -->
       <div class="ml-4 mb-6">
         <div class="event-datetime-title">
           <v-icon class="mr-2">mdi-calendar</v-icon>
@@ -40,9 +52,6 @@
         </div>
       </div>
 
-      <!-- <v-divider class="my-5"></v-divider> -->
-
-      <!-- 場所 -->
       <div class="ml-4 mb-6">
         <div class="event-location-title">
           <v-icon class="mr-2">mdi-map-marker</v-icon>
@@ -51,9 +60,6 @@
         {{ event.prefecture }} {{ event.city }} {{ event.location }}
       </div>
 
-      <!-- <v-divider class="my-5"></v-divider> -->
-
-      <!-- 参加費 -->
       <div class="ml-4 mb-6">
         <div class="event-price-title">
           <v-icon class="mr-2">mdi-currency-jpy</v-icon>
@@ -62,9 +68,6 @@
         {{ event.ticket_price === 0 ? "なし" : event.ticket_price + "円" }}
       </div>
 
-      <!-- <v-divider class="my-5"></v-divider> -->
-
-      <!-- 連絡先 -->
       <div class="ml-4 mb-6">
         <div class="event-contact-title">
           <v-icon class="mr-2">mdi-phone</v-icon>
@@ -75,7 +78,6 @@
 
       <v-divider class="my-5"></v-divider>
 
-      <!-- イベントホスト -->
       <div class="ml-4 mb-5">
         <template v-if="user">
           <div class="event-host-title">
@@ -84,11 +86,11 @@
           <div class="user-profile">
             <div class="avatar-container">
               <nuxt-link :to="`/user/${user.id}`">
-              <v-img
-                :src="user.user_profile.avatar"
-                alt="ユーザーのアバター"
-                class="avatar-image"
-              ></v-img>
+                <v-img
+                  :src="user.user_profile.avatar"
+                  alt="ユーザーのアバター"
+                  class="avatar-image"
+                ></v-img>
               </nuxt-link>
             </div>
             <div class="bio-text">{{ user.user_profile.bio }}</div>
@@ -155,8 +157,6 @@ export default {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
-  /* border: 1px solid #ccc; */
-  /* border-radius: 10px; */
 }
 
 .event-title {
@@ -183,6 +183,17 @@ export default {
   margin-right: 5px; /* 詰めるためにマイナスの値を試す */
   height: 280px;
   width: auto;
+}
+
+.carousel-image {
+  border-radius: 10px;
+  height: 280px;
+  width: auto;
+  object-fit: cover;
+}
+
+.v-window.v-carousel {
+  height: 280px !important;
 }
 
 .event-datetime,
