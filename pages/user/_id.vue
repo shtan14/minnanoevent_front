@@ -17,7 +17,6 @@
         </div>
         <div class="user-details">
           <div class="user-name">{{ userProfile.name }}</div>
-          <div class="user-name">{{ userProfile.id }}</div>
           <div class="bio-text">{{ userProfile.user_profile.bio }}</div>
           <div class="social-media-links">
             <div>
@@ -62,8 +61,9 @@
           </div>
         </div>
       </div>
-    </v-main>
-    <v-main>
+      <div class="title-container">
+        {{ userProfile.name }}さんの主催イベント
+      </div>
       <nuxt />
       <events-hosted-by-user :user-id="userProfile.id" />
     </v-main>
@@ -93,28 +93,29 @@ export default {
 .user-profile-container {
   display: flex;
   justify-content: center;
-  min-height: 100vh; /* 画面の高さに合わせて最小高さを調整 */
-  padding-top: 40px; /* 上部の間隔 */
+  height: 220px;
+  padding-top: 40px;
 }
 
 .avatar-image {
-  width: 115px; /* 幅を指定 */
-  height: 115px; /* 高さを指定 */
-  border-radius: 50%; /* 円形にする */
-  object-fit: cover; /* 画像が枠に合わせて調整される */
-  flex-shrink: 0; /* 伸縮しないようにする */
+  width: 115px;
+  height: 115px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
 }
 
 .user-details {
   display: flex;
   flex-direction: column; /* 要素を縦に並ばせる */
   margin-left: 15px;
+  width: 600px;
 }
 
 .user-name {
   font-weight: bold;
   font-size: 18px;
-  margin-top: 5px;
+  margin-top: 2px;
   margin-left: 5px;
   margin-bottom: 12px; /* 名前と自己紹介文の間の間隔を調整 */
 }
@@ -127,5 +128,12 @@ export default {
 .social-media-links {
   display: flex;
   justify-content: flex-start;
+}
+
+.title-container {
+  text-align: center;
+  font-weight: bold;
+  font-size: 15px;
+  margin-bottom: 10px;
 }
 </style>
