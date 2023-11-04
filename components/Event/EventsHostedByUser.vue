@@ -2,10 +2,10 @@
   <div>
     <v-container>
       <v-row justify="center">
-        <v-col cols="12" md="6" lg="8">
+        <v-col cols="12" sm="12" md="12" lg="8">
           <!-- コンテンツが中央に配置される -->
           <v-row class="mx-1">
-            <v-col v-for="event in events" :key="event.id" cols="12" md="6">
+            <v-col v-for="event in events" :key="event.id" cols="12" sm="6" md="6">
               <v-card class="fill-height" style="border-radius: 10px">
                 <nuxt-link :to="'/event/' + event.id" class="event-card">
                   <v-img
