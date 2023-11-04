@@ -19,15 +19,54 @@
           <div class="user-name">{{ userProfile.name }}</div>
           <div class="bio-text">{{ userProfile.user_profile.bio }}</div>
           <div class="social-media-icons">
-            <v-btn icon href="#" target="_blank">
-              <v-icon>mdi-facebook</v-icon>
-            </v-btn>
-            <v-btn icon href="ユーザーのTwitterリンク" target="_blank">
-              <v-icon>mdi-twitter</v-icon>
-            </v-btn>
-            <v-btn icon href="ユーザーのInstagramリンク" target="_blank">
-              <v-icon>mdi-instagram</v-icon>
-            </v-btn>
+            <div>
+              <!-- リンクが存在する場合、通常のボタンを表示 -->
+              <v-btn
+                v-if="userProfile.user_profile.instagram_link"
+                :href="userProfile.user_profile.instagram_link"
+                target="_blank"
+                icon
+              >
+                <v-icon>mdi-instagram</v-icon>
+              </v-btn>
+
+              <!-- リンクが存在しない場合、非活性化されたボタンを表示 -->
+              <v-btn v-else disabled icon>
+                <v-icon>mdi-instagram</v-icon>
+              </v-btn>
+            </div>
+            <div>
+              <!-- リンクが存在する場合、通常のボタンを表示 -->
+              <v-btn
+                v-if="userProfile.user_profile.x_link"
+                :href="userProfile.user_profile.x_link"
+                target="_blank"
+                icon
+              >
+                <v-icon>mdi-twitter</v-icon>
+              </v-btn>
+
+              <!-- リンクが存在しない場合、非活性化されたボタンを表示 -->
+              <v-btn v-else disabled icon>
+                <v-icon>mdi-twitter</v-icon>
+              </v-btn>
+            </div>
+            <div>
+              <!-- リンクが存在する場合、通常のボタンを表示 -->
+              <v-btn
+                v-if="userProfile.user_profile.facebook_link"
+                :href="userProfile.user_profile.facebook_link"
+                target="_blank"
+                icon
+              >
+                <v-icon>mdi-facebook</v-icon>
+              </v-btn>
+
+              <!-- リンクが存在しない場合、非活性化されたボタンを表示 -->
+              <v-btn v-else disabled icon>
+                <v-icon>mdi-facebook</v-icon>
+              </v-btn>
+            </div>
           </div>
         </div>
       </div>
@@ -84,7 +123,7 @@ export default {
 }
 
 .bio-text {
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   margin-left: 5px;
 }
 
