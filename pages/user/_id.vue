@@ -17,10 +17,10 @@
         </div>
         <div class="user-details">
           <div class="user-name">{{ userProfile.name }}</div>
+          <div class="user-name">{{ userProfile.id }}</div>
           <div class="bio-text">{{ userProfile.user_profile.bio }}</div>
-          <div class="social-media-icons">
+          <div class="social-media-links">
             <div>
-              <!-- リンクが存在する場合、通常のボタンを表示 -->
               <v-btn
                 v-if="userProfile.user_profile.instagram_link"
                 :href="userProfile.user_profile.instagram_link"
@@ -29,14 +29,11 @@
               >
                 <v-icon>mdi-instagram</v-icon>
               </v-btn>
-
-              <!-- リンクが存在しない場合、非活性化されたボタンを表示 -->
               <v-btn v-else disabled icon>
                 <v-icon>mdi-instagram</v-icon>
               </v-btn>
             </div>
             <div>
-              <!-- リンクが存在する場合、通常のボタンを表示 -->
               <v-btn
                 v-if="userProfile.user_profile.x_link"
                 :href="userProfile.user_profile.x_link"
@@ -45,14 +42,11 @@
               >
                 <v-icon>mdi-twitter</v-icon>
               </v-btn>
-
-              <!-- リンクが存在しない場合、非活性化されたボタンを表示 -->
               <v-btn v-else disabled icon>
                 <v-icon>mdi-twitter</v-icon>
               </v-btn>
             </div>
             <div>
-              <!-- リンクが存在する場合、通常のボタンを表示 -->
               <v-btn
                 v-if="userProfile.user_profile.facebook_link"
                 :href="userProfile.user_profile.facebook_link"
@@ -61,8 +55,6 @@
               >
                 <v-icon>mdi-facebook</v-icon>
               </v-btn>
-
-              <!-- リンクが存在しない場合、非活性化されたボタンを表示 -->
               <v-btn v-else disabled icon>
                 <v-icon>mdi-facebook</v-icon>
               </v-btn>
@@ -71,20 +63,25 @@
         </div>
       </div>
     </v-main>
+    <v-main>
+      <nuxt />
+      <events-hosted-by-user :user-id="userProfile.id" />
+    </v-main>
     <app-footer />
   </v-app>
 </template>
 
 <script>
+import EventsHostedByUser from "../../components/Event/EventsHostedByUser.vue";
 export default {
+  components: { EventsHostedByUser },
   async asyncData({ params, $axios }) {
-    // APIからユーザー情報取得
     const userProfile = await $axios.$get(`/api/v1/users/${params.id}`);
     return { userProfile };
   },
   computed: {
     isUserLoggedIn() {
-      const loggedIn = this.$auth.loggedIn(); // ログイン状態を呼び出し
+      const loggedIn = this.$auth.loggedIn();
       console.log("ログイン状態", loggedIn);
       return loggedIn;
     },
@@ -127,8 +124,8 @@ export default {
   margin-left: 5px;
 }
 
-.social-media-icons {
+.social-media-links {
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
 }
 </style>
