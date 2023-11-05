@@ -9,7 +9,8 @@
         class="hidden-mobile-and-down primary--text font-weight-bold"
       />
     </nuxt-link>
-
+    <v-spacer />
+    <event-search-bar />
     <v-spacer />
 
     <before-login-app-bar-signup-button />
