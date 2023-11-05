@@ -9,6 +9,7 @@
     <v-main>
       <nuxt />
       <event-detail />
+      <event-comments />
     </v-main>
     <app-footer />
   </v-app>
@@ -16,11 +17,12 @@
 
 <script>
 import EventDetail from "../../components/Event/EventDetail.vue";
+import EventComments from "../../components/Event/EventComments.vue";
 export default {
-  components: { EventDetail },
+  components: { EventDetail, EventComments },
   computed: {
     isUserLoggedIn() {
-      const loggedIn = this.$auth.loggedIn(); // ログイン状態を呼び出し
+      const loggedIn = this.$auth.loggedIn();
       console.log("ログイン状態", loggedIn);
       return loggedIn;
     },
