@@ -22,7 +22,7 @@ export default {
     searchEvents() {
       // 親コンポーネントに検索キーワードを送信
       this.$emit("search", this.searchKeyword);
-      console.log("検索キーワード:", this.searchKeyword);
+      console.log("検索キーワード:", this.searchKeyword); // TODO 本番環境では削除
     },
   },
 };

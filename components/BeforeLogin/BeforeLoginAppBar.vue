@@ -10,7 +10,7 @@
       />
     </nuxt-link>
     <v-spacer />
-    <event-search-bar />
+    <event-search-bar @search="handleSearch" />
     <v-spacer />
 
     <before-login-app-bar-signup-button />
@@ -24,6 +24,12 @@ export default {
     return {
       homeAppBarHeight: $store.state.styles.homeAppBarHeight,
     };
+  },
+  methods: {
+    handleSearch(searchTerm) {
+      // searchTermをイベントリストコンポーネントに伝えるための処理
+      this.$emit("search", searchTerm);
+    },
   },
 };
 </script>
