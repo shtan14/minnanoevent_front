@@ -27,7 +27,6 @@ export default {
   },
   methods: {
     handleSearch(searchTerm) {
-      // searchTermをイベントリストコンポーネントに伝えるための処理
       this.$emit("search", searchTerm);
     },
   },
