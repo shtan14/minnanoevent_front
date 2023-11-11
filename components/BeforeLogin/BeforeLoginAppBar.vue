@@ -10,6 +10,7 @@
       />
     </nuxt-link>
     <v-spacer />
+
     <event-search-bar @search="handleSearch" />
     <v-spacer />
 
