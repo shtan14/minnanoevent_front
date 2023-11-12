@@ -1,10 +1,10 @@
 <template>
   <v-app>
     <template v-if="isUserLoggedIn">
-      <logged-in-app-bar @search="onSearch" />
+      <logged-in-app-bar @search="onSearch" @clearSearch="clearSearch" />
     </template>
     <template v-else>
-      <before-login-app-bar @search="onSearch" />
+      <before-login-app-bar @search="onSearch" @clearSearch="clearSearch" />
     </template>
     <v-main>
       <nuxt />
@@ -32,6 +32,9 @@ export default {
   methods: {
     onSearch(searchTerm) {
       this.searchTerm = searchTerm;
+    },
+    clearSearch() {
+      this.searchTerm = "";
     },
   },
 };

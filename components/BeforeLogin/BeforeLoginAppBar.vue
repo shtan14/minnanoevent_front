@@ -1,10 +1,10 @@
 <template>
   <v-app-bar app :height="homeAppBarHeight" elevation="0" color="white">
-    <nuxt-link to="/" class="text-decoration-none">
+    <nuxt-link to="/" class="text-decoration-none" @click.native="clearSearch">
       <app-logo />
     </nuxt-link>
 
-    <nuxt-link to="/" class="text-decoration-none">
+    <nuxt-link to="/" class="text-decoration-none" @click.native="clearSearch">
       <app-title
         class="hidden-mobile-and-down primary--text font-weight-bold"
       />
@@ -29,6 +29,9 @@ export default {
   methods: {
     handleSearch(searchTerm) {
       this.$emit("search", searchTerm);
+    },
+    clearSearch() {
+      this.$emit("clearSearch");
     },
   },
 };
