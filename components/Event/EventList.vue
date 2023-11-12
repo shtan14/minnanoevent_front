@@ -80,9 +80,25 @@ export default {
       if (!this.searchTerm) {
         return this.events;
       }
-      return this.events.filter((event) =>
-        event.title.toLowerCase().includes(this.searchTerm.toLowerCase())
-      );
+      const lowerCaseSearchTerm = this.searchTerm.toLowerCase();
+      return this.events.filter((event) => {
+        return (
+          event.title.toLowerCase().includes(lowerCaseSearchTerm) ||
+          event.description.toLowerCase().includes(lowerCaseSearchTerm) ||
+          event.prefecture.toLowerCase().includes(lowerCaseSearchTerm) ||
+          event.city.toLowerCase().includes(lowerCaseSearchTerm) ||
+          event.location.toLowerCase().includes(lowerCaseSearchTerm) ||
+          event.event_start_datetime
+            .toLowerCase()
+            .includes(lowerCaseSearchTerm) ||
+          // event.event_end_datetime
+          //   .toLowerCase()
+          //   .includes(lowerCaseSearchTerm) ||
+          event.categories.some((category) =>
+            category.category.toLowerCase().includes(lowerCaseSearchTerm)
+          )
+        );
+      });
     },
   },
   mounted() {
