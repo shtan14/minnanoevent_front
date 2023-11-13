@@ -1,10 +1,10 @@
 <template>
   <v-app>
     <template v-if="isUserLoggedIn">
-      <logged-in-app-bar />
+      <logged-in-app-bar @search="onSearch" @clearSearch="clearSearch" />
     </template>
     <template v-else>
-      <before-login-app-bar />
+      <before-login-app-bar @search="onSearch" @clearSearch="clearSearch" />
     </template>
     <v-main>
       <nuxt />
@@ -25,6 +25,15 @@ export default {
       const loggedIn = this.$auth.loggedIn();
       console.log("ログイン状態", loggedIn);
       return loggedIn;
+    },
+  },
+  methods: {
+    onSearch(searchTerm) {
+      // トップページに遷移し、searchTermをクエリパラメータとして渡す
+      this.$router.push({ path: "/", query: { search: searchTerm } });
+    },
+    clearSearch() {
+      this.searchTerm = "";
     },
   },
 };

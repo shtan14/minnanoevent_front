@@ -29,6 +29,13 @@ export default {
       return loggedIn;
     },
   },
+  created() {
+    // URLのクエリパラメータからsearchTermを取得
+    const searchQuery = this.$route.query.search;
+    if (searchQuery) {
+      this.searchTerm = searchQuery;
+    }
+  },
   methods: {
     onSearch(searchTerm) {
       this.searchTerm = searchTerm;

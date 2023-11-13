@@ -4,7 +4,7 @@
       <logged-in-app-bar />
     </template>
     <template v-else>
-      <before-login-app-bar />
+      <before-login-app-bar :show-search-bar="false" />
     </template>
     <v-main>
       <div class="user-profile-container">
