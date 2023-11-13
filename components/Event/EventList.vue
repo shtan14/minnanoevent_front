@@ -102,7 +102,6 @@ export default {
     },
   },
   mounted() {
-    // ページが読み込まれたときにAPIからイベントデータを取得
     this.fetchEvents();
   },
   methods: {
