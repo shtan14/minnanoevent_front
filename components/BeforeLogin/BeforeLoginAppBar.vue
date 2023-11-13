@@ -11,7 +11,7 @@
     </nuxt-link>
     <v-spacer />
 
-    <event-search-bar @search="handleSearch" />
+    <event-search-bar v-if="showSearchBar" @search="handleSearch" />
     <v-spacer />
 
     <before-login-app-bar-signup-button />
@@ -21,6 +21,12 @@
 
 <script>
 export default {
+  props: {
+    showSearchBar: {
+      type: Boolean,
+      default: true,
+    },
+  },
   data({ $store }) {
     return {
       homeAppBarHeight: $store.state.styles.homeAppBarHeight,
