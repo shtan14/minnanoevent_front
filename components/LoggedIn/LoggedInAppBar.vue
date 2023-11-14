@@ -27,6 +27,7 @@
           </v-row>
         </v-col>
 
+
         <v-col cols="6">
           <v-row justify="center">
             <v-col cols="auto">
