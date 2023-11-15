@@ -34,7 +34,10 @@
           class="custom-date-picker"
         ></v-date-picker>
         <div class="text-center">
-          <v-btn @click="searchEvents">さがす</v-btn>
+          <v-btn @click="resetSearch">リセット</v-btn>
+          <v-btn class="searchbtn" color="primary" @click="searchEvents"
+            >さがす</v-btn
+          >
         </div>
       </v-card-text>
     </v-card>
@@ -64,6 +67,11 @@ export default {
         this.selectedDate
       );
     },
+    resetSearch() {
+      this.searchKeyword = "";
+      this.selectedDate = null;
+      // this.menu = false;
+    },
   },
 };
 </script>
@@ -72,5 +80,9 @@ export default {
 .search-bar {
   margin-top: 25px;
   max-width: 300px;
+}
+
+.searchbtn {
+  font-weight: bold;
 }
 </style>
