@@ -6,7 +6,7 @@
 
     <nuxt-link to="/" class="text-decoration-none" @click.native="clearSearch">
       <app-title
-        class="hidden-mobile-and-down primary--text font-weight-bold"
+        class="hidden-ipad-and-down primary--text font-weight-bold"
       />
     </nuxt-link>
     <v-spacer />

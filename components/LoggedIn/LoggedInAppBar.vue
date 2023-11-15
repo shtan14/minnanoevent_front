@@ -20,17 +20,16 @@
                 @click.native="clearSearch"
               >
                 <app-title
-                  class="hidden-mobile-and-down primary--text font-weight-bold"
+                  class="hidden-ipad-and-down primary--text font-weight-bold"
                 />
               </nuxt-link>
             </v-col>
           </v-row>
         </v-col>
 
-
         <v-col cols="6">
           <v-row justify="center">
-            <v-col cols="auto">
+            <v-col cols="12" sm="12" md="6" lg="6">
               <event-search-bar v-if="showSearchBar" @search="handleSearch" />
             </v-col>
           </v-row>
@@ -63,8 +62,8 @@ export default {
     };
   },
   methods: {
-    handleSearch(searchTerm) {
-      this.$emit("search", searchTerm);
+    handleSearch(searchConditions) {
+      this.$emit("search", searchConditions);
     },
     clearSearch() {
       this.$emit("clearSearch");

@@ -70,7 +70,6 @@ export default {
     resetSearch() {
       this.searchKeyword = "";
       this.selectedDate = null;
-      // this.menu = false;
     },
   },
 };
