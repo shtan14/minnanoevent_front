@@ -68,12 +68,12 @@ export default {
     theme: {
       themes: {
         light: {
-          primary: "44D69E",
-          info: "447cd6",
-          success: "44c5d6",
-          warning: "9e44d6",
-          error: "d6447c",
-          background: "ffffff",
+          primary: "#44D69E",
+          info: "#447cd6",
+          success: "#44c5d6",
+          warning: "#9e44d6",
+          error: "#d6447c",
+          background: "#ffffff",
         },
       },
     },

@@ -1,10 +1,10 @@
 <template>
   <v-app>
     <template v-if="isUserLoggedIn">
-      <logged-in-app-bar />
+      <logged-in-app-bar :show-search-bar="false"/>
     </template>
     <template v-else>
-      <before-login-app-bar />
+      <before-login-app-bar :show-search-bar="false" />
     </template>
     <v-main>
       <div class="user-profile-container">

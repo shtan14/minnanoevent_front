@@ -1,7 +1,14 @@
 <template>
   <div>
     <v-row class="mx-1">
-      <v-col v-for="event in events" :key="event.id" cols="12" sm="6" md="6" lg="3">
+      <v-col
+        v-for="event in filteredEvents"
+        :key="event.id"
+        cols="12"
+        sm="6"
+        md="6"
+        lg="3"
+      >
         <v-card class="fill-height" style="border-radius: 10px">
           <nuxt-link :to="'/event/' + event.id" class="event-card">
             <v-img
@@ -57,13 +64,54 @@
 
 <script>
 export default {
+  props: {
+    searchKeyword: {
+      type: String,
+      default: "",
+    },
+    selectedDate: {
+      type: String,
+      default: null,
+    },
+  },
   data() {
     return {
       events: [],
     };
   },
+  computed: {
+    filteredEvents() {
+      let filtered = this.events;
+      if (this.searchKeyword) {
+        const lowerCaseSearchTerm = this.searchKeyword.toLowerCase();
+        filtered = filtered.filter((event) => {
+          return (
+            event.title.toLowerCase().includes(lowerCaseSearchTerm) ||
+            event.description.toLowerCase().includes(lowerCaseSearchTerm) ||
+            event.prefecture.toLowerCase().includes(lowerCaseSearchTerm) ||
+            event.city.toLowerCase().includes(lowerCaseSearchTerm) ||
+            event.location.toLowerCase().includes(lowerCaseSearchTerm) ||
+            event.categories.some((category) =>
+              category.category.toLowerCase().includes(lowerCaseSearchTerm)
+            )
+          );
+        });
+      }
+      if (this.selectedDate) {
+        const selectedDateFormatted = new Date(this.selectedDate)
+          .toISOString()
+          .split("T")[0];
+        filtered = filtered.filter((event) => {
+          const eventStartDate = new Date(event.event_start_datetime)
+            .toISOString()
+            .split("T")[0];
+          return eventStartDate === selectedDateFormatted;
+        });
+      }
+      return filtered;
+    },
+  },
   mounted() {
-    // ページが読み込まれたときにAPIからイベントデータを取得
     this.fetchEvents();
   },
   methods: {

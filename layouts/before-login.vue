@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <before-login-app-bar />
+    <before-login-app-bar :show-search-bar="false" />
     <v-main>
       <app-toaster />
       <nuxt />
