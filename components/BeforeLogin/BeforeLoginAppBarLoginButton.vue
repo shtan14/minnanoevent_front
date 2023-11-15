@@ -1,5 +1,5 @@
 <template>
-  <v-btn text class="ml-2" color="black" to="/login">
+  <v-btn text class="hidden-mobile-and-down ml-2" color="black" to="/login">
     {{ $my.pageTitle("login") }}
   </v-btn>
 </template>

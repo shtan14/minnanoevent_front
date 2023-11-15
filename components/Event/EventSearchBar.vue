@@ -11,7 +11,7 @@
         rounded
         solo
         class="search-bar"
-        placeholder="さがす"
+        placeholder="イベントをさがす"
         append-icon="mdi-magnify"
         v-bind="attrs"
         @click:append="menu = !menu"
