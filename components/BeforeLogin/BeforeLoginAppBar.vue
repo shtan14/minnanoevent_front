@@ -5,14 +5,29 @@
     </nuxt-link>
 
     <nuxt-link to="/" class="text-decoration-none" @click.native="clearSearch">
-      <app-title
-        class="hidden-ipad-and-down primary--text font-weight-bold"
-      />
+      <app-title class="hidden-ipad-and-down primary--text font-weight-bold" />
     </nuxt-link>
     <v-spacer />
 
     <event-search-bar v-if="showSearchBar" @search="handleSearch" />
     <v-spacer />
+
+    <!-- スマホサイズでのみ表示されるメニュー -->
+    <v-menu>
+      <template #activator="{ on, attrs }">
+        <v-btn class="hidden-mobile-and-up" icon v-bind="attrs" v-on="on">
+          <v-icon>mdi-menu</v-icon>
+        </v-btn>
+      </template>
+      <v-list>
+        <v-list-item to="/login">
+          <v-list-item-title>ログイン</v-list-item-title>
+        </v-list-item>
+        <v-list-item to="/signup">
+          <v-list-item-title>会員登録</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
 
     <before-login-app-bar-signup-button />
     <before-login-app-bar-login-button />
