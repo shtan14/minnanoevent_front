@@ -33,8 +33,8 @@ export default {
     };
   },
   methods: {
-    handleSearch(searchTerm) {
-      this.$emit("search", searchTerm);
+    handleSearch(searchConditions) {
+      this.$emit("search", searchConditions);
     },
     clearSearch() {
       this.$emit("clearSearch");

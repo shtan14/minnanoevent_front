@@ -65,9 +65,13 @@
 <script>
 export default {
   props: {
-    searchTerm: {
+    searchKeyword: {
       type: String,
       default: "",
+    },
+    selectedDate: {
+      type: String,
+      default: null,
     },
   },
   data() {
@@ -77,28 +81,34 @@ export default {
   },
   computed: {
     filteredEvents() {
-      if (!this.searchTerm) {
-        return this.events;
+      let filtered = this.events;
+      if (this.searchKeyword) {
+        const lowerCaseSearchTerm = this.searchKeyword.toLowerCase();
+        filtered = filtered.filter((event) => {
+          return (
+            event.title.toLowerCase().includes(lowerCaseSearchTerm) ||
+            event.description.toLowerCase().includes(lowerCaseSearchTerm) ||
+            event.prefecture.toLowerCase().includes(lowerCaseSearchTerm) ||
+            event.city.toLowerCase().includes(lowerCaseSearchTerm) ||
+            event.location.toLowerCase().includes(lowerCaseSearchTerm) ||
+            event.categories.some((category) =>
+              category.category.toLowerCase().includes(lowerCaseSearchTerm)
+            )
+          );
+        });
       }
-      const lowerCaseSearchTerm = this.searchTerm.toLowerCase();
-      return this.events.filter((event) => {
-        return (
-          event.title.toLowerCase().includes(lowerCaseSearchTerm) ||
-          event.description.toLowerCase().includes(lowerCaseSearchTerm) ||
-          event.prefecture.toLowerCase().includes(lowerCaseSearchTerm) ||
-          event.city.toLowerCase().includes(lowerCaseSearchTerm) ||
-          event.location.toLowerCase().includes(lowerCaseSearchTerm) ||
-          event.event_start_datetime
-            .toLowerCase()
-            .includes(lowerCaseSearchTerm) ||
-          // event.event_end_datetime
-          //   .toLowerCase()
-          //   .includes(lowerCaseSearchTerm) ||
-          event.categories.some((category) =>
-            category.category.toLowerCase().includes(lowerCaseSearchTerm)
-          )
-        );
-      });
+      if (this.selectedDate) {
+        const selectedDateFormatted = new Date(this.selectedDate)
+          .toISOString()
+          .split("T")[0];
+        filtered = filtered.filter((event) => {
+          const eventStartDate = new Date(event.event_start_datetime)
+            .toISOString()
+            .split("T")[0];
+          return eventStartDate === selectedDateFormatted;
+        });
+      }
+      return filtered;
     },
   },
   mounted() {

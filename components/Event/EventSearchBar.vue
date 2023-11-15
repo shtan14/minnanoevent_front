@@ -14,6 +14,7 @@
         placeholder="さがす"
         append-icon="mdi-magnify"
         v-bind="attrs"
+        @click:append="menu = !menu"
         v-on="on"
       ></v-text-field>
     </template>

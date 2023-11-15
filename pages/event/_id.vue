@@ -28,9 +28,14 @@ export default {
     },
   },
   methods: {
-    onSearch(searchTerm) {
-      // トップページに遷移し、searchTermをクエリパラメータとして渡す
-      this.$router.push({ path: "/", query: { search: searchTerm } });
+    onSearch(searchConditions) {
+      this.$router.push({
+        path: "/",
+        query: {
+          keyword: searchConditions.keyword,
+          date: searchConditions.date,
+        },
+      });
     },
   },
 };
