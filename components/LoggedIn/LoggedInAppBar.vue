@@ -1,6 +1,6 @@
 <template>
   <v-app-bar app :height="homeAppBarHeight" elevation="0" color="white">
-    <v-container fluid>
+    <v-container fluid class="app-bar-container">
       <v-row no-gutters align="center" justify="center">
         <v-col cols="3">
           <v-row no-gutters align="center">
@@ -29,7 +29,7 @@
 
         <v-col cols="6">
           <v-row justify="center">
-            <v-col cols="12" sm="12" md="6" lg="6">
+            <v-col cols="12" sm="12" md="6" lg="6" class="search-bar">
               <event-search-bar v-if="showSearchBar" @search="handleSearch" />
             </v-col>
           </v-row>
@@ -71,3 +71,12 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.app-bar-container {
+  padding: 0;
+}
+.search-bar {
+  padding: 0;
+}
+</style>

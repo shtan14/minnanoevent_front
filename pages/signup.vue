@@ -34,12 +34,29 @@ export default {
     };
   },
   methods: {
-    signup() {
+    async signup() {
       this.loading = true;
-      setTimeout(() => {
+
+      try {
+        // APIエンドポイントへのPOSTリクエストを送信
+        const response = await this.$axios.post("/api/v1/users", {
+          user: {
+            name: this.params.user.name,
+            email: this.params.user.email,
+            password: this.params.user.password,
+          },
+        });
+
+        // 成功した場合の処理（例: ログインページへリダイレクト）
+        console.log("登録成功", response);
+        this.$router.push("/login");
+      } catch (error) {
+        // エラー発生時の処理
+        console.error("登録失敗", error);
+      } finally {
         this.formReset();
         this.loading = false;
-      }, 1000);
+      }
     },
     formReset() {
       this.$refs.form.reset();
