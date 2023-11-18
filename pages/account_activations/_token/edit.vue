@@ -12,16 +12,23 @@ export default {
       const activationToken = this.$route.params.token;
       const email = this.$route.query.email;
 
+      let baseUrl;
+
+      if (process.env.NODE_ENV === "production") {
+        baseUrl = "https://minnanoevent.com";
+      } else {
+        baseUrl = "http://localhost";
+      }
       this.$axios
         .get(
-          `http://localhost/account_activations/${activationToken}/edit?email=${email}`
+          `${baseUrl}/account_activations/${activationToken}/edit?email=${email}`
         )
         .then((response) => {
           this.$router.push(response.data.redirect_url);
           this.showToast(response.data.message);
         })
         .catch((error) => {
-          this.$router.push("/login");
+          this.$router.push(error.response.data.redirect_url);
           this.showToast(error.response.data.error, "error");
         });
     },
