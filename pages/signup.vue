@@ -47,11 +47,13 @@ export default {
           },
         });
 
-        // 成功した場合の処理（例: ログインページへリダイレクト）
         console.log("登録成功", response);
-        this.$router.push("/login");
+        this.$store.dispatch("getToast", {
+          msg: "メールを確認してアカウント認証をお願いいたします🙏",
+          color: "info",
+          timeout: 20000,
+        });
       } catch (error) {
-        // エラー発生時の処理
         console.error("登録失敗", error);
       } finally {
         this.formReset();

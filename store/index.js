@@ -26,7 +26,7 @@ export const state = () => ({
   toast: {
     msg: null,
     color: "error",
-    timeoit: 4000,
+    timeout: 4000,
   },
 });
 
