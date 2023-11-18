@@ -9,21 +9,24 @@ export default {
   },
   methods: {
     activateAccount() {
-      // URLパラメータからアクティベーショントークンを取得
       const activationToken = this.$route.params.token;
+      const email = this.$route.query.email;
+
       this.$axios
-        .get(`/api/v1/account_activations/${activationToken}/edit`)
+        .get(
+          `http://localhost/account_activations/${activationToken}/edit?email=${email}`
+        )
         .then((response) => {
           this.$router.push(response.data.redirect_url);
           this.showToast(response.data.message);
         })
         .catch((error) => {
-          this.$router.push("/login"); // 念のためログインページへリダイレクト
-          this.showToast(error.response.data.error);
+          this.$router.push("/login");
+          this.showToast(error.response.data.error, "error");
         });
     },
-    showToast(message) {
-      // トースター表示のロジックをここに実装
+    showToast(message, color = "success") {
+      this.$store.dispatch("getToast", { msg: message, color, timeout: 8000 });
     },
   },
 };
