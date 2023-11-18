@@ -11,7 +11,6 @@ export default {
     activateAccount() {
       const activationToken = this.$route.params.token;
       const email = this.$route.query.email;
-
       let baseUrl;
 
       if (process.env.NODE_ENV === "production") {
