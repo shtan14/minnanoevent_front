@@ -14,7 +14,7 @@ export default {
       let baseUrl;
 
       if (process.env.NODE_ENV === "production") {
-        baseUrl = "https://minnanoevent.com";
+        baseUrl = "https://backend.minnanoevent.com";
       } else {
         baseUrl = "http://localhost";
       }
@@ -27,8 +27,13 @@ export default {
           this.showToast(response.data.message);
         })
         .catch((error) => {
-          this.$router.push(error.response.data.redirect_url);
-          this.showToast(error.response.data.error, "error");
+          if (error.response && error.response.data) {
+            this.$router.push(error.response.data.redirect_url);
+            this.showToast(error.response.data.error, "error");
+          } else {
+            console.error("Error:", error);
+            this.showToast("予期しないエラーが発生しました", "error");
+          }
         });
     },
     showToast(message, color = "success") {
