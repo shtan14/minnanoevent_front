@@ -14,7 +14,7 @@ export default {
       let baseUrl;
 
       if (process.env.NODE_ENV === "production") {
-        baseUrl = "https://backend.minnanoevent.com";
+        baseUrl = "https://minnanoevent.com";
       } else {
         baseUrl = "http://localhost";
       }
