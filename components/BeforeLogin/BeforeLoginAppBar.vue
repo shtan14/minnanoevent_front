@@ -21,9 +21,15 @@
       </template>
       <v-list>
         <v-list-item to="/login">
+          <v-icon size="22" class="mr-2">
+            {{ "mdi-login-variant" }}
+          </v-icon>
           <v-list-item-title>ログイン</v-list-item-title>
         </v-list-item>
         <v-list-item to="/signup">
+          <v-icon size="22" class="mr-2">
+            {{ "mdi-account-plus" }}
+          </v-icon>
           <v-list-item-title>会員登録</v-list-item-title>
         </v-list-item>
       </v-list>
