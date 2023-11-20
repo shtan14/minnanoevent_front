@@ -29,7 +29,7 @@
 
         <v-col cols="6">
           <v-row justify="center">
-            <v-col cols="12" sm="12" md="6" lg="6" class="search-bar">
+            <v-col cols="6" class="search-bar-container">
               <event-search-bar v-if="showSearchBar" @search="handleSearch" />
             </v-col>
           </v-row>
@@ -76,7 +76,11 @@ export default {
 .app-bar-container {
   padding: 0;
 }
-.search-bar {
+.search-bar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 0;
+  min-width: 210px;
 }
 </style>

@@ -15,7 +15,7 @@
     <!-- スマホサイズでのみ表示されるメニュー -->
     <v-menu>
       <template #activator="{ on, attrs }">
-        <v-btn class="hidden-mobile-and-up" icon v-bind="attrs" v-on="on">
+        <v-btn class="hidden-ipad-and-up" icon v-bind="attrs" v-on="on">
           <v-icon>mdi-menu</v-icon>
         </v-btn>
       </template>
@@ -35,8 +35,8 @@
       </v-list>
     </v-menu>
 
-    <before-login-app-bar-signup-button />
-    <before-login-app-bar-login-button />
+    <before-login-app-bar-signup-button class="hidden-ipad-and-down"/>
+    <before-login-app-bar-login-button class="hidden-ipad-and-down"/>
   </v-app-bar>
 </template>
 
