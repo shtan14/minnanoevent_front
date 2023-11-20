@@ -40,12 +40,15 @@ export default {
     },
     async deactivateAccount() {
       this.loading = true;
-      // APIリクエストを送信して退会処理を実行
       try {
         await this.$axios.delete("/api/v1/users");
-        // 退会成功後の処理（例: ログアウト、ホームページへのリダイレクトなど）
+        await this.$auth.logout();
+        this.$router.push("/");
       } catch (error) {
-        console.error("退会処理に失敗しました", error);
+        this.$store.dispatch("getToast", {
+          msg: "退会処理に失敗しました",
+          color: "error",
+        });
       } finally {
         this.loading = false;
       }
