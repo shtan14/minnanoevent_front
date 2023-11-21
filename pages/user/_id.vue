@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <template v-if="isUserLoggedIn">
-      <logged-in-app-bar :show-search-bar="false"/>
+      <logged-in-app-bar :show-search-bar="false" />
     </template>
     <template v-else>
       <before-login-app-bar :show-search-bar="false" />
@@ -10,18 +10,37 @@
       <div class="user-profile-container">
         <div>
           <v-img
+            v-if="
+              userProfile &&
+              userProfile.user_profile &&
+              userProfile.user_profile.avatar
+            "
             :src="userProfile.user_profile.avatar"
             alt="ユーザーのアバター"
             class="avatar-image"
           ></v-img>
+          <v-icon v-else class="avatar-image" style="font-size: 70px"
+            >mdi-account-circle</v-icon
+          >
         </div>
         <div class="user-details">
           <div class="user-name">{{ userProfile.name }}</div>
-          <div class="bio-text">{{ userProfile.user_profile.bio }}</div>
+          <div
+            v-if="userProfile.user_profile && userProfile.user_profile.bio"
+            class="bio-text"
+          >
+            {{ userProfile.user_profile.bio }}
+          </div>
+          <div v-else class="bio-text">
+            まだ自己紹介がありません。ぜひ自己紹介を記入しましょう！
+          </div>
           <div class="social-media-links">
             <div>
               <v-btn
-                v-if="userProfile.user_profile.instagram_link"
+                v-if="
+                  userProfile.user_profile &&
+                  userProfile.user_profile.instagram_link
+                "
                 :href="userProfile.user_profile.instagram_link"
                 target="_blank"
                 icon
@@ -34,7 +53,9 @@
             </div>
             <div>
               <v-btn
-                v-if="userProfile.user_profile.x_link"
+                v-if="
+                  userProfile.user_profile && userProfile.user_profile.x_link
+                "
                 :href="userProfile.user_profile.x_link"
                 target="_blank"
                 icon
@@ -47,7 +68,10 @@
             </div>
             <div>
               <v-btn
-                v-if="userProfile.user_profile.facebook_link"
+                v-if="
+                  userProfile.user_profile &&
+                  userProfile.user_profile.facebook_link
+                "
                 :href="userProfile.user_profile.facebook_link"
                 target="_blank"
                 icon
@@ -107,8 +131,8 @@ export default {
 
 @media (max-width: 599px) {
   .avatar-image {
-    width: 70px; /* スマホでは画像の幅を小さくする */
-    height: 70px; /* スマホでは画像の高さを小さくする */
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
     margin-left: 15px;
     margin-top: 20px;
