@@ -16,7 +16,9 @@
       <v-list-item>
         <v-list-item-content>
           <v-list-item-subtitle>
-            {{ $auth.user.name }}
+            <nuxt-link :to="`/user/${$auth.user.id}`" class="user-link">
+              {{ $auth.user.name }}
+            </nuxt-link>
           </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
@@ -49,7 +51,7 @@ export default {
         { name: "create-event", icon: "mdi-note-edit-outline" },
         { name: "account-settings", icon: "mdi-account-cog" },
         { name: "logout", icon: "mdi-logout-variant" },
-        { name: "account-deactivate", icon: "mdi-account-off"}
+        { name: "account-deactivate", icon: "mdi-account-off" },
       ],
     };
   },
@@ -66,5 +68,10 @@ export default {
   width: 45px;
   border-radius: 50%;
   object-fit: cover;
+}
+
+.user-link {
+  text-decoration: none; /* 下線を消す */
+  color: inherit; /* 親要素の色を継承する */
 }
 </style>
