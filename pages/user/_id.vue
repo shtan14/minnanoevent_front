@@ -98,6 +98,7 @@
 <script>
 import EventsHostedByUser from "../../components/Event/EventsHostedByUser.vue";
 export default {
+  name: "PagesUserId",
   components: { EventsHostedByUser },
   async asyncData({ params, $axios }) {
     const userProfile = await $axios.$get(`/api/v1/users/${params.id}`);

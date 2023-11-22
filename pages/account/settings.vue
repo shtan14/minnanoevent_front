@@ -19,7 +19,7 @@
               ></v-text-field>
               <v-text-field
                 v-model="profile.x_link"
-                label="Twitter リンク"
+                label="X リンク"
                 outlined
               ></v-text-field>
               <v-text-field
@@ -45,6 +45,7 @@
 
 <script>
 export default {
+  name: "PagesSettings",
   layout: "logged-in",
   data() {
     return {
@@ -61,8 +62,12 @@ export default {
   async created() {
     try {
       const response = await this.$axios.$get("/api/v1/user_profiles");
-      this.name = response.name;
-      this.profile = response.profile;
+      this.name = response.name || "";
+      this.profile.bio = response.profile.bio || "";
+      this.profile.avatar = response.profile.avatar || "";
+      this.profile.x_link = response.profile.x_link || "";
+      this.profile.facebook_link = response.profile.facebook_link || "";
+      this.profile.instagram_link = response.profile.instagram_link || "";
     } catch (error) {
       this.$store.dispatch("getToast", {
         msg: "プロフィールの取得に失敗しました。",
@@ -75,13 +80,20 @@ export default {
       try {
         await this.$axios.put("/api/v1/user_profiles", {
           user_profile: this.profile,
-          name: this.name,
         });
+
+        const userId = this.$auth.user.id;
+        await this.$axios.patch(`/api/v1/users/${userId}`, {
+          user: { name: this.name },
+        });
+
+        console.log("更新成功");
         this.$store.dispatch("getToast", {
           msg: "プロフィールが更新されました。",
           color: "success",
         });
       } catch (error) {
+        console.error("更新失敗:", error);
         this.$store.dispatch("getToast", {
           msg: "プロフィールの更新に失敗しました。",
           color: "error",
