@@ -86,6 +86,11 @@ export default {
         await this.$axios.patch(`/api/v1/users/${userId}`, {
           user: { name: this.name },
         });
+        // 更新されたユーザー情報で $auth.user を更新
+        this.$store.dispatch("updateUser", {
+          ...this.$auth.user,
+          name: this.name,
+        });
 
         console.log("更新成功");
         this.$store.dispatch("getToast", {

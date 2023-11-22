@@ -81,4 +81,7 @@ export const actions = {
     params = params || {};
     commit("setRememberPath", { name, params });
   },
+  updateUser({ commit }, user) {
+    commit("setCurrentUser", user);
+  },
 };
