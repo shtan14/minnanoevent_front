@@ -1,41 +1,50 @@
 <template>
-  <v-container>
+  <v-container class="setting-container">
     <v-row justify="center">
-      <v-col cols="12" md="8">
-        <v-card>
-          <v-card-title>プロフィール編集</v-card-title>
+      <v-col cols="12">
+        <v-card flat>
+          <v-card-title class="text-h6 font-weight-bold d-flex justify-center"
+            >プロフィール編集</v-card-title
+          >
+          <v-img
+            v-if="profile.avatar"
+            :src="profile.avatar"
+            class="avatar-circle"
+          ></v-img>
+          <v-icon v-else size="90">mdi-account-circle</v-icon>
           <v-card-text>
             <v-form>
-              <v-text-field v-model="name" label="名前" outlined></v-text-field>
               <v-text-field
+                v-model="name"
+                label="表示名（必須）"
+                outlined
+              ></v-text-field>
+              <v-textarea
                 v-model="profile.bio"
                 label="自己紹介"
                 outlined
-              ></v-text-field>
+                auto-grow
+                rows="3"
+              ></v-textarea>
               <v-text-field
-                v-model="profile.avatar"
-                label="アバターURL"
+                v-model="profile.instagram_link"
+                label="Instagram ユーザー名（＠なしで入力）"
                 outlined
               ></v-text-field>
               <v-text-field
                 v-model="profile.x_link"
-                label="X リンク"
+                label="X ユーザー名（＠なしで入力）"
                 outlined
               ></v-text-field>
               <v-text-field
                 v-model="profile.facebook_link"
-                label="Facebook リンク"
-                outlined
-              ></v-text-field>
-              <v-text-field
-                v-model="profile.instagram_link"
-                label="Instagram リンク"
+                label="Facebook ユーザー名"
                 outlined
               ></v-text-field>
             </v-form>
           </v-card-text>
-          <v-card-actions>
-            <v-btn color="primary" @click="updateProfile">更新</v-btn>
+          <v-card-actions class="d-flex justify-center">
+            <v-btn color="primary" @click="updateProfile">更新する</v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -118,3 +127,29 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.setting-container {
+  max-width: 700px;
+}
+
+
+.avatar-circle {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  margin-left: 18px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+@media (max-width: 599px) {
+  .avatar-circle {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    margin-left: 15px;
+    margin-top: 20px;
+  }
+}
+</style>
