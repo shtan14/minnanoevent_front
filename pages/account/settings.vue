@@ -63,11 +63,21 @@ export default {
     try {
       const response = await this.$axios.$get("/api/v1/user_profiles");
       this.name = response.name || "";
-      this.profile.bio = response.profile.bio || "";
-      this.profile.avatar = response.profile.avatar || "";
-      this.profile.x_link = response.profile.x_link || "";
-      this.profile.facebook_link = response.profile.facebook_link || "";
-      this.profile.instagram_link = response.profile.instagram_link || "";
+
+      if (response.profile) {
+        this.profile.bio = response.profile.bio || "";
+        this.profile.avatar = response.profile.avatar || "";
+        this.profile.x_link = response.profile.x_link || "";
+        this.profile.facebook_link = response.profile.facebook_link || "";
+        this.profile.instagram_link = response.profile.instagram_link || "";
+      } else {
+        // プロフィールが null の場合、プロフィール関連のフィールドは空のままにする
+        this.profile.bio = "";
+        this.profile.avatar = "";
+        this.profile.x_link = "";
+        this.profile.facebook_link = "";
+        this.profile.instagram_link = "";
+      }
     } catch (error) {
       this.$store.dispatch("getToast", {
         msg: "プロフィールの取得に失敗しました。",
