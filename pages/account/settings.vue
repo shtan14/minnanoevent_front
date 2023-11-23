@@ -6,12 +6,33 @@
           <v-card-title class="text-h6 font-weight-bold d-flex justify-center"
             >プロフィール編集</v-card-title
           >
-          <v-img
-            v-if="profile.avatar"
-            :src="profile.avatar"
-            class="avatar-circle"
-          ></v-img>
-          <v-icon v-else size="90">mdi-account-circle</v-icon>
+          <v-row>
+            <v-col cols="12" style="padding-bottom: 0">
+              <v-img
+                v-if="profile.avatar"
+                :src="profile.avatar"
+                class="avatar-circle"
+              ></v-img>
+              <v-icon v-else size="85" style="margin-left: 20px"
+                >mdi-account-circle</v-icon
+              >
+            </v-col>
+
+            <v-col cols="12" style="padding: 0">
+              <v-btn text class="avatar-change-btn" @click="openFileInput"
+                >変更する</v-btn
+              >
+            </v-col>
+          </v-row>
+
+          <!-- 隠れたファイルインプット -->
+          <input
+            ref="fileInput"
+            type="file"
+            accept="image/*"
+            style="display: none"
+            @change="handleImageChange"
+          />
           <v-card-text>
             <v-form>
               <v-text-field
@@ -124,6 +145,16 @@ export default {
         });
       }
     },
+    openFileInput() {
+      this.$refs.fileInput.click();
+    },
+    handleImageChange(e) {
+      const file = e.target.files[0];
+      if (file) {
+        // ここで画像を処理する
+        console.log(file);
+      }
+    },
   },
 };
 </script>
@@ -133,23 +164,27 @@ export default {
   max-width: 700px;
 }
 
-
 .avatar-circle {
-  width: 90px;
-  height: 90px;
+  width: 85px;
+  height: 85px;
   border-radius: 50%;
-  margin-left: 18px;
+  margin-left: 25px;
   object-fit: cover;
   flex-shrink: 0;
 }
 
 @media (max-width: 599px) {
   .avatar-circle {
-    width: 70px;
-    height: 70px;
+    width: 85px;
+    height: 85px;
     border-radius: 50%;
-    margin-left: 15px;
+    margin-left: 25px;
     margin-top: 20px;
   }
+}
+
+.avatar-change-btn {
+  margin-left: 30px;
+  margin-bottom: 10px;
 }
 </style>

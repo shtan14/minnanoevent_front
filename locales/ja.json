@@ -8,7 +8,7 @@
       "event": "イベント投稿"
     },
     "account": {
-      "settings": "プロフィール設定",
+      "settings": "プロフィール編集",
       "password": "パスワード変更",
       "deactivate": "退会"
     }
