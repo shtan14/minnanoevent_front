@@ -1,10 +1,10 @@
 <template>
   <v-app>
     <template v-if="isUserLoggedIn">
-      <logged-in-app-bar :show-search-bar="false" />
+      <logged-in-app-bar @search="onSearch" />
     </template>
     <template v-else>
-      <before-login-app-bar :show-search-bar="false" />
+      <before-login-app-bar @search="onSearch" />
     </template>
     <v-main>
       <div class="user-profile-container">
@@ -109,6 +109,17 @@ export default {
       const loggedIn = this.$auth.loggedIn();
       console.log("ログイン状態", loggedIn);
       return loggedIn;
+    },
+  },
+  methods: {
+    onSearch(searchConditions) {
+      this.$router.push({
+        path: "/",
+        query: {
+          keyword: searchConditions.keyword,
+          date: searchConditions.date,
+        },
+      });
     },
   },
 };
