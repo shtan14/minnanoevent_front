@@ -7,89 +7,102 @@
       <before-login-app-bar @search="onSearch" />
     </template>
     <v-main>
-      <div class="user-profile-container">
-        <div>
-          <v-img
-            v-if="
-              userProfile &&
-              userProfile.user_profile &&
-              userProfile.user_profile.avatar
-            "
-            :src="userProfile.user_profile.avatar"
-            alt="ユーザーのアバター"
-            class="avatar-image"
-          ></v-img>
-          <v-icon v-else class="avatar-image" style="font-size: 70px"
-            >mdi-account-circle</v-icon
-          >
-        </div>
-        <div class="user-details">
-          <div class="user-name">{{ userProfile.name }}</div>
-          <div
-            v-if="userProfile.user_profile && userProfile.user_profile.bio"
-            class="bio-text"
-          >
-            {{ userProfile.user_profile.bio }}
-          </div>
-          <div v-else class="bio-text">
-            まだ自己紹介がありません。ぜひ自己紹介を記入しましょう！
-          </div>
-          <div class="social-media-links">
-            <div>
-              <v-btn
-                v-if="
-                  userProfile.user_profile &&
-                  userProfile.user_profile.instagram_link
-                "
-                :href="`https://www.instagram.com/${userProfile.user_profile.instagram_link}`"
-                target="_blank"
-                icon
-              >
-                <v-icon>mdi-instagram</v-icon>
-              </v-btn>
-              <v-btn v-else disabled icon>
-                <v-icon>mdi-instagram</v-icon>
-              </v-btn>
+      <v-container>
+        <v-row>
+          <v-col>
+            <div class="user-profile-container">
+              <div>
+                <v-img
+                  v-if="
+                    userProfile &&
+                    userProfile.user_profile &&
+                    userProfile.user_profile.avatar
+                  "
+                  :src="userProfile.user_profile.avatar"
+                  alt="ユーザーのアバター"
+                  class="avatar-image"
+                ></v-img>
+                <v-icon v-else class="avatar-image" style="font-size: 70px"
+                  >mdi-account-circle</v-icon
+                >
+              </div>
+              <div class="user-details">
+                <div class="user-name">{{ userProfile.name }}</div>
+                <div
+                  v-if="
+                    userProfile.user_profile && userProfile.user_profile.bio
+                  "
+                  class="bio-text"
+                >
+                  {{ userProfile.user_profile.bio }}
+                </div>
+                <div v-else class="bio-text">
+                  まだ自己紹介がありません。ぜひ自己紹介を記入しましょう！
+                </div>
+                <div class="social-media-links">
+                  <div>
+                    <v-btn
+                      v-if="
+                        userProfile.user_profile &&
+                        userProfile.user_profile.instagram_link
+                      "
+                      :href="`https://www.instagram.com/${userProfile.user_profile.instagram_link}`"
+                      target="_blank"
+                      icon
+                    >
+                      <v-icon>mdi-instagram</v-icon>
+                    </v-btn>
+                    <v-btn v-else disabled icon>
+                      <v-icon>mdi-instagram</v-icon>
+                    </v-btn>
+                  </div>
+                  <div>
+                    <v-btn
+                      v-if="
+                        userProfile.user_profile &&
+                        userProfile.user_profile.x_link
+                      "
+                      :href="`https://twitter.com/${userProfile.user_profile.x_link}`"
+                      target="_blank"
+                      icon
+                    >
+                      <v-icon>mdi-twitter</v-icon>
+                    </v-btn>
+                    <v-btn v-else disabled icon>
+                      <v-icon>mdi-twitter</v-icon>
+                    </v-btn>
+                  </div>
+                  <div>
+                    <v-btn
+                      v-if="
+                        userProfile.user_profile &&
+                        userProfile.user_profile.facebook_link
+                      "
+                      :href="`https://facebook.com/${userProfile.user_profile.facebook_link}`"
+                      target="_blank"
+                      icon
+                    >
+                      <v-icon>mdi-facebook</v-icon>
+                    </v-btn>
+                    <v-btn v-else disabled icon>
+                      <v-icon>mdi-facebook</v-icon>
+                    </v-btn>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div>
-              <v-btn
-                v-if="
-                  userProfile.user_profile && userProfile.user_profile.x_link
-                "
-                :href="`https://twitter.com/${userProfile.user_profile.x_link}`"
-                target="_blank"
-                icon
-              >
-                <v-icon>mdi-twitter</v-icon>
-              </v-btn>
-              <v-btn v-else disabled icon>
-                <v-icon>mdi-twitter</v-icon>
-              </v-btn>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <div class="title-container">
+              {{ userProfile.name }}さんの主催イベント
             </div>
-            <div>
-              <v-btn
-                v-if="
-                  userProfile.user_profile &&
-                  userProfile.user_profile.facebook_link
-                "
-                :href="`https://facebook.com/${userProfile.user_profile.facebook_link}`"
-                target="_blank"
-                icon
-              >
-                <v-icon>mdi-facebook</v-icon>
-              </v-btn>
-              <v-btn v-else disabled icon>
-                <v-icon>mdi-facebook</v-icon>
-              </v-btn>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="title-container">
-        {{ userProfile.name }}さんの主催イベント
-      </div>
-      <nuxt />
-      <events-hosted-by-user :user-id="userProfile.id" />
+            <nuxt />
+            <events-hosted-by-user :user-id="userProfile.id" />
+          </v-col>
+        </v-row>
+      </v-container>
     </v-main>
     <app-footer />
   </v-app>
@@ -129,7 +142,7 @@ export default {
 .user-profile-container {
   display: flex;
   justify-content: center;
-  height: 220px;
+  min-height: 250px;
   padding-top: 40px;
 }
 
