@@ -41,7 +41,7 @@
                   userProfile.user_profile &&
                   userProfile.user_profile.instagram_link
                 "
-                :href="userProfile.user_profile.instagram_link"
+                :href="`https://www.instagram.com/${userProfile.user_profile.instagram_link}`"
                 target="_blank"
                 icon
               >
@@ -56,7 +56,7 @@
                 v-if="
                   userProfile.user_profile && userProfile.user_profile.x_link
                 "
-                :href="userProfile.user_profile.x_link"
+                :href="`https://twitter.com/${userProfile.user_profile.x_link}`"
                 target="_blank"
                 icon
               >
@@ -72,7 +72,7 @@
                   userProfile.user_profile &&
                   userProfile.user_profile.facebook_link
                 "
-                :href="userProfile.user_profile.facebook_link"
+                :href="`https://facebook.com/${userProfile.user_profile.facebook_link}`"
                 target="_blank"
                 icon
               >
@@ -98,6 +98,7 @@
 <script>
 import EventsHostedByUser from "../../components/Event/EventsHostedByUser.vue";
 export default {
+  name: "PagesUserId",
   components: { EventsHostedByUser },
   async asyncData({ params, $axios }) {
     const userProfile = await $axios.$get(`/api/v1/users/${params.id}`);

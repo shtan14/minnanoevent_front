@@ -6,6 +6,7 @@
 
 <script>
 export default {
+  name: "PagesAccount",
   layout: "logged-in",
   validate({ route }) {
     return route.name !== "account";

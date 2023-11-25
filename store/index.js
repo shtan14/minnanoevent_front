@@ -69,7 +69,7 @@ export const actions = {
     commit("setAuthPayload", jwtPayload);
   },
   getToast({ commit }, { msg, color, timeout }) {
-    color = color || "error";
+    color = color || "transparent";
     timeout = timeout || 4000;
     commit("setToast", { msg, color, timeout });
   },
@@ -80,5 +80,8 @@ export const actions = {
     }
     params = params || {};
     commit("setRememberPath", { name, params });
+  },
+  updateUser({ commit }, user) {
+    commit("setCurrentUser", user);
   },
 };
