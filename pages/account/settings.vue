@@ -8,14 +8,14 @@
           >
           <v-row>
             <v-col cols="12" style="padding-bottom: 0">
-              <v-img
-                v-if="profile.avatar"
-                :src="profile.avatar"
-                class="avatar-circle"
-              ></v-img>
-              <v-icon v-else size="85" style="margin-left: 20px"
-                >mdi-account-circle</v-icon
-              >
+              <template v-if="profile.avatar">
+                <v-img :src="profile.avatar" class="avatar-circle"></v-img>
+              </template>
+              <template v-else>
+                <v-icon size="85" style="margin-left: 20px"
+                  >mdi-account-circle</v-icon
+                >
+              </template>
             </v-col>
 
             <v-col cols="12" style="padding: 0">
@@ -131,7 +131,6 @@ export default {
           ...this.$auth.user,
           name: this.name,
         });
-
         console.log("更新成功");
         this.$store.dispatch("getToast", {
           msg: "プロフィールが更新されました。",
@@ -148,11 +147,62 @@ export default {
     openFileInput() {
       this.$refs.fileInput.click();
     },
-    handleImageChange(e) {
+    async handleImageChange(e) {
       const file = e.target.files[0];
       if (file) {
-        // ここで画像を処理する
-        console.log(file);
+        await this.uploadImageToS3(file);
+      }
+    },
+    async uploadImageToS3(file) {
+      try {
+        const formData = new FormData();
+        formData.append("filename", file.name);
+        formData.append("contentType", file.type);
+        const presignedResponse = await this.$axios.post(
+          "/api/v1/s3/sign",
+          formData
+        );
+        const { signedUrl, publicUrl } = presignedResponse.data;
+
+        // 新しいAxiosインスタンスを使用
+        const axiosInstance = this.$axios.create();
+        await axiosInstance.put(signedUrl, file, {
+          headers: { "Content-Type": file.type },
+        });
+        this.profile.avatar = publicUrl; // プロフィール情報を更新
+        console.log("Public URL:", publicUrl);
+        await this.updateAvatar();
+      } catch (error) {
+        console.error("画像のアップロードに失敗しました", error);
+      }
+    },
+    async updateAvatar() {
+      try {
+        await this.$axios.put("/api/v1/user_profiles", {
+          user_profile: {
+            avatar: this.profile.avatar,
+          },
+        });
+
+        // ストアのユーザーデータを更新
+        this.$store.dispatch("updateUser", {
+          ...this.$auth.user,
+          user_profile: {
+            ...this.$auth.user.user_profile,
+            avatar: this.profile.avatar,
+          },
+        });
+
+        this.$store.dispatch("getToast", {
+          msg: "アバター画像が更新されました。",
+          color: "success",
+        });
+      } catch (error) {
+        console.error("アバター画像の更新に失敗しました", error);
+        this.$store.dispatch("getToast", {
+          msg: "プロフィールの更新に失敗しました。",
+          color: "error",
+        });
       }
     },
   },
@@ -175,10 +225,6 @@ export default {
 
 @media (max-width: 599px) {
   .avatar-circle {
-    width: 85px;
-    height: 85px;
-    border-radius: 50%;
-    margin-left: 25px;
     margin-top: 20px;
   }
 }
