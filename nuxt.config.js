@@ -26,6 +26,7 @@ export default {
     "plugins/axios",
     "plugins/my-inject",
     "plugins/nuxt-client-init",
+    "plugins/vue-infinite-loading",
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
