@@ -34,11 +34,13 @@
             @change="handleImageChange"
           />
           <v-card-text>
-            <v-form>
+            <v-form ref="form" v-model="isValid">
               <v-text-field
                 v-model="name"
                 label="表示名（必須）"
                 outlined
+                :rules="nameRules"
+                counter="30"
               ></v-text-field>
               <v-textarea
                 v-model="profile.bio"
@@ -46,6 +48,8 @@
                 outlined
                 auto-grow
                 rows="3"
+                :rules="bioRules"
+                counter="100"
               ></v-textarea>
               <v-text-field
                 v-model="profile.instagram_link"
@@ -62,11 +66,16 @@
                 label="Facebook ユーザー名"
                 outlined
               ></v-text-field>
+              <v-card-actions class="d-flex justify-center">
+                <v-btn
+                  :disabled="!isValid"
+                  color="primary"
+                  @click="updateProfile"
+                  >更新する</v-btn
+                >
+              </v-card-actions>
             </v-form>
           </v-card-text>
-          <v-card-actions class="d-flex justify-center">
-            <v-btn color="primary" @click="updateProfile">更新する</v-btn>
-          </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
@@ -79,7 +88,19 @@ export default {
   layout: "logged-in",
   data() {
     return {
+      isValid: true,
       name: "",
+      nameRules: [
+        // 表示名のバリデーションルール
+        (v) => !!v || "表示名は必須です。",
+        (v) =>
+          (v && v.length <= 30) || "表示名は30文字以内で入力してください。",
+      ],
+      bioRules: [
+        // 自己紹介のバリデーションルール
+        (v) =>
+          !v || v.length <= 100 || "自己紹介は100文字以内で入力してください。",
+      ],
       profile: {
         bio: "",
         avatar: "",
