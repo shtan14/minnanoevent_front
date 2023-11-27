@@ -7,6 +7,7 @@
       <before-login-app-bar @search="onSearch" @clearSearch="clearSearch" />
     </template>
     <v-main>
+      <app-toaster />
       <nuxt />
       <event-list
         :search-keyword="searchKeyword"
