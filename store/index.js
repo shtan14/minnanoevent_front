@@ -28,11 +28,28 @@ export const state = () => ({
     color: "error",
     timeout: 4000,
   },
+  events: [],
 });
 
 export const getters = {};
 
 export const mutations = {
+  updateFavourite(state, { id, isFavourite, favouriteId }) {
+    const event = state.events.find((e) => e.id === id);
+    if (event) {
+      event.isFavourite = isFavourite;
+      event.favouriteId = favouriteId;
+    }
+  },
+  setEvents(state, events) {
+    state.events = events;
+  },
+  resetFavourites(state) {
+    state.events = state.events.map((event) => ({
+      ...event,
+      isFavourite: false,
+    }));
+  },
   setCurrentUser(state, payload) {
     state.user.current = payload;
   },
@@ -54,6 +71,15 @@ export const mutations = {
 };
 
 export const actions = {
+  updateFavourite({ commit }, payload) {
+    commit("updateFavourite", payload);
+  },
+  setEvents({ commit }, events) {
+    commit("setEvents", events);
+  },
+  resetFavourites({ commit }) {
+    commit("resetFavourites");
+  },
   getCurrentUser({ commit }, user) {
     commit("setCurrentUser", user);
   },

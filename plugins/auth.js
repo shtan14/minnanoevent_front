@@ -48,10 +48,16 @@ class Authentication {
   }
 
   async logout() {
-    await this.$axios.$delete("/api/v1/auth_token", {
-      validateStatus: (status) => this.resolveUnauthorized(status),
-    });
-    this.resetVuex();
+    try {
+      await this.$axios.$delete("/api/v1/auth_token", {
+        validateStatus: (status) => this.resolveUnauthorized(status),
+      });
+      this.resetVuex();
+      // お気に入りの状態をクリア
+      this.store.dispatch("resetFavourites");
+    } catch (error) {
+      console.error("ログアウト中にエラーが発生しました", error);
+    }
   }
 
   // 有効期限内にtrueを返す
