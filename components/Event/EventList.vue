@@ -146,11 +146,11 @@ export default {
       return `${year}年${month}月${day}日（${dayOfWeek}）${hour}時`;
     },
     toggleFavourite(event) {
-      if (!this.$auth.loggedIn) {
+      if (!this.$auth.loggedIn()) {
         // ユーザーがログインしていない場合、ログインを促す
         this.$store.dispatch("getToast", {
           msg: "お気に入りに追加するにはログインが必要です。",
-          color: "error",
+          color: "info",
         });
         return;
       }
