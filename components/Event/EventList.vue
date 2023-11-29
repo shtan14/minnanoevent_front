@@ -51,8 +51,19 @@
               </v-btn>
             </v-card-actions>
           </nuxt-link>
-          <v-btn icon right style="position: absolute; top: 3px; right: 5px">
-            <v-icon style="font-size: 22px; text-stroke: 1.5px white"
+          <v-btn
+            icon
+            right
+            style="position: absolute; top: 3px; right: 5px"
+            @click.stop="toggleFavourite(event)"
+          >
+            <v-icon
+              :color="event.isFavourite ? 'red' : 'transparent'"
+              :style="
+                event.isFavourite
+                  ? 'font-size: 22px; text-stroke: 1.5px red'
+                  : 'font-size: 22px; text-stroke: 1.5px white'
+              "
               >mdi-heart</v-icon
             >
           </v-btn>
@@ -80,8 +91,12 @@ export default {
     };
   },
   computed: {
+    // Vuexのstateからイベントデータを取得
+    eventsFromStore() {
+      return this.$store.state.events;
+    },
     filteredEvents() {
-      let filtered = this.events;
+      let filtered = this.eventsFromStore;
       if (this.searchKeyword) {
         const lowerCaseSearchTerm = this.searchKeyword.toLowerCase();
         filtered = filtered.filter((event) => {
@@ -120,7 +135,8 @@ export default {
         .get("/api/v1/events/")
         .then((response) => {
           this.events = response.data;
-        })
+          this.$store.dispatch("setEvents", response.data);
+        }) // Vuexのstateにも保存
         .catch((error) => {
           console.error("イベントデータの取得に失敗しました", error);
         });
@@ -134,6 +150,54 @@ export default {
       const hour = datetime.getHours();
       const dayOfWeek = weekdays[datetime.getDay()];
       return `${year}年${month}月${day}日（${dayOfWeek}）${hour}時`;
+    },
+    async toggleFavourite(event) {
+      if (!this.$auth.loggedIn()) {
+        // ユーザーがログインしていない場合、ログインを促す
+        this.$store.dispatch("getToast", {
+          msg: "お気に入りに追加するにはログインが必要です。",
+          color: "info",
+        });
+        return;
+      }
+
+      const method = event.isFavourite ? "delete" : "post";
+      const url = event.isFavourite
+        ? `/api/v1/favourites/${event.favouriteId}`
+        : "/api/v1/favourites";
+      const requestData = method === "post" ? { event_id: event.id } : {};
+
+      try {
+        const response = await this.$axios({ url, method, data: requestData });
+        if (method === "post") {
+          // お気に入り追加の場合
+          this.$store.dispatch("updateFavourite", {
+            id: event.id,
+            isFavourite: true,
+            favouriteId: response.data.id,
+          });
+        } else {
+          // お気に入り削除の場合
+          this.$store.dispatch("updateFavourite", {
+            id: event.id,
+            isFavourite: false,
+            favouriteId: null,
+          });
+        }
+        const message = event.isFavourite
+          ? "お気に入りに追加しました。"
+          : "お気に入りから削除しました。";
+        this.$store.dispatch("getToast", {
+          msg: message,
+          color: "success",
+        });
+      } catch (error) {
+        console.error("お気に入りの操作に失敗しました", error);
+        this.$store.dispatch("getToast", {
+          msg: "お気に入りの操作に失敗しました。",
+          color: "error",
+        });
+      }
     },
   },
 };

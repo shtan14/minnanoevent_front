@@ -28,11 +28,28 @@ export const state = () => ({
     color: "error",
     timeout: 4000,
   },
+  events: [],
 });
 
 export const getters = {};
 
 export const mutations = {
+  updateFavourite(state, { id, isFavourite, favouriteId }) {
+    const event = state.events.find((e) => e.id === id);
+    if (event) {
+      event.isFavourite = isFavourite;
+      event.favouriteId = favouriteId;
+    }
+  },
+  setEvents(state, events) {
+    state.events = events;
+  },
+  resetFavourites(state) {
+    state.events = state.events.map((event) => ({
+      ...event,
+      isFavourite: false,
+    }));
+  },
   setCurrentUser(state, payload) {
     state.user.current = payload;
   },
@@ -54,6 +71,39 @@ export const mutations = {
 };
 
 export const actions = {
+  // Vuex ストアの actions
+  fetchEventsByCategory({ commit }, categoryId) {
+    this.$axios.get(`/api/v1/categories/${categoryId}`).then((response) => {
+      const events = response.data;
+      // ログインしている場合、お気に入り情報を取得して統合
+      if (this.$auth.loggedIn()) {
+        this.$axios.get("/api/v1/favourites").then((favResponse) => {
+          const favourites = favResponse.data;
+          const updatedEvents = events.map((event) => {
+            const favourite = favourites.find((f) => f.event_id === event.id);
+            return {
+              ...event,
+              isFavourite: !!favourite,
+              favouriteId: favourite ? favourite.id : null,
+            };
+          });
+          commit("setEvents", updatedEvents);
+        });
+      } else {
+        // ログインしていない場合、そのままイベントを設定
+        commit("setEvents", events);
+      }
+    });
+  },
+  updateFavourite({ commit }, payload) {
+    commit("updateFavourite", payload);
+  },
+  setEvents({ commit }, events) {
+    commit("setEvents", events);
+  },
+  resetFavourites({ commit }) {
+    commit("resetFavourites");
+  },
   getCurrentUser({ commit }, user) {
     commit("setCurrentUser", user);
   },

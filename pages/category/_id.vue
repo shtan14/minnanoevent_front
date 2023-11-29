@@ -7,6 +7,7 @@
       <before-login-app-bar @search="onSearch" />
     </template>
     <v-main>
+      <app-toaster />
       <nuxt />
       <events-by-category />
     </v-main>
@@ -17,6 +18,7 @@
 <script>
 import EventsByCategory from "../../components/Event/EventsByCategory.vue";
 export default {
+  name: "PagesCategoryId",
   components: { EventsByCategory },
   computed: {
     isUserLoggedIn() {
