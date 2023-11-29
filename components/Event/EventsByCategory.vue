@@ -1,9 +1,15 @@
 <template>
   <div>
-    <!-- <v-container> -->
     <h1 class="category-name-title">{{ categoryName }}</h1>
     <v-row class="mx-1">
-      <v-col v-for="event in events" :key="event.id" cols="12" sm="6" md="6" lg="3">
+      <v-col
+        v-for="event in events"
+        :key="event.id"
+        cols="12"
+        sm="6"
+        md="6"
+        lg="3"
+      >
         <v-card class="fill-height" style="border-radius: 10px">
           <nuxt-link :to="'/event/' + event.id" class="event-card">
             <v-img
@@ -47,55 +53,58 @@
               </v-btn>
             </v-card-actions>
           </nuxt-link>
-          <v-btn icon right style="position: absolute; top: 3px; right: 5px">
-            <v-icon style="font-size: 22px; text-stroke: 1.5px white"
+          <v-btn
+            icon
+            right
+            style="position: absolute; top: 3px; right: 5px"
+            @click.stop="toggleFavourite(event)"
+          >
+            <v-icon
+              :color="event.isFavourite ? 'red' : 'transparent'"
+              :style="
+                event.isFavourite
+                  ? 'font-size: 22px; text-stroke: 1.5px red'
+                  : 'font-size: 22px; text-stroke: 1.5px white'
+              "
               >mdi-heart</v-icon
             >
           </v-btn>
         </v-card>
       </v-col>
     </v-row>
-    <!-- </v-container> -->
   </div>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      events: [],
-      categoryName: "",
-    };
+  computed: {
+    events() {
+      // Vuexストアからイベントデータを取得
+      return this.$store.state.events.filter((event) =>
+        event.categories.some(
+          (category) => category.id === parseInt(this.$route.params.id)
+        )
+      );
+    },
+    categoryName() {
+      // カテゴリー名の取得
+      const category =
+        this.events.length > 0
+          ? this.events[0].categories.find(
+              (c) => c.id === parseInt(this.$route.params.id)
+            )
+          : null;
+      return category ? category.category : "";
+    },
   },
+  // イベントデータを更新するためのVuexアクションを呼び出す
   mounted() {
-    // ページが読み込まれたときにカテゴリーIDに基づいてイベントデータを取得
-    this.fetchEventsByCategory();
+    const categoryId = this.$route.params.id;
+    if (categoryId) {
+      this.$store.dispatch("fetchEventsByCategory", categoryId);
+    }
   },
   methods: {
-    fetchEventsByCategory() {
-      // カテゴリーIDをルートパラメータから取得
-      const categoryId = this.$route.params.id;
-
-      this.$axios
-        .get(`/api/v1/categories/${categoryId}`)
-        .then((response) => {
-          this.events = response.data;
-          if (this.events.length > 0 && this.events[0].categories) {
-            const category = this.events[0].categories.find(
-              (c) => c.id === parseInt(categoryId)
-            );
-            if (category) {
-              this.categoryName = category.category;
-            }
-          }
-        })
-        .catch((error) => {
-          console.error(
-            "カテゴリー別イベントデータの取得に失敗しました",
-            error
-          );
-        });
-    },
     formatDatetime(datetimeString) {
       const datetime = new Date(datetimeString);
       const weekdays = ["日", "月", "火", "水", "木", "金", "土"];
@@ -105,6 +114,54 @@ export default {
       const hour = datetime.getHours();
       const dayOfWeek = weekdays[datetime.getDay()];
       return `${year}年${month}月${day}日（${dayOfWeek}）${hour}時`;
+    },
+    async toggleFavourite(event) {
+      if (!this.$auth.loggedIn()) {
+        // ユーザーがログインしていない場合、ログインを促す
+        this.$store.dispatch("getToast", {
+          msg: "お気に入りに追加するにはログインが必要です。",
+          color: "info",
+        });
+        return;
+      }
+
+      const method = event.isFavourite ? "delete" : "post";
+      const url = event.isFavourite
+        ? `/api/v1/favourites/${event.favouriteId}`
+        : "/api/v1/favourites";
+      const requestData = method === "post" ? { event_id: event.id } : {};
+
+      try {
+        const response = await this.$axios({ url, method, data: requestData });
+        if (method === "post") {
+          // お気に入り追加の場合
+          this.$store.dispatch("updateFavourite", {
+            id: event.id,
+            isFavourite: true,
+            favouriteId: response.data.id,
+          });
+        } else {
+          // お気に入り削除の場合
+          this.$store.dispatch("updateFavourite", {
+            id: event.id,
+            isFavourite: false,
+            favouriteId: null,
+          });
+        }
+        const message = event.isFavourite
+          ? "お気に入りに追加しました。"
+          : "お気に入りから削除しました。";
+        this.$store.dispatch("getToast", {
+          msg: message,
+          color: "success",
+        });
+      } catch (error) {
+        console.error("お気に入りの操作に失敗しました", error);
+        this.$store.dispatch("getToast", {
+          msg: "お気に入りの操作に失敗しました。",
+          color: "error",
+        });
+      }
     },
   },
 };

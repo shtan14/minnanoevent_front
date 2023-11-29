@@ -7,6 +7,7 @@
       <before-login-app-bar @search="onSearch" />
     </template>
     <v-main>
+      <app-toaster />
       <nuxt />
       <event-detail />
       <event-comments />
