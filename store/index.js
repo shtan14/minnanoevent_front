@@ -75,6 +75,12 @@ export const actions = {
   fetchEventsByCategory({ commit }, categoryId) {
     this.$axios.get(`/api/v1/categories/${categoryId}`).then((response) => {
       const events = response.data;
+      // 開催日時に基づいてイベントを並べ替え
+      events.sort(
+        (a, b) =>
+          new Date(a.event_start_datetime) - new Date(b.event_start_datetime)
+      );
+
       // ログインしている場合、お気に入り情報を取得して統合
       if (this.$auth.loggedIn()) {
         this.$axios.get("/api/v1/favourites").then((favResponse) => {
