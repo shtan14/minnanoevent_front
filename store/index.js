@@ -101,6 +101,30 @@ export const actions = {
       }
     });
   },
+  // 特定のユーザーによってホストされたイベントを取得するアクション
+  fetchEventsHostedByUser({ commit }, userId) {
+    this.$axios.get(`/api/v1/events/?user_id=${userId}`).then((response) => {
+      const events = response.data;
+      // ログインしている場合、お気に入り情報を取得して統合
+      if (this.$auth.loggedIn()) {
+        this.$axios.get("/api/v1/favourites").then((favResponse) => {
+          const favourites = favResponse.data;
+          const updatedEvents = events.map((event) => {
+            const favourite = favourites.find((f) => f.event_id === event.id);
+            return {
+              ...event,
+              isFavourite: !!favourite,
+              favouriteId: favourite ? favourite.id : null,
+            };
+          });
+          commit("setEvents", updatedEvents);
+        });
+      } else {
+        // ログインしていない場合、そのままイベントを設定
+        commit("setEvents", events);
+      }
+    });
+  },
   updateFavourite({ commit }, payload) {
     commit("updateFavourite", payload);
   },
