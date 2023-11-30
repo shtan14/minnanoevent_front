@@ -103,6 +103,7 @@
           </v-col>
         </v-row>
       </v-container>
+      <app-toaster />
     </v-main>
     <app-footer />
   </v-app>
