@@ -163,6 +163,35 @@ export const actions = {
       console.error("イベントデータの取得に失敗しました", error);
     }
   },
+  // ログインユーザーのお気に入りイベントを取得するアクション
+  async fetchFavouriteEvents({ commit }) {
+    try {
+      // お気に入りイベントのAPIエンドポイントを呼び出す
+      const response = await this.$axios.get("/api/v1/favourites");
+      const favourites = response.data;
+
+      // お気に入りイベントのIDを取得
+      const eventIds = favourites.map((fav) => fav.event_id);
+
+      // お気に入りイベントの詳細情報を取得
+      const eventResponses = await Promise.all(
+        eventIds.map((eventId) => this.$axios.get(`/api/v1/events/${eventId}`))
+      );
+      const favouriteEvents = eventResponses.map((res) => res.data);
+
+      // お気に入りイベント情報をVuexストアのstateに保存
+      commit(
+        "setEvents",
+        favouriteEvents.map((event) => ({
+          ...event,
+          isFavourite: true,
+          favouriteId: favourites.find((fav) => fav.event_id === event.id).id,
+        }))
+      );
+    } catch (error) {
+      console.error("お気に入りイベントの取得に失敗しました", error);
+    }
+  },
   updateFavourite({ commit }, payload) {
     commit("updateFavourite", payload);
   },
