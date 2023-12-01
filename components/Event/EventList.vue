@@ -97,10 +97,12 @@ export default {
     },
     filteredEvents() {
       let filtered = this.eventsFromStore;
+
+      // キーワードによるフィルタリング
       if (this.searchKeyword) {
         const lowerCaseSearchTerm = this.searchKeyword.toLowerCase();
-        filtered = filtered.filter((event) => {
-          return (
+        filtered = filtered.filter(
+          (event) =>
             event.title.toLowerCase().includes(lowerCaseSearchTerm) ||
             event.description.toLowerCase().includes(lowerCaseSearchTerm) ||
             event.prefecture.toLowerCase().includes(lowerCaseSearchTerm) ||
@@ -109,23 +111,26 @@ export default {
             event.categories.some((category) =>
               category.category.toLowerCase().includes(lowerCaseSearchTerm)
             )
+        );
+      }
+
+      // 日付によるフィルタリング
+      if (this.selectedDate) {
+        const selectedDateObj = new Date(this.selectedDate);
+        filtered = filtered.filter((event) => {
+          const eventDateObj = new Date(event.event_start_datetime);
+          return (
+            eventDateObj.getFullYear() === selectedDateObj.getFullYear() &&
+            eventDateObj.getMonth() === selectedDateObj.getMonth() &&
+            eventDateObj.getDate() === selectedDateObj.getDate()
           );
         });
       }
-      if (this.selectedDate) {
-        const selectedDateFormatted = new Date(this.selectedDate)
-          .toISOString()
-          .split("T")[0];
-        filtered = filtered.filter((event) => {
-          const eventStartDate = new Date(event.event_start_datetime)
-            .toISOString()
-            .split("T")[0];
-          return eventStartDate === selectedDateFormatted;
-        });
-      }
+
       return filtered;
     },
   },
+
   mounted() {
     this.fetchEvents();
   },
