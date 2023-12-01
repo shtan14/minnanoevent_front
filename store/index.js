@@ -34,6 +34,15 @@ export const state = () => ({
 export const getters = {};
 
 export const mutations = {
+  updateEvent(state, event) {
+    const index = state.events.findIndex((e) => e.id === event.id);
+    if (index !== -1) {
+      // イベント情報とユーザー情報を含むオブジェクトで更新
+      state.events.splice(index, 1, event);
+    } else {
+      state.events.push(event);
+    }
+  },
   updateFavourite(state, { id, isFavourite, favouriteId }) {
     const event = state.events.find((e) => e.id === id);
     if (event) {
@@ -124,6 +133,35 @@ export const actions = {
         commit("setEvents", events);
       }
     });
+  },
+  async fetchEventDetails({ commit }, eventId) {
+    try {
+      const response = await this.$axios.get(`/api/v1/events/${eventId}`);
+      let event = response.data;
+
+      // ログインしている場合、お気に入り情報を取得して統合
+      if (this.$auth.loggedIn()) {
+        const favResponse = await this.$axios.get("/api/v1/favourites");
+        const favourites = favResponse.data;
+        const favourite = favourites.find((f) => f.event_id === event.id);
+        event = {
+          ...event,
+          isFavourite: !!favourite,
+          favouriteId: favourite ? favourite.id : null,
+        };
+      }
+
+      // イベントホストのユーザー情報を取得
+      const userResponse = await this.$axios.get(
+        `/api/v1/users/${event.user_id}`
+      );
+      const user = userResponse.data;
+
+      // イベントとユーザー情報をVuexに保存
+      commit("updateEvent", { ...event, user });
+    } catch (error) {
+      console.error("イベントデータの取得に失敗しました", error);
+    }
   },
   updateFavourite({ commit }, payload) {
     commit("updateFavourite", payload);

@@ -1,8 +1,24 @@
 <template>
   <div>
     <div v-if="event" class="event-details-container">
-      <h1 class="ml-4 event-title">{{ event.title }}</h1>
-
+      <div class="title-and-favourite">
+        <h1 class="ml-4 event-title">{{ event.title }}</h1>
+        <v-btn
+          icon
+          class="favourite-button"
+          @click.stop="toggleFavourite(event)"
+        >
+          <v-icon
+            :color="event.isFavourite ? 'red' : 'transparent'"
+            :style="
+              event.isFavourite
+                ? 'font-size: 22px; text-stroke: 1.5px red'
+                : 'font-size: 22px; text-stroke: 1.5px black'
+            "
+            >mdi-heart</v-icon
+          >
+        </v-btn>
+      </div>
       <div v-if="$vuetify.breakpoint.xsOnly" class="mb-7 image-container">
         <v-carousel cycle hide-delimiters>
           <v-carousel-item
@@ -104,40 +120,28 @@
 
 <script>
 export default {
-  data() {
-    return {
-      event: null, // イベント情報を格納するデータ
-      user: null,
-    };
+  // data() {
+  //   return {
+  //     event: null, // イベント情報を格納するデータ
+  //     user: null,
+  //   };
+  // },
+  computed: {
+    event() {
+      const eventId = parseInt(this.$route.params.id);
+      return this.$store.state.events.find((e) => e.id === eventId) || null;
+    },
+    user() {
+      return this.event ? this.event.user : null;
+    },
   },
   mounted() {
-    // ページが読み込まれたときにAPIからイベントデータを取得
-    this.fetchEventDetails();
+    const eventId = parseInt(this.$route.params.id);
+    if (eventId) {
+      this.$store.dispatch("fetchEventDetails", eventId);
+    }
   },
   methods: {
-    fetchEventDetails() {
-      const eventId = this.$route.params.id;
-      this.$axios
-        .get(`/api/v1/events/${eventId}`)
-        .then((response) => {
-          this.event = response.data;
-
-          // ユーザー情報を取得
-          const userId = response.data.user_id;
-          this.$axios
-            .get(`/api/v1/users/${userId}`)
-            .then((userResponse) => {
-              this.user = userResponse.data;
-            })
-            .catch((userError) => {
-              console.error("ユーザー情報の取得に失敗しました", userError);
-            });
-        })
-        .catch((error) => {
-          console.error("イベントデータの取得に失敗しました", error);
-        });
-    },
-
     formatDatetime(datetimeString) {
       const datetime = new Date(datetimeString);
       const weekdays = ["日", "月", "火", "水", "木", "金", "土"];
@@ -148,6 +152,54 @@ export default {
       const dayOfWeek = weekdays[datetime.getDay()];
       return `${year}年${month}月${day}日（${dayOfWeek}）${hour}時`;
     },
+    async toggleFavourite(event) {
+      if (!this.$auth.loggedIn()) {
+        // ユーザーがログインしていない場合、ログインを促す
+        this.$store.dispatch("getToast", {
+          msg: "お気に入りに追加するにはログインが必要です。",
+          color: "info",
+        });
+        return;
+      }
+
+      const method = event.isFavourite ? "delete" : "post";
+      const url = event.isFavourite
+        ? `/api/v1/favourites/${event.favouriteId}`
+        : "/api/v1/favourites";
+      const requestData = method === "post" ? { event_id: event.id } : {};
+
+      try {
+        const response = await this.$axios({ url, method, data: requestData });
+        if (method === "post") {
+          // お気に入り追加の場合
+          this.$store.dispatch("updateFavourite", {
+            id: event.id,
+            isFavourite: true,
+            favouriteId: response.data.id,
+          });
+        } else {
+          // お気に入り削除の場合
+          this.$store.dispatch("updateFavourite", {
+            id: event.id,
+            isFavourite: false,
+            favouriteId: null,
+          });
+        }
+        const message = event.isFavourite
+          ? "お気に入りに追加しました。"
+          : "お気に入りから削除しました。";
+        this.$store.dispatch("getToast", {
+          msg: message,
+          color: "success",
+        });
+      } catch (error) {
+        console.error("お気に入りの操作に失敗しました", error);
+        this.$store.dispatch("getToast", {
+          msg: "お気に入りの操作に失敗しました。",
+          color: "error",
+        });
+      }
+    },
   },
 };
 </script>
@@ -157,6 +209,15 @@ export default {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
+}
+
+.title-and-favourite {
+  display: flex;
+  justify-content: space-between;
+}
+
+.favourite-button {
+  margin-right: 1rem;
 }
 
 .event-title {
