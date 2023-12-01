@@ -18,7 +18,7 @@
 <script>
 import EventsByCategory from "../../components/Event/EventsByCategory.vue";
 export default {
-  name: "PagesCategoryId",
+  name: "CategoryPageId",
   components: { EventsByCategory },
   computed: {
     isUserLoggedIn() {

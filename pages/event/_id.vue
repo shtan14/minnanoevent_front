@@ -20,6 +20,7 @@
 import EventDetail from "../../components/Event/EventDetail.vue";
 import EventComments from "../../components/Event/EventComments.vue";
 export default {
+  name: "EventPageId",
   components: { EventDetail, EventComments },
   computed: {
     isUserLoggedIn() {
