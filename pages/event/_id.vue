@@ -10,6 +10,7 @@
       <app-toaster />
       <nuxt />
       <event-detail />
+      <event-comment-form @commentAdded="refreshComments" />
       <event-comments />
     </v-main>
     <app-footer />
@@ -19,9 +20,10 @@
 <script>
 import EventDetail from "../../components/Event/EventDetail.vue";
 import EventComments from "../../components/Event/EventComments.vue";
+import EventCommentForm from "../../components/Event/EventCommentForm.vue";
 export default {
   name: "EventPageId",
-  components: { EventDetail, EventComments },
+  components: { EventDetail, EventComments, EventCommentForm },
   computed: {
     isUserLoggedIn() {
       const loggedIn = this.$auth.loggedIn();

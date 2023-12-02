@@ -1,10 +1,10 @@
 <template>
   <div>
     <div v-if="!isLoading && comments.length > 0" class="comments-container">
-      <v-divider class="comment-divider"></v-divider>
-      <div class="ml-4 mb-0">
+      <!-- <v-divider class="comment-divider"></v-divider> -->
+      <!-- <div class="ml-4 mb-0">
         <div class="comment-title">コメント</div>
-      </div>
+      </div> -->
       <v-row>
         <v-col
           v-for="comment in comments"
