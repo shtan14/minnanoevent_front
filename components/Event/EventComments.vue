@@ -1,13 +1,12 @@
 <template>
   <div>
-    <div v-if="!isLoading && comments.length > 0" class="comments-container">
-      <!-- <v-divider class="comment-divider"></v-divider> -->
-      <!-- <div class="ml-4 mb-0">
-        <div class="comment-title">コメント</div>
-      </div> -->
+    <div
+      v-if="!isLoading && eventComments.length > 0"
+      class="comments-container"
+    >
       <v-row>
         <v-col
-          v-for="comment in comments"
+          v-for="comment in eventComments"
           :key="comment.id"
           class="comment-item"
           cols="12"
@@ -42,30 +41,19 @@
 
 <script>
 export default {
-  data() {
-    return {
-      comments: [],
-      isLoading: true, // データロード中かどうかを追跡
-    };
+  computed: {
+    // Vuexストアからコメントデータを取得
+    eventComments() {
+      return this.$store.state.comments;
+    },
+    isLoading() {
+      return this.$store.state.isLoadingComments;
+    },
   },
   mounted() {
-    this.fetchEventComments();
-  },
-  methods: {
-    fetchEventComments() {
-      this.isLoading = true;
-      const eventId = this.$route.params.id;
-      this.$axios
-        .get(`/api/v1/events/${eventId}/comments`)
-        .then((response) => {
-          this.comments = response.data;
-          this.isLoading = false; // データロード完了
-        })
-        .catch((error) => {
-          console.error("コメントデータの取得に失敗しました", error);
-          this.isLoading = false;
-        });
-    },
+    // コンポーネントがマウントされたときにVuexアクションを呼び出して、コメントを取得
+    const eventId = this.$route.params.id;
+    this.$store.dispatch("fetchEventComments", eventId);
   },
 };
 </script>

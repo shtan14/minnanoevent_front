@@ -6,18 +6,24 @@
     </div>
     <v-row class="comment-form-row">
       <v-col cols="12">
-        <v-textarea
-          v-model="newComment"
-          class="ml-4"
-          label="コメントする..."
-          rows="1"
-          no-resize
-          auto-grow
-        ></v-textarea>
-        <div class="text-right">
-          <v-btn @click="cancelComment">キャンセル</v-btn>
-          <v-btn color="primary" @click="submitComment">コメント</v-btn>
-        </div>
+        <v-form ref="form" v-model="isValid">
+          <v-textarea
+            v-model="newComment"
+            class="ml-4"
+            label="コメントする..."
+            rows="1"
+            no-resize
+            auto-grow
+            :rules="commentRules"
+            counter="100"
+          ></v-textarea>
+          <div class="text-right">
+            <v-btn @click="cancelComment">キャンセル</v-btn>
+            <v-btn :disabled="!isValid" color="primary" @click="submitComment"
+              >コメント</v-btn
+            >
+          </div>
+        </v-form>
       </v-col>
     </v-row>
   </div>
@@ -27,11 +33,16 @@
 export default {
   data() {
     return {
+      isValid: true,
       newComment: "", // 新しいコメントのテキスト
+      commentRules: [
+        (v) =>
+          !v || v.length <= 100 || "コメントは100文字以内で入力してください。",
+      ],
     };
   },
   methods: {
-    async submitComment() {
+    submitComment() {
       if (!this.$auth.loggedIn()) {
         // ユーザーがログインしていない場合、ログインを促す
         this.$store.dispatch("getToast", {
@@ -41,19 +52,17 @@ export default {
         return;
       }
       if (!this.newComment) return;
-      try {
-        const eventId = this.$route.params.id;
-        await this.$axios.post(`/api/v1/events/${eventId}/comments`, {
-          comment: this.newComment,
-        });
-        this.newComment = "";
-        this.$emit("commentAdded");
-      } catch (error) {
-        console.error("コメントの投稿に失敗しました", error);
-      }
+
+      const eventId = this.$route.params.id;
+      // Vuexストアのアクションを使ってコメントを投稿
+      this.$store.dispatch("postComment", {
+        eventId,
+        commentText: this.newComment,
+      });
+      this.newComment = ""; // コメントテキストをリセット
     },
     cancelComment() {
-      this.newComment = "";
+      this.newComment = ""; // コメントテキストをリセット
     },
   },
 };

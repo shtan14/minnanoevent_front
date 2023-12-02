@@ -10,7 +10,7 @@
       <app-toaster />
       <nuxt />
       <event-detail />
-      <event-comment-form @commentAdded="refreshComments" />
+      <event-comment-form />
       <event-comments />
     </v-main>
     <app-footer />
