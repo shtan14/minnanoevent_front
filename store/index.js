@@ -29,11 +29,16 @@ export const state = () => ({
     timeout: 4000,
   },
   events: [],
+  comments: [],
+  isLoadingComments: false,
 });
 
 export const getters = {};
 
 export const mutations = {
+  setLoadingComments(state, isLoading) {
+    state.isLoadingComments = isLoading;
+  },
   updateEvent(state, event) {
     const index = state.events.findIndex((e) => e.id === event.id);
     if (index !== -1) {
@@ -77,9 +82,39 @@ export const mutations = {
   setRememberPath(state, payload) {
     state.loggedIn.rememberPath = payload;
   },
+  setComments(state, comments) {
+    state.comments = comments;
+  },
 };
 
 export const actions = {
+  // イベントのコメントを取得するアクション
+  async fetchEventComments({ commit }, eventId) {
+    commit("setLoadingComments", true);
+    try {
+      const response = await this.$axios.get(
+        `/api/v1/events/${eventId}/comments`
+      );
+      commit("setComments", response.data);
+    } catch (error) {
+      console.error("コメントの取得に失敗しました", error);
+    }
+    commit("setLoadingComments", false);
+  },
+  // コメントを投稿するアクション
+  async postComment({ dispatch }, { eventId, commentText }) {
+    try {
+      await this.$axios.post(`/api/v1/events/${eventId}/comments`, {
+        comment: {
+          comment: commentText,
+        },
+      });
+      // コメントの再取得をトリガー
+      dispatch("fetchEventComments", eventId);
+    } catch (error) {
+      console.error("コメントの投稿に失敗しました", error);
+    }
+  },
   // Vuex ストアの actions
   fetchEventsByCategory({ commit }, categoryId) {
     this.$axios.get(`/api/v1/categories/${categoryId}`).then((response) => {
