@@ -60,7 +60,7 @@ export default {
       return this.$store.state.isLoadingComments;
     },
     currentUser() {
-      return this.$store.state.user.current;
+      return this.$store.state.user.current || {};
     },
   },
   mounted() {
