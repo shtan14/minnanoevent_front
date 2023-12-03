@@ -85,6 +85,18 @@ export const mutations = {
   setComments(state, comments) {
     state.comments = comments;
   },
+  deleteComment(state, commentId) {
+    // state.comments内から指定されたcommentIdに一致するコメントを検索
+    const index = state.comments.findIndex(
+      (comment) => comment.id === commentId
+    );
+    // コメントが見つかればそのインデックスを返し、見つからなければ-1を返す
+    if (index !== -1) {
+      // インデックスが-1でない場合はコメントが見つかった
+      // その場合spliceメソッドを使用してstate.commentsからコメントを削除
+      state.comments.splice(index, 1);
+    }
+  },
 };
 
 export const actions = {
@@ -111,11 +123,43 @@ export const actions = {
       });
       // コメントの再取得をトリガー
       dispatch("fetchEventComments", eventId);
+      this.dispatch("getToast", {
+        msg: "コメントを投稿しました。",
+        color: "success",
+      });
     } catch (error) {
       console.error("コメントの投稿に失敗しました", error);
+      this.dispatch("getToast", {
+        msg: "コメントの投稿に失敗しました。",
+        color: "error",
+      });
     }
   },
-  // Vuex ストアの actions
+  // コメントを削除するアクション
+  async deleteComment({ commit, state }, commentId) {
+    try {
+      // コメントを削除
+      await this.$axios.delete(`/api/v1/comments/${commentId}`);
+
+      // 成功した場合、ストアからコメントを削除
+      const updatedComments = state.comments.filter(
+        (comment) => comment.id !== commentId
+      );
+      commit("setComments", updatedComments);
+
+      // 成功メッセージを表示
+      this.dispatch("getToast", {
+        msg: "コメントが削除されました。",
+        color: "success",
+      });
+    } catch (error) {
+      console.error("コメントの削除に失敗しました", error);
+      this.dispatch("getToast", {
+        msg: "コメントの削除に失敗しました。",
+        color: "error",
+      });
+    }
+  },
   fetchEventsByCategory({ commit }, categoryId) {
     this.$axios.get(`/api/v1/categories/${categoryId}`).then((response) => {
       const events = response.data;
