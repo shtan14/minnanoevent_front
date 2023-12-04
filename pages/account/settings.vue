@@ -179,6 +179,7 @@ export default {
         const formData = new FormData();
         formData.append("filename", file.name);
         formData.append("contentType", file.type);
+        formData.append("imageType", "avatar");
         const presignedResponse = await this.$axios.post(
           "/api/v1/s3/sign",
           formData
