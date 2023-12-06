@@ -9,18 +9,18 @@
           @click.stop="toggleFavourite(event)"
         >
           <v-icon
-            :color="event.isFavourite ? 'red' : 'transparent'"
+            :color="event.isFavourite ? 'red' : 'gray'"
             :style="
               event.isFavourite
                 ? 'font-size: 22px; text-stroke: 1.5px red'
-                : 'font-size: 22px; text-stroke: 1.5px black'
+                : 'font-size: 22px; text-stroke: 1.5px white'
             "
             >mdi-heart</v-icon
           >
         </v-btn>
       </div>
       <div v-if="$vuetify.breakpoint.xsOnly" class="mb-7 image-container">
-        <v-carousel cycle hide-delimiters>
+        <v-carousel cycle hide-delimiters height="260px">
           <v-carousel-item
             v-for="(image, index) in event.event_images"
             :key="index"
@@ -39,7 +39,11 @@
           <v-col
             v-for="(image, index) in event.event_images"
             :key="index"
-            cols="4"
+            :cols="
+              event.event_images.length === 1
+                ? 12
+                : calculateColWidth(event.event_images.length)
+            "
           >
             <v-img
               :src="image.event_image"
@@ -136,6 +140,14 @@ export default {
     }
   },
   methods: {
+    calculateColWidth(imageCount) {
+      if (imageCount === 1) {
+        return 12; // 全幅
+      } else if (imageCount === 2) {
+        return 6; // 半分の幅
+      }
+      return 4; // 3分割
+    },
     formatDatetime(datetimeString) {
       const datetime = new Date(datetimeString);
       const weekdays = ["日", "月", "火", "水", "木", "金", "土"];
@@ -292,5 +304,12 @@ export default {
 
 .bio-text {
   margin-left: 20px; /* テキストと画像の間隔を調整 */
+}
+
+.single-image {
+  object-fit: cover; /* 画像の縦横比を維持しつつ、コンテナに合わせて調整 */
+  max-width: 100%; /* コンテナの幅に合わせる */
+  margin: 0 auto; /* 中央寄せ */
+  height: auto; /* 任意の高さ */
 }
 </style>
