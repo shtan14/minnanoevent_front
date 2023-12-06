@@ -39,7 +39,7 @@
               <v-icon>mdi-map-marker</v-icon>
               {{ event.prefecture }}{{ event.city }} {{ event.location }}
             </v-card-text>
-            <v-card-actions>
+            <v-card-actions class="category-actions-container">
               <v-btn
                 v-for="(category, index) in event.categories"
                 :key="index"
@@ -212,5 +212,16 @@ export default {
 .event-card {
   text-decoration: none; /* 下線を非表示にする */
   color: black;
+}
+
+.category-actions-container {
+  display: flex;
+  flex-wrap: wrap;
+  overflow-x: auto;
+}
+
+.category-button {
+  margin-bottom: 4px;
+  font-size: 14px;
 }
 </style>

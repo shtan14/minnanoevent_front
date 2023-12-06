@@ -223,7 +223,10 @@
             ></v-text-field>
 
             <v-card-actions class="d-flex justify-center">
-              <v-btn :disabled="!isFormValid" color="primary" @click="submitEvent"
+              <v-btn
+                :disabled="!isFormValid"
+                color="primary"
+                @click="submitEvent"
                 >投稿する</v-btn
               >
             </v-card-actions>
@@ -249,6 +252,7 @@ export default {
       imagePreviews: [null, null, null],
       selectedCategories: [],
       categories: [],
+      selectedFiles: [null, null, null], // ユーザーが選択したファイルを格納
       event: {
         title: "",
         description: "",
@@ -314,6 +318,7 @@ export default {
       const file = e.target.files[0];
       if (file && file.type.startsWith("image/")) {
         this.createImagePreview(file, this.currentImageIndex); // 現在の画像インデックスを渡す
+        this.selectedFiles[this.currentImageIndex] = file; // ファイルを保存
       }
     },
     createImagePreview(file, index) {
@@ -368,21 +373,66 @@ export default {
       ).length;
       return validImageCount >= 1;
     },
-    // 同様の処理をイベント終了日時にも適用...
-    submitEvent() {
-      if (this.isFormValid) {
-        // フォームデータをAPIに送信する処理をここに記述
-        console.log("イベントを投稿:", this.event);
-      }
-      const startDateTime = new Date(
-        `${this.event.start_date}T${this.event.start_time}`
-      ).toISOString();
+    async uploadImages() {
+      const urls = [];
+      for (const file of this.selectedFiles) {
+        if (file) {
+          const formData = new FormData();
+          // 実際のファイル名とMIMEタイプを使用
+          formData.append("filename", file.name);
+          formData.append("contentType", file.type);
+          formData.append("imageType", "event");
 
-      // バックエンドに送信するデータの準備
-      // const eventData = {
-      //   event_start_datetime: startDateTime,
-      //   // 他のイベントデータ...
-      // };
+          const response = await this.$axios.post("/api/v1/s3/sign", formData);
+          const { signedUrl, publicUrl } = response.data;
+
+          // 新しいAxiosインスタンスを使用
+          const axiosInstance = this.$axios.create();
+          await axiosInstance.put(signedUrl, file, {
+            headers: { "Content-Type": file.type },
+          });
+
+          urls.push(publicUrl);
+        }
+      }
+      return urls;
+    },
+    async submitEvent() {
+      if (this.isFormValid) {
+        try {
+          // 画像をアップロードし、公開URLを取得
+          const imageUrls = await this.uploadImages();
+
+          // イベントデータの準備
+          const eventData = {
+            title: this.event.title,
+            description: this.event.description,
+            prefecture: this.event.prefecture,
+            city: this.event.city,
+            location: this.event.location,
+            ticket_price: this.event.ticket_price,
+            phone_number: this.event.phone_number,
+            event_start_datetime: this.event.event_start_datetime,
+            event_end_datetime: this.event.event_end_datetime,
+            image_urls: imageUrls, // アップロードされた画像のURL
+            category_ids: this.selectedCategories,
+          };
+
+          // イベントデータをバックエンドに送信
+          await this.$axios.post("/api/v1/events", eventData);
+          console.log("投稿成功");
+          this.$store.dispatch("getToast", {
+            msg: "イベントが投稿されました。",
+            color: "success",
+          });
+        } catch (error) {
+          console.error("イベントの投稿に失敗しました:", error);
+          this.$store.dispatch("getToast", {
+            msg: "イベントの投稿に失敗しました。",
+            color: "error",
+          });
+        }
+      }
     },
   },
 };

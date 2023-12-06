@@ -120,12 +120,6 @@
 
 <script>
 export default {
-  // data() {
-  //   return {
-  //     event: null, // イベント情報を格納するデータ
-  //     user: null,
-  //   };
-  // },
   computed: {
     event() {
       const eventId = parseInt(this.$route.params.id);
