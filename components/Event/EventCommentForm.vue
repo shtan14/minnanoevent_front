@@ -17,7 +17,7 @@
             :rules="commentRules"
             counter="100"
           ></v-textarea>
-          <div class="text-right">
+          <div class="comment-buttons">
             <v-btn @click="cancelComment">キャンセル</v-btn>
             <v-btn :disabled="!isValid" color="primary" @click="submitComment"
               >コメント</v-btn
@@ -82,5 +82,10 @@ export default {
   font-weight: bold;
   color: #333;
   margin-bottom: 0px;
+}
+
+.comment-buttons {
+  margin-bottom: 5px;
+  text-align: right;
 }
 </style>
