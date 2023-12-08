@@ -338,7 +338,7 @@ export default {
       if (file && file.type.startsWith("image/")) {
         this.createImagePreview(file, this.currentImageIndex); // 現在の画像インデックスを渡す
         this.selectedFiles[this.currentImageIndex] = file; // ファイルを保存
-        // ファイル選択状態をリセット
+        // 同一画像を登録できるようにファイル選択状態をリセット
         e.target.value = null;
       }
     },
