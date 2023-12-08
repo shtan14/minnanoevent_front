@@ -52,7 +52,7 @@
 
             <v-textarea
               v-model="event.description"
-              label="概要（見どころ、おすすめポイントなど）"
+              label="概要（見どころ、対象者、おすすめポイントなど）"
               outlined
               auto-grow
               rows="5"
@@ -77,6 +77,7 @@
                         label="開始日"
                         readonly
                         v-bind="attrs"
+                        :rules="startDateRules"
                         v-on="on"
                       ></v-text-field>
                     </template>
@@ -130,6 +131,7 @@
                         v-model="event.end_date"
                         label="終了日"
                         readonly
+                        :rules="endDateRules"
                         v-bind="attrs"
                         v-on="on"
                       ></v-text-field>
@@ -263,9 +265,9 @@ export default {
         event_start_datetime: "",
         event_end_datetime: "",
         phone_number: "",
-        start_date: new Date().toISOString().slice(0, 10),
+        start_date: "",
         start_time: "",
-        end_date: new Date().toISOString().slice(0, 10),
+        end_date: "",
         end_time: "",
       },
       titleRules: [
@@ -292,6 +294,14 @@ export default {
           /^[0-9-]+$/.test(v) ||
           "連絡先は半角数字とハイフンのみで入力してください。",
       ],
+      startDateRules: [
+        (v) => !!v || "開始日は必須です。",
+        (v) => this.isFutureDate(v) || "本日以降の日付を選択してください。",
+      ],
+      endDateRules: [
+        (v) => !!v || "終了日は必須です。",
+        (v) => this.isFutureDate(v) || "本日以降の日付を選択してください。",
+      ],
       startTimeRules: [(v) => !!v || "開始時間は必須です。"],
       endTimeRules: [(v) => !!v || "終了時間は必須です。"],
     };
@@ -309,6 +319,15 @@ export default {
     this.fetchCategories();
   },
   methods: {
+    isFutureDate(date) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // 今日の日付の時刻をリセット
+
+      const selectedDate = new Date(date);
+      selectedDate.setHours(0, 0, 0, 0); // 選択された日付の時刻をリセット
+
+      return selectedDate >= today;
+    },
     openFileInput(index) {
       this.currentImageIndex = index; // 現在選択している画像のインデックスを保存
       this.$refs.fileInput.click(); // ファイル選択ウィンドウを開く
@@ -319,6 +338,8 @@ export default {
       if (file && file.type.startsWith("image/")) {
         this.createImagePreview(file, this.currentImageIndex); // 現在の画像インデックスを渡す
         this.selectedFiles[this.currentImageIndex] = file; // ファイルを保存
+        // ファイル選択状態をリセット
+        e.target.value = null;
       }
     },
     createImagePreview(file, index) {
