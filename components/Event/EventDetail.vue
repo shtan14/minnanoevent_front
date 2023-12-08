@@ -20,7 +20,13 @@
         </v-btn>
       </div>
       <div v-if="$vuetify.breakpoint.xsOnly" class="mb-7 image-container">
-        <v-carousel cycle hide-delimiters height="260px">
+        <v-carousel
+          cycle
+          :interval="4000"
+          hide-delimiters
+          height="280px"
+          :show-arrows="false"
+        >
           <v-carousel-item
             v-for="(image, index) in event.event_images"
             :key="index"
@@ -36,14 +42,24 @@
 
       <div v-else class="mb-7 image-container">
         <v-row class="mx-4 image-container" no-gutters>
+          <!-- 画像が1枚の場合 -->
+          <v-col
+            v-if="event.event_images.length === 1"
+            cols="12"
+            class="d-flex justify-center"
+          >
+            <v-img
+              :src="event.event_images[0].event_image"
+              class="single-image"
+              alt="サムネイル写真"
+            ></v-img>
+          </v-col>
+          <!-- 画像が複数の場合 -->
           <v-col
             v-for="(image, index) in event.event_images"
+            v-else
             :key="index"
-            :cols="
-              event.event_images.length === 1
-                ? 12
-                : calculateColWidth(event.event_images.length)
-            "
+            :cols="calculateColWidth(event.event_images.length)"
           >
             <v-img
               :src="image.event_image"
@@ -142,11 +158,11 @@ export default {
   methods: {
     calculateColWidth(imageCount) {
       if (imageCount === 1) {
-        return 12; // 全幅
+        return 12;
       } else if (imageCount === 2) {
-        return 6; // 半分の幅
+        return 6;
       }
-      return 4; // 3分割
+      return 4;
     },
     formatDatetime(datetimeString) {
       const datetime = new Date(datetimeString);
@@ -307,9 +323,9 @@ export default {
 }
 
 .single-image {
-  object-fit: cover; /* 画像の縦横比を維持しつつ、コンテナに合わせて調整 */
-  max-width: 100%; /* コンテナの幅に合わせる */
-  margin: 0 auto; /* 中央寄せ */
-  height: auto; /* 任意の高さ */
+  border-radius: 10px;
+  max-width: 50%; /* 画像の最大幅を指定 */
+  max-height: 100%; /* 画像の最大高さを指定 */
+  object-fit: contain; /* 画像の比率を保持 */
 }
 </style>
