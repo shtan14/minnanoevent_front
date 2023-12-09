@@ -1,9 +1,17 @@
 <template>
   <div>
     <div v-if="event" class="event-details-container">
-      <div class="ml-auto">
+      <div class="ml-auto mb-4 d-flex justify-end">
+        <nuxt-link
+          v-if="event.user && event.user.id === currentUser.id"
+          class="mr-1"
+          :to="`/event/edit`"
+        >
+          <v-btn small>編集する </v-btn>
+        </nuxt-link>
         <v-btn
           v-if="event.user && event.user.id === currentUser.id"
+          small
           @click="confirmDelete(event.id)"
           >削除する
         </v-btn>
