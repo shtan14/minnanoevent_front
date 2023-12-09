@@ -1,6 +1,13 @@
 <template>
   <div>
     <div v-if="event" class="event-details-container">
+      <div class="ml-auto">
+        <v-btn
+          v-if="event.user && event.user.id === currentUser.id"
+          @click="confirmDelete(event.id)"
+          >削除する
+        </v-btn>
+      </div>
       <div class="title-and-favourite">
         <h1 class="ml-4 event-title">{{ event.title }}</h1>
         <v-btn
@@ -148,6 +155,9 @@ export default {
     user() {
       return this.event ? this.event.user : null;
     },
+    currentUser() {
+      return this.$store.state.user.current || {};
+    },
   },
   mounted() {
     const eventId = parseInt(this.$route.params.id);
@@ -156,6 +166,17 @@ export default {
     }
   },
   methods: {
+    async confirmDelete(eventId) {
+      if (confirm("このイベントを削除しますか？")) {
+        await this.deleteEvent(eventId);
+        setTimeout(() => {
+          this.$router.push(`/user/${this.currentUser.id}`);
+        }, 1000);
+      }
+    },
+    async deleteEvent(eventId) {
+      await this.$store.dispatch("deleteEvent", eventId);
+    },
     calculateColWidth(imageCount) {
       if (imageCount === 1) {
         return 12;
