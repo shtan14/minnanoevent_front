@@ -440,12 +440,18 @@ export default {
           };
 
           // イベントデータをバックエンドに送信
-          await this.$axios.post("/api/v1/events", eventData);
+          const response = await this.$axios.post("/api/v1/events", eventData);
           console.log("投稿成功");
           this.$store.dispatch("getToast", {
             msg: "イベントが投稿されました。",
             color: "success",
           });
+
+          // トーストを表示してからページ遷移
+          setTimeout(() => {
+            const eventId = response.data.id;
+            this.$router.push(`/event/${eventId}`);
+          }, 1000);
         } catch (error) {
           console.error("イベントの投稿に失敗しました:", error);
           this.$store.dispatch("getToast", {
