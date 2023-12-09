@@ -24,6 +24,17 @@
                   class="clickable-image"
                   @click="openFileInput(index)"
                 ></v-img>
+                <div class="delete-image-container">
+                  <v-btn
+                    v-if="image"
+                    icon
+                    small
+                    class="delete-image-button"
+                    @click="removeImage(index)"
+                  >
+                    <v-icon>mdi-trash-can-outline</v-icon>
+                  </v-btn>
+                </div>
               </v-col>
             </v-row>
             <input
@@ -343,6 +354,7 @@ export default {
       }
     },
     createImagePreview(file, index) {
+      // TODO console.log削除
       console.log("createImagePreview called", file, index);
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -355,6 +367,12 @@ export default {
         console.error("FileReader error", e);
       };
       reader.readAsDataURL(file);
+    },
+    removeImage(index) {
+      // 該当の画像をプレビューから削除
+      this.imagePreviews.splice(index, 1, null);
+      // 対応するファイルもリセット
+      this.selectedFiles.splice(index, 1, null);
     },
     setStartDateTime() {
       if (this.event.start_date && this.event.start_time) {
@@ -472,5 +490,10 @@ export default {
 
 .clickable-image {
   cursor: pointer;
+}
+
+.delete-image-container {
+  display: flex;
+  justify-content: flex-end; /* アイコンを右に寄せる */
 }
 </style>
