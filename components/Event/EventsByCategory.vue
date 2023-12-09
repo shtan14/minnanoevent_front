@@ -7,18 +7,30 @@
         :key="event.id"
         cols="12"
         sm="6"
-        md="6"
+        md="4"
         lg="3"
       >
         <v-card class="fill-height" style="border-radius: 10px">
           <nuxt-link :to="'/event/' + event.id" class="event-card">
-            <v-img
+            <v-carousel
               v-if="event.event_images && event.event_images.length > 0"
-              :src="event.event_images[0].event_image"
-              style="border-radius: 10px; height: 220px; position: relative"
-              alt="サムネイル写真"
+              class="custom-carousel-height"
+              :show-arrows="false"
+              cycle :interval="4000"
+              hide-delimiters
             >
-            </v-img>
+              <v-carousel-item
+                v-for="(image, index) in event.event_images"
+                :key="index"
+              >
+                <v-img
+                  :src="image.event_image"
+                  style="border-radius: 10px; height: 250px; position: relative"
+                  alt="イベント画像"
+                >
+                </v-img>
+              </v-carousel-item>
+            </v-carousel>
             <v-card-title
               style="
                 font-size: 15px;
@@ -40,7 +52,7 @@
               <v-icon>mdi-map-marker</v-icon>
               {{ event.prefecture }}{{ event.city }} {{ event.location }}
             </v-card-text>
-            <v-card-actions>
+            <v-card-actions class="category-actions-container">
               <!-- カテゴリーボタンに別の遷移先を設定 -->
               <v-btn
                 v-for="(category, index) in event.categories"
@@ -60,7 +72,7 @@
             @click.stop="toggleFavourite(event)"
           >
             <v-icon
-              :color="event.isFavourite ? 'red' : 'transparent'"
+              :color="event.isFavourite ? 'red' : 'gray'"
               :style="
                 event.isFavourite
                   ? 'font-size: 22px; text-stroke: 1.5px red'
@@ -177,5 +189,19 @@ export default {
   font-size: 20px;
   margin-left: 20px;
   margin-bottom: 16px;
+}
+
+.category-actions-container {
+  display: flex;
+  flex-wrap: wrap;
+  overflow-x: auto;
+}
+
+.category-button {
+  margin-bottom: 4px;
+}
+
+.custom-carousel-height {
+  height: 250px !important; /* 必要に応じて適切な高さを設定 */
 }
 </style>

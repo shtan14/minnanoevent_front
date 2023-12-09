@@ -2,6 +2,7 @@
   <v-menu
     ref="menu"
     v-model="menu"
+    transition="scale-transition"
     :close-on-content-click="false"
     class="search-menu"
   >

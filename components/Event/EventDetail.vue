@@ -9,18 +9,24 @@
           @click.stop="toggleFavourite(event)"
         >
           <v-icon
-            :color="event.isFavourite ? 'red' : 'transparent'"
+            :color="event.isFavourite ? 'red' : 'gray'"
             :style="
               event.isFavourite
                 ? 'font-size: 22px; text-stroke: 1.5px red'
-                : 'font-size: 22px; text-stroke: 1.5px black'
+                : 'font-size: 22px; text-stroke: 1.5px white'
             "
             >mdi-heart</v-icon
           >
         </v-btn>
       </div>
       <div v-if="$vuetify.breakpoint.xsOnly" class="mb-7 image-container">
-        <v-carousel cycle hide-delimiters>
+        <v-carousel
+          cycle
+          :interval="4000"
+          hide-delimiters
+          height="280px"
+          :show-arrows="false"
+        >
           <v-carousel-item
             v-for="(image, index) in event.event_images"
             :key="index"
@@ -36,10 +42,24 @@
 
       <div v-else class="mb-7 image-container">
         <v-row class="mx-4 image-container" no-gutters>
+          <!-- 画像が1枚の場合 -->
+          <v-col
+            v-if="event.event_images.length === 1"
+            cols="12"
+            class="d-flex justify-center"
+          >
+            <v-img
+              :src="event.event_images[0].event_image"
+              class="single-image"
+              alt="サムネイル写真"
+            ></v-img>
+          </v-col>
+          <!-- 画像が複数の場合 -->
           <v-col
             v-for="(image, index) in event.event_images"
+            v-else
             :key="index"
-            cols="4"
+            :cols="calculateColWidth(event.event_images.length)"
           >
             <v-img
               :src="image.event_image"
@@ -120,12 +140,6 @@
 
 <script>
 export default {
-  // data() {
-  //   return {
-  //     event: null, // イベント情報を格納するデータ
-  //     user: null,
-  //   };
-  // },
   computed: {
     event() {
       const eventId = parseInt(this.$route.params.id);
@@ -142,6 +156,14 @@ export default {
     }
   },
   methods: {
+    calculateColWidth(imageCount) {
+      if (imageCount === 1) {
+        return 12;
+      } else if (imageCount === 2) {
+        return 6;
+      }
+      return 4;
+    },
     formatDatetime(datetimeString) {
       const datetime = new Date(datetimeString);
       const weekdays = ["日", "月", "火", "水", "木", "金", "土"];
@@ -298,5 +320,12 @@ export default {
 
 .bio-text {
   margin-left: 20px; /* テキストと画像の間隔を調整 */
+}
+
+.single-image {
+  border-radius: 10px;
+  max-width: 50%; /* 画像の最大幅を指定 */
+  max-height: 100%; /* 画像の最大高さを指定 */
+  object-fit: contain; /* 画像の比率を保持 */
 }
 </style>
