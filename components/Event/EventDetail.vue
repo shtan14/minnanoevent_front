@@ -5,7 +5,7 @@
         <nuxt-link
           v-if="event.user && event.user.id === currentUser.id"
           class="mr-1"
-          :to="`/event/edit`"
+          :to="`/event/edit/${event.id}`"
         >
           <v-btn small>編集する </v-btn>
         </nuxt-link>
