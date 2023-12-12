@@ -10,6 +10,21 @@
       <v-container>
         <v-row>
           <v-col>
+            <div
+              class="d-flex justify-end"
+              style="
+                margin-right: 1rem;
+                justify-content: center;
+                max-width: 950px;
+              "
+            >
+              <nuxt-link
+                v-if="userProfile.id === currentUser.id"
+                :to="'/account/settings'"
+              >
+                <v-btn small>編集</v-btn>
+              </nuxt-link>
+            </div>
             <div class="user-profile-container">
               <div>
                 <v-img
@@ -123,6 +138,10 @@ export default {
       const loggedIn = this.$auth.loggedIn();
       console.log("ログイン状態", loggedIn);
       return loggedIn;
+    },
+    currentUser() {
+      // Vuexストアから現在のユーザー情報を取得
+      return this.$store.state.user.current || {};
     },
   },
   methods: {

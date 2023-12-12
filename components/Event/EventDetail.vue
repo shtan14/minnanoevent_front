@@ -1,19 +1,19 @@
 <template>
   <div>
     <div v-if="event" class="event-details-container">
-      <div class="ml-auto mb-4 d-flex justify-end">
+      <div class="ml-auto mb-4 d-flex justify-end" style="margin-right: 1rem">
         <nuxt-link
           v-if="event.user && event.user.id === currentUser.id"
           class="mr-1"
           :to="`/event/edit/${event.id}`"
         >
-          <v-btn small>編集する </v-btn>
+          <v-btn small>編集</v-btn>
         </nuxt-link>
         <v-btn
           v-if="event.user && event.user.id === currentUser.id"
           small
           @click="confirmDelete(event.id)"
-          >削除する
+          >削除
         </v-btn>
       </div>
       <div class="title-and-favourite">
@@ -163,6 +163,7 @@ export default {
     user() {
       return this.event ? this.event.user : null;
     },
+    // Vuexストアから現在のユーザー情報を取得
     currentUser() {
       return this.$store.state.user.current || {};
     },
