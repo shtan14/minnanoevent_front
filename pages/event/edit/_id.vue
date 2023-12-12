@@ -95,7 +95,7 @@
                     <v-date-picker
                       v-model="event.start_date"
                       locale="ja"
-                      @change="setStartDateTime"
+                      @change="updateStartDateTime"
                     ></v-date-picker>
                   </v-menu>
                 </v-col>
@@ -122,7 +122,7 @@
                       v-model="event.start_time"
                       format="ampm"
                       locale="ja"
-                      @change="setStartDateTime"
+                      @input="updateStartDateTime"
                     ></v-time-picker>
                   </v-menu>
                 </v-col>
@@ -150,7 +150,7 @@
                     <v-date-picker
                       v-model="event.end_date"
                       locale="ja"
-                      @change="setEndDateTime"
+                      @input="updateEndDateTime"
                     ></v-date-picker>
                   </v-menu>
                 </v-col>
@@ -177,7 +177,7 @@
                       v-model="event.end_time"
                       format="ampm"
                       locale="ja"
-                      @change="setEndDateTime"
+                      @input="updateEndDateTime"
                     ></v-time-picker>
                   </v-menu>
                 </v-col>
@@ -384,7 +384,8 @@ export default {
       // 対応するファイルもリセット
       this.selectedFiles.splice(index, 1, null);
     },
-    setStartDateTime() {
+    // 開始日時が変更された際の処理
+    updateStartDateTime() {
       if (this.event.start_date && this.event.start_time) {
         this.event.event_start_datetime = this.formatDateTime(
           this.event.start_date,
@@ -392,7 +393,8 @@ export default {
         );
       }
     },
-    setEndDateTime() {
+    // 終了日時が変更された際の処理
+    updateEndDateTime() {
       if (this.event.end_date && this.event.end_time) {
         this.event.event_end_datetime = this.formatDateTime(
           this.event.end_date,

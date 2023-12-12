@@ -15,7 +15,8 @@
               v-if="event.event_images && event.event_images.length > 0"
               class="custom-carousel-height"
               :show-arrows="false"
-              cycle :interval="4000"
+              cycle
+              :interval="4000"
               hide-delimiters
             >
               <v-carousel-item
@@ -164,8 +165,9 @@ export default {
       const month = datetime.getMonth() + 1;
       const day = datetime.getDate();
       const hour = datetime.getHours();
+      const minute = String(datetime.getMinutes()).padStart(2, "0"); // 分を2桁の文字列に変換
       const dayOfWeek = weekdays[datetime.getDay()];
-      return `${year}年${month}月${day}日（${dayOfWeek}）${hour}時`;
+      return `${year}年${month}月${day}日（${dayOfWeek}）${hour}時${minute}分`;
     },
     async toggleFavourite(event) {
       if (!this.$auth.loggedIn()) {
