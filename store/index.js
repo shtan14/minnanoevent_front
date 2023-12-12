@@ -97,6 +97,9 @@ export const mutations = {
       state.comments.splice(index, 1);
     }
   },
+  deleteEvent(state, eventId) {
+    state.events = state.events.filter((event) => event.id !== eventId);
+  },
 };
 
 export const actions = {
@@ -269,6 +272,22 @@ export const actions = {
       );
     } catch (error) {
       console.error("お気に入りイベントの取得に失敗しました", error);
+    }
+  },
+  async deleteEvent({ commit }, eventId) {
+    try {
+      await this.$axios.delete(`/api/v1/events/${eventId}`);
+      commit("deleteEvent", eventId);
+      this.dispatch("getToast", {
+        msg: "イベントが削除されました。",
+        color: "success",
+      });
+    } catch (error) {
+      console.error("イベントの削除に失敗しました", error);
+      this.dispatch("getToast", {
+        msg: "イベントの削除に失敗しました。",
+        color: "error",
+      });
     }
   },
   updateFavourite({ commit }, payload) {

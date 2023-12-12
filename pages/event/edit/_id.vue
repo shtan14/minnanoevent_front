@@ -4,7 +4,7 @@
       <v-col cols="12">
         <v-card flat>
           <v-card-title class="text-h6 font-weight-bold d-flex justify-center">
-            イベント投稿
+            イベント編集
           </v-card-title>
 
           <!-- 画像アップロード -->
@@ -95,7 +95,7 @@
                     <v-date-picker
                       v-model="event.start_date"
                       locale="ja"
-                      @change="setStartDateTime"
+                      @change="updateStartDateTime"
                     ></v-date-picker>
                   </v-menu>
                 </v-col>
@@ -122,7 +122,7 @@
                       v-model="event.start_time"
                       format="ampm"
                       locale="ja"
-                      @change="setStartDateTime"
+                      @input="updateStartDateTime"
                     ></v-time-picker>
                   </v-menu>
                 </v-col>
@@ -150,7 +150,7 @@
                     <v-date-picker
                       v-model="event.end_date"
                       locale="ja"
-                      @change="setEndDateTime"
+                      @input="updateEndDateTime"
                     ></v-date-picker>
                   </v-menu>
                 </v-col>
@@ -177,7 +177,7 @@
                       v-model="event.end_time"
                       format="ampm"
                       locale="ja"
-                      @change="setEndDateTime"
+                      @input="updateEndDateTime"
                     ></v-time-picker>
                   </v-menu>
                 </v-col>
@@ -239,8 +239,8 @@
               <v-btn
                 :disabled="!isFormValid"
                 color="primary"
-                @click="submitEvent"
-                >投稿する</v-btn
+                @click="updateEvent"
+                >更新する</v-btn
               >
             </v-card-actions>
           </v-form>
@@ -252,7 +252,7 @@
 
 <script>
 export default {
-  name: "PagesCreateEvent",
+  name: "EventEdit",
   layout: "logged-in",
   data() {
     return {
@@ -263,6 +263,7 @@ export default {
       isValid: true,
       currentImageIndex: null,
       imagePreviews: [null, null, null],
+      originalImageUrls: [], // 既存の画像URLを格納する配列
       selectedCategories: [],
       categories: [],
       selectedFiles: [null, null, null], // ユーザーが選択したファイルを格納
@@ -330,6 +331,13 @@ export default {
   created() {
     // APIからカテゴリーを取得
     this.fetchCategories();
+    // ページURLからイベントIDを取得
+    const eventId = this.$route.params.id;
+    if (eventId) {
+      this.loadEventDetails(eventId);
+    } else {
+      console.error("イベントIDが未定義です");
+    }
   },
   methods: {
     isFutureDate(date) {
@@ -376,7 +384,8 @@ export default {
       // 対応するファイルもリセット
       this.selectedFiles.splice(index, 1, null);
     },
-    setStartDateTime() {
+    // 開始日時が変更された際の処理
+    updateStartDateTime() {
       if (this.event.start_date && this.event.start_time) {
         this.event.event_start_datetime = this.formatDateTime(
           this.event.start_date,
@@ -384,7 +393,8 @@ export default {
         );
       }
     },
-    setEndDateTime() {
+    // 終了日時が変更された際の処理
+    updateEndDateTime() {
       if (this.event.end_date && this.event.end_time) {
         this.event.event_end_datetime = this.formatDateTime(
           this.event.end_date,
@@ -415,34 +425,104 @@ export default {
       return validImageCount >= 1;
     },
     async uploadImages() {
-      const urls = [];
+      const newImageUrls = [];
+
+      // selectedFiles 配列の各ファイルに対して処理
       for (const file of this.selectedFiles) {
         if (file) {
           const formData = new FormData();
-          // 実際のファイル名とMIMEタイプを使用
           formData.append("filename", file.name);
           formData.append("contentType", file.type);
           formData.append("imageType", "event");
 
-          const response = await this.$axios.post("/api/v1/s3/sign", formData);
-          const { signedUrl, publicUrl } = response.data;
+          try {
+            // S3の署名付きURLを取得
+            const presignedResponse = await this.$axios.post(
+              "/api/v1/s3/sign",
+              formData
+            );
+            const { signedUrl, publicUrl } = presignedResponse.data;
 
-          // 新しいAxiosインスタンスを使用
-          const axiosInstance = this.$axios.create();
-          await axiosInstance.put(signedUrl, file, {
-            headers: { "Content-Type": file.type },
-          });
+            // 新しいAxiosインスタンスを使用してファイルをS3にアップロード
+            const axiosInstance = this.$axios.create();
+            await axiosInstance.put(signedUrl, file, {
+              headers: { "Content-Type": file.type },
+            });
 
-          urls.push(publicUrl);
+            // 公開URLを配列に追加
+            newImageUrls.push(publicUrl);
+          } catch (error) {
+            console.error("画像のアップロードに失敗しました", error);
+          }
         }
       }
-      return urls;
+      return newImageUrls;
     },
-    async submitEvent() {
+    async loadEventDetails(eventId) {
+      try {
+        const response = await this.$axios.get(`/api/v1/events/${eventId}`);
+        const eventData = response.data;
+
+        // 編集ページで既存のイベントの開始日時を表示させるための処理
+        if (eventData.event_start_datetime) {
+          const startDateTime = new Date(eventData.event_start_datetime);
+          this.event.start_date = startDateTime.toISOString().split("T")[0];
+          this.event.start_time =
+            startDateTime.toTimeString().split(":")[0] +
+            ":" +
+            startDateTime.toTimeString().split(":")[1];
+        }
+        // 編集ページで既存のイベントの開始日時を表示させるための処理
+        if (eventData.event_end_datetime) {
+          const endDateTime = new Date(eventData.event_end_datetime);
+          this.event.end_date = endDateTime.toISOString().split("T")[0];
+          this.event.end_time =
+            endDateTime.toTimeString().split(":")[0] +
+            ":" +
+            endDateTime.toTimeString().split(":")[1];
+        }
+        this.event.title = eventData.title;
+        this.event.description = eventData.description;
+        this.event.prefecture = eventData.prefecture;
+        this.event.city = eventData.city;
+        this.event.location = eventData.location;
+        this.event.ticket_price = eventData.ticket_price;
+        this.event.phone_number = eventData.phone_number;
+        this.event.event_start_datetime = eventData.event_start_datetime;
+        this.event.event_end_datetime = eventData.event_end_datetime;
+        this.selectedCategories = [
+          ...new Set(eventData.categories.map((category) => category.id)),
+        ];
+
+        // 既存のイベント画像のURLを配列に格納
+        // これにより、編集時に既存の画像を表示できる
+        this.originalImageUrls = eventData.event_images.map(
+          (image) => image.event_image
+        );
+        // 既存の画像URLと、残りのスロットが null の配列を作成
+        // 画像が3枚までなので、配列の長さは最大3となるように slice で制限
+        this.imagePreviews = [...this.originalImageUrls, null, null].slice(
+          0,
+          3
+        );
+      } catch (error) {
+        console.error("イベントデータの取得に失敗しました:", error);
+      }
+    },
+    async updateEvent() {
+      const eventId = this.$route.params.id;
       if (this.isFormValid) {
         try {
-          // 画像をアップロードし、公開URLを取得
-          const imageUrls = await this.uploadImages();
+          // 新しい画像をアップロードし、URLを取得
+          const newImageUrls = await this.uploadImages();
+
+          // 既存の画像の中で削除されていない画像（nullでないもの）をフィルタリング
+          const retainedImages = this.imagePreviews.filter(
+            (url) => url && this.originalImageUrls.includes(url)
+          );
+
+          // 最終的な画像URLの配列を組み立て
+          const allImageUrls = retainedImages.concat(newImageUrls);
 
           // イベントデータの準備
           const eventData = {
@@ -455,28 +535,28 @@ export default {
             phone_number: this.event.phone_number,
             event_start_datetime: this.event.event_start_datetime,
             event_end_datetime: this.event.event_end_datetime,
-            image_urls: imageUrls, // アップロードされた画像のURL
+            image_urls: allImageUrls, // アップロードされた画像のURL
             category_ids: this.selectedCategories,
           };
 
-          // イベントデータをバックエンドに送信
-          const response = await this.$axios.post("/api/v1/events", eventData);
+          console.log("送信するイベントデータ:", eventData);
+          // イベントデータをバックエンドに送信し、更新
+          await this.$axios.put(`/api/v1/events/${eventId}`, eventData);
           // TODO console.log削除
-          console.log("投稿成功");
+          console.log("更新成功");
           this.$store.dispatch("getToast", {
-            msg: "イベントが投稿されました。",
+            msg: "イベントが更新されました。",
             color: "success",
           });
 
-          // トーストを表示してからページ遷移
+          // 編集後にトースト表示後にイベント詳細ページに遷移
           setTimeout(() => {
-            const eventId = response.data.id;
             this.$router.push(`/event/${eventId}`);
           }, 1000);
         } catch (error) {
-          console.error("イベントの投稿に失敗しました:", error);
+          console.error("イベントの更新に失敗しました:", error);
           this.$store.dispatch("getToast", {
-            msg: "イベントの投稿に失敗しました。",
+            msg: "イベントの更新に失敗しました。",
             color: "error",
           });
         }

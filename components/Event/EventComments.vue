@@ -27,11 +27,11 @@
                 <div class="user-info pl-3">
                   <div class="subtitle-1">{{ comment.user.name }}</div>
                 </div>
-                <!-- 削除アイコン（自分のコメントのみ表示） -->
               </div>
+              <!-- 削除アイコン（自分のコメントのみ表示） -->
               <div class="ml-auto">
                 <v-btn
-                  v-if="comment.user.id === currentUser.id"
+                  v-if="comment.user && comment.user.id === currentUser.id"
                   icon
                   @click="confirmDelete(comment.id)"
                 >

@@ -1,6 +1,21 @@
 <template>
   <div>
     <div v-if="event" class="event-details-container">
+      <div class="ml-auto mb-4 d-flex justify-end">
+        <nuxt-link
+          v-if="event.user && event.user.id === currentUser.id"
+          class="mr-1"
+          :to="`/event/edit/${event.id}`"
+        >
+          <v-btn small>編集する </v-btn>
+        </nuxt-link>
+        <v-btn
+          v-if="event.user && event.user.id === currentUser.id"
+          small
+          @click="confirmDelete(event.id)"
+          >削除する
+        </v-btn>
+      </div>
       <div class="title-and-favourite">
         <h1 class="ml-4 event-title">{{ event.title }}</h1>
         <v-btn
@@ -148,6 +163,9 @@ export default {
     user() {
       return this.event ? this.event.user : null;
     },
+    currentUser() {
+      return this.$store.state.user.current || {};
+    },
   },
   mounted() {
     const eventId = parseInt(this.$route.params.id);
@@ -156,6 +174,17 @@ export default {
     }
   },
   methods: {
+    async confirmDelete(eventId) {
+      if (confirm("このイベントを削除しますか？")) {
+        await this.deleteEvent(eventId);
+        setTimeout(() => {
+          this.$router.push(`/user/${this.currentUser.id}`);
+        }, 1000);
+      }
+    },
+    async deleteEvent(eventId) {
+      await this.$store.dispatch("deleteEvent", eventId);
+    },
     calculateColWidth(imageCount) {
       if (imageCount === 1) {
         return 12;
@@ -171,8 +200,9 @@ export default {
       const month = datetime.getMonth() + 1;
       const day = datetime.getDate();
       const hour = datetime.getHours();
+      const minute = String(datetime.getMinutes()).padStart(2, "0"); // 分を2桁の文字列に変換
       const dayOfWeek = weekdays[datetime.getDay()];
-      return `${year}年${month}月${day}日（${dayOfWeek}）${hour}時`;
+      return `${year}年${month}月${day}日（${dayOfWeek}）${hour}時${minute}分`;
     },
     async toggleFavourite(event) {
       if (!this.$auth.loggedIn()) {
