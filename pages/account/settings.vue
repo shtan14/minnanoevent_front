@@ -152,11 +152,16 @@ export default {
           ...this.$auth.user,
           name: this.name,
         });
+        // TODO console.log削除
         console.log("更新成功");
         this.$store.dispatch("getToast", {
           msg: "プロフィールが更新されました。",
           color: "success",
         });
+        // 編集後にトースト表示後にプロフィールページに遷移
+        setTimeout(() => {
+          this.$router.push(`/user/${userId}`);
+        }, 1000);
       } catch (error) {
         console.error("更新失敗:", error);
         this.$store.dispatch("getToast", {
