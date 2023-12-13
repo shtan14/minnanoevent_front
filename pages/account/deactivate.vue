@@ -12,14 +12,16 @@
       </v-card-text>
       <v-card-actions class="justify-center">
         <v-btn
-          color="red darken-1"
-          dark
+          :disabled="isTestUser"
           :loading="loading"
           @click="confirmDeactivation"
         >
           退会する
         </v-btn>
       </v-card-actions>
+      <v-card-text v-if="isTestUser" class="text-center">
+        <p>テストユーザーは退会できません。</p>
+      </v-card-text>
     </v-card>
   </div>
 </template>
@@ -30,7 +32,14 @@ export default {
   data() {
     return {
       loading: false,
+      testUserId: 118, // テストユーザーのID
     };
+  },
+  computed: {
+    isTestUser() {
+      // ここでテストユーザーかどうかを判断
+      return this.$auth.user.id === this.testUserId;
+    },
   },
   methods: {
     confirmDeactivation() {
