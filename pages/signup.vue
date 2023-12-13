@@ -14,7 +14,7 @@
           :loading="loading"
           block
           color="primary"
-          class="white--text"
+          class="white--text mb-1"
         >
           登録する
         </v-btn>
