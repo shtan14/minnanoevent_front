@@ -28,11 +28,11 @@
 
 <script>
 export default {
-  layout: "before-login",
+  layout: "logged-in",
   data() {
     return {
       loading: false,
-      testUserId: 118, // テストユーザーのID
+      testUserId: 118,
     };
   },
   computed: {
