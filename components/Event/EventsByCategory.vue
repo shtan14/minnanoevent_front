@@ -16,7 +16,7 @@
               v-if="event.event_images && event.event_images.length > 0"
               class="custom-carousel-height"
               :show-arrows="false"
-              cycle :interval="7000"
+              cycle :interval="8500"
               hide-delimiters
             >
               <v-carousel-item

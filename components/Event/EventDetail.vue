@@ -37,7 +37,7 @@
       <div v-if="$vuetify.breakpoint.xsOnly" class="mb-7 image-container">
         <v-carousel
           cycle
-          :interval="7000"
+          :interval="8500"
           hide-delimiters
           height="280px"
           :show-arrows="false"
@@ -138,7 +138,11 @@
             <div class="avatar-container">
               <nuxt-link :to="`/user/${user.id}`">
                 <v-img
-                  :src="user.user_profile.avatar"
+                  :src="
+                    user.user_profile && user.user_profile.avatar
+                      ? user.user_profile.avatar
+                      : 'https://s3.ap-northeast-1.amazonaws.com/minnanoevent.com/ev/default_avatar.png'
+                  "
                   alt="ユーザーのアバター"
                   class="avatar-image"
                 ></v-img>
