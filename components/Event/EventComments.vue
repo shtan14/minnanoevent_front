@@ -18,7 +18,12 @@
                 <nuxt-link :to="`/user/${comment.user.id}`">
                   <v-avatar>
                     <v-img
-                      :src="comment.user.user_profile.avatar"
+                      :src="
+                        comment.user.user_profile &&
+                        comment.user.user_profile.avatar
+                          ? comment.user.user_profile.avatar
+                          : 'https://s3.ap-northeast-1.amazonaws.com/minnanoevent.com/ev/default_avatar.png'
+                      "
                       alt="ユーザーのアバター"
                       class="avatar-image"
                     ></v-img>

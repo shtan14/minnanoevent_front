@@ -8,14 +8,14 @@
           >
           <v-row>
             <v-col cols="12" style="padding-bottom: 0">
-              <template v-if="profile.avatar">
-                <v-img :src="profile.avatar" class="avatar-circle"></v-img>
-              </template>
-              <template v-else>
-                <v-icon size="85" style="margin-left: 20px"
-                  >mdi-account-circle</v-icon
-                >
-              </template>
+              <v-img
+                :src="
+                  profile.avatar
+                    ? profile.avatar
+                    : 'https://s3.ap-northeast-1.amazonaws.com/minnanoevent.com/ev/default_avatar.png'
+                "
+                class="avatar-circle"
+              ></v-img>
             </v-col>
 
             <v-col cols="12" style="padding: 0">

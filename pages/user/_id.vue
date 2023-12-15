@@ -28,18 +28,19 @@
             <div class="user-profile-container">
               <div>
                 <v-img
-                  v-if="
+                  :src="
                     userProfile &&
                     userProfile.user_profile &&
                     userProfile.user_profile.avatar
+                      ? userProfile.user_profile.avatar
+                      : 'https://s3.ap-northeast-1.amazonaws.com/minnanoevent.com/ev/default_avatar.png'
                   "
-                  :src="userProfile.user_profile.avatar"
                   alt="ユーザーのアバター"
                   class="avatar-image"
                 ></v-img>
-                <v-icon v-else class="avatar-image" style="font-size: 70px"
+                <!-- <v-icon v-else class="avatar-image" style="font-size: 70px"
                   >mdi-account-circle</v-icon
-                >
+                > -->
               </div>
               <div class="user-details">
                 <div class="user-name">{{ userProfile.name }}</div>
@@ -167,8 +168,8 @@ export default {
 }
 
 .avatar-image {
-  width: 115px;
-  height: 115px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   object-fit: cover;
   flex-shrink: 0;
