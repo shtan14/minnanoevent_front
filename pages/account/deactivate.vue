@@ -12,25 +12,32 @@
       </v-card-text>
       <v-card-actions class="justify-center">
         <v-btn
-          color="red darken-1"
-          dark
+          :disabled="isGuestUser"
           :loading="loading"
           @click="confirmDeactivation"
         >
           退会する
         </v-btn>
       </v-card-actions>
+      <v-card-text v-if="isGuestUser" class="text-center">
+        <p>ゲストユーザーは退会できません。</p>
+      </v-card-text>
     </v-card>
   </div>
 </template>
 
 <script>
 export default {
-  layout: "before-login",
+  layout: "logged-in",
   data() {
     return {
       loading: false,
     };
+  },
+  computed: {
+    isGuestUser() {
+      return this.$auth.user.is_guest_user;
+    },
   },
   methods: {
     confirmDeactivation() {

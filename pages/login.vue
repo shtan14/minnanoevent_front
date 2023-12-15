@@ -20,6 +20,18 @@
           >
             ログインする
           </v-btn>
+          <v-btn
+            class="easy-login-button"
+            :disabled="loading"
+            block
+            color="primary"
+            @click="easyLogin"
+          >
+            かんたんログインはこちら
+          </v-btn>
+          <p class="easy-login-description">
+            ゲストユーザーでログインいただけます。
+          </p>
         </v-card-text>
       </v-form>
     </template>
@@ -40,6 +52,7 @@ export default {
     };
   },
   methods: {
+    // 通常のログイン
     async login() {
       this.loading = true;
       if (this.isValid) {
@@ -50,6 +63,20 @@ export default {
       }
       this.loading = false;
     },
+    // かんたんログイン
+    async easyLogin() {
+      try {
+        this.loading = true;
+        const response = await this.$axios.$post(
+          "/api/v1/auth_token/easy_login"
+        );
+        this.authSuccessful(response);
+      } catch (error) {
+        this.authFailure(error);
+      } finally {
+        this.loading = false;
+      }
+    },
     authSuccessful(response) {
       this.$auth.login(response);
       this.$router.push(this.redirectPath);
@@ -58,7 +85,7 @@ export default {
     },
     authFailure({ response }) {
       if (response && response.status === 404) {
-        const msg = "ユーザーが見つかりません😢";
+        const msg = "ユーザーが見つかりません。";
         return this.$store.dispatch("getToast", { msg, color: "error" });
       }
       return this.$my.apiErrorHandler(response);
@@ -66,3 +93,17 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.easy-login-button {
+  margin-top: 55px;
+  font-weight: bold;
+}
+
+.easy-login-description {
+  margin-top: 5px;
+  font-size: 14px;
+  color: #666;
+  text-align: center;
+}
+</style>

@@ -35,8 +35,9 @@
       </v-list>
     </v-menu>
 
-    <before-login-app-bar-signup-button class="hidden-ipad-and-down"/>
     <before-login-app-bar-login-button class="hidden-ipad-and-down"/>
+    <before-login-app-bar-signup-button class="hidden-ipad-and-down"/>
+
   </v-app-bar>
 </template>
 
