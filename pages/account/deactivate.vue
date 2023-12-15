@@ -12,15 +12,15 @@
       </v-card-text>
       <v-card-actions class="justify-center">
         <v-btn
-          :disabled="isTestUser"
+          :disabled="isGuestUser"
           :loading="loading"
           @click="confirmDeactivation"
         >
           退会する
         </v-btn>
       </v-card-actions>
-      <v-card-text v-if="isTestUser" class="text-center">
-        <p>テストユーザーは退会できません。</p>
+      <v-card-text v-if="isGuestUser" class="text-center">
+        <p>ゲストユーザーは退会できません。</p>
       </v-card-text>
     </v-card>
   </div>
@@ -32,13 +32,11 @@ export default {
   data() {
     return {
       loading: false,
-      testUserId: 118,
     };
   },
   computed: {
-    isTestUser() {
-      // ここでテストユーザーかどうかを判断
-      return this.$auth.user.id === this.testUserId;
+    isGuestUser() {
+      return this.$auth.user.is_guest_user;
     },
   },
   methods: {
