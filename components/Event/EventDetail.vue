@@ -37,7 +37,7 @@
       <div v-if="$vuetify.breakpoint.xsOnly" class="mb-7 image-container">
         <v-carousel
           cycle
-          :interval="8500"
+          :interval="10000"
           hide-delimiters
           height="280px"
           :show-arrows="false"
