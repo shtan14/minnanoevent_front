@@ -50,7 +50,27 @@
               :src="image.event_image"
               alt="イベント画像"
               class="carousel-image"
-            ></v-img>
+              @load="imageLoaded(index, event.id)"
+            >
+              <!-- ローディング中に表示するコンテンツ -->
+              <template v-if="isLoading(event.id, index)">
+                <div
+                  style="
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                  "
+                >
+                  <v-progress-circular
+                    indeterminate
+                    color="gray"
+                    :size="20"
+                    width="2"
+                  ></v-progress-circular>
+                </div>
+              </template>
+            </v-img>
           </v-carousel-item>
         </v-carousel>
       </div>
@@ -67,7 +87,27 @@
               :src="event.event_images[0].event_image"
               class="single-image"
               alt="サムネイル写真"
-            ></v-img>
+              @load="imageLoaded(index, event.id)"
+            >
+              <!-- ローディング中に表示するコンテンツ -->
+              <template v-if="isLoading(event.id, index)">
+                <div
+                  style="
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                  "
+                >
+                  <v-progress-circular
+                    indeterminate
+                    color="gray"
+                    :size="20"
+                    width="2"
+                  ></v-progress-circular>
+                </div>
+              </template>
+            </v-img>
           </v-col>
           <!-- 画像が複数の場合 -->
           <v-col
@@ -80,7 +120,27 @@
               :src="image.event_image"
               class="image-item"
               alt="サムネイル写真"
-            ></v-img>
+              @load="imageLoaded(index, event.id)"
+            >
+              <!-- ローディング中に表示するコンテンツ -->
+              <template v-if="isLoading(event.id, index)">
+                <div
+                  style="
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                  "
+                >
+                  <v-progress-circular
+                    indeterminate
+                    color="gray"
+                    :size="20"
+                    width="2"
+                  ></v-progress-circular>
+                </div>
+              </template>
+            </v-img>
           </v-col>
         </v-row>
       </div>
@@ -159,6 +219,11 @@
 
 <script>
 export default {
+  data() {
+    return {
+      imageLoadStatus: {},
+    };
+  },
   computed: {
     event() {
       const eventId = parseInt(this.$route.params.id);
@@ -179,6 +244,14 @@ export default {
     }
   },
   methods: {
+    imageLoaded(index, eventId) {
+      // 画像が読み込まれたら、ローディングステータスを更新
+      this.$set(this.imageLoadStatus, `${eventId}_${index}`, true);
+    },
+    isLoading(eventId, index) {
+      // 画像が読み込まれていない場合にtrueを返す
+      return !this.imageLoadStatus[`${eventId}_${index}`];
+    },
     async confirmDelete(eventId) {
       if (confirm("このイベントを削除しますか？")) {
         await this.deleteEvent(eventId);
