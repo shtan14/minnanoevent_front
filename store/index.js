@@ -58,6 +58,14 @@ export const mutations = {
   setEvents(state, events) {
     state.events = events;
   },
+  // 無限スクロール
+  addEvents(state, newEvents) {
+    const existingEventIds = state.events.map((event) => event.id);
+    const newUniqueEvents = newEvents.filter(
+      (newEvent) => !existingEventIds.includes(newEvent.id)
+    );
+    state.events.push(...newUniqueEvents);
+  },
   resetFavourites(state) {
     state.events = state.events.map((event) => ({
       ...event,

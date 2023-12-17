@@ -82,11 +82,30 @@
         </v-card>
       </v-col>
     </v-row>
+    <!-- データのロードが完了しかつ検索結果が0件の場合に表示-->
+    <span
+      v-if="isAllLoaded && filteredResults.length === 0"
+      slot="no-results"
+      class="custom-no-results-message"
+      >検索結果はありません。</span
+    >
+    <!-- 無限スクロール -->
+    <infinite-loading
+      class="custom-spinner"
+      spinner="spiral"
+      @infinite="infiniteHandler"
+    >
+      <span slot="no-more"></span>
+    </infinite-loading>
   </div>
 </template>
 
 <script>
+import InfiniteLoading from "vue-infinite-loading";
 export default {
+  components: {
+    InfiniteLoading,
+  },
   props: {
     searchKeyword: {
       type: String,
@@ -99,7 +118,8 @@ export default {
   },
   data() {
     return {
-      events: [],
+      page: 1, // 現在のページ番号
+      isAllLoaded: false, // すべてのデータが読み込まれたかどうか
     };
   },
   computed: {
@@ -141,6 +161,9 @@ export default {
 
       return filtered;
     },
+    filteredResults() {
+      return this.filteredEvents;
+    },
   },
 
   mounted() {
@@ -151,11 +174,32 @@ export default {
       this.$axios
         .get("/api/v1/events/")
         .then((response) => {
-          this.events = response.data;
           this.$store.dispatch("setEvents", response.data);
+          this.isAllLoaded = true;
         }) // Vuexのstateにも保存
         .catch((error) => {
           console.error("イベントデータの取得に失敗しました", error);
+        });
+    },
+    // 無限スクロール
+    infiniteHandler($state) {
+      this.$axios
+        .get(`/api/v1/events?page=${this.page}`)
+        .then((response) => {
+          if (response.data.length > 0) {
+            // ミューテーションを使用してデータを追加
+            this.$store.commit("addEvents", response.data);
+            this.page++;
+            $state.loaded();
+          } else {
+            // もうデータがない場合
+            this.isAllLoaded = true;
+            $state.complete();
+          }
+        })
+        .catch((error) => {
+          console.error("エラーが発生しました", error);
+          $state.complete();
         });
     },
     formatDatetime(datetimeString) {
@@ -239,5 +283,17 @@ export default {
 
 .custom-carousel-height {
   height: 250px !important; /* 必要に応じて適切な高さを設定 */
+}
+
+.custom-spinner {
+  margin-top: 9px;
+}
+
+.custom-no-results-message {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+  font-size: 14px;
+  color: #666;
 }
 </style>
