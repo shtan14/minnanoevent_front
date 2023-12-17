@@ -82,12 +82,14 @@
         </v-card>
       </v-col>
     </v-row>
+    <!-- データのロードが完了しかつ検索結果が0件の場合に表示-->
     <span
-      v-if="filteredResults.length === 0"
+      v-if="isAllLoaded && filteredResults.length === 0"
       slot="no-results"
       class="custom-no-results-message"
       >検索結果はありません。</span
     >
+    <!-- 無限スクロール -->
     <infinite-loading
       class="custom-spinner"
       spinner="spiral"
@@ -116,7 +118,6 @@ export default {
   },
   data() {
     return {
-      events: [],
       page: 1, // 現在のページ番号
       isAllLoaded: false, // すべてのデータが読み込まれたかどうか
     };
@@ -173,8 +174,8 @@ export default {
       this.$axios
         .get("/api/v1/events/")
         .then((response) => {
-          this.events = response.data;
           this.$store.dispatch("setEvents", response.data);
+          this.isAllLoaded = true;
         }) // Vuexのstateにも保存
         .catch((error) => {
           console.error("イベントデータの取得に失敗しました", error);
