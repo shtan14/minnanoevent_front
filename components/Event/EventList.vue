@@ -27,7 +27,27 @@
                   :src="image.event_image"
                   alt="イベント画像"
                   style="border-radius: 10px; height: 250px"
-                ></v-img>
+                  @load="imageLoaded(index, event.id)"
+                >
+                  <!-- ローディング中に表示するコンテンツ -->
+                  <template v-if="isLoading(event.id, index)">
+                    <div
+                      style="
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                      "
+                    >
+                      <v-progress-circular
+                        indeterminate
+                        color="gray"
+                        :size="20"
+                        width="2"
+                      ></v-progress-circular>
+                    </div>
+                  </template>
+                </v-img>
               </v-carousel-item>
             </v-carousel>
             <v-card-title
@@ -120,6 +140,7 @@ export default {
     return {
       page: 1, // 現在のページ番号
       isAllLoaded: false, // すべてのデータが読み込まれたかどうか
+      imageLoadStatus: {},
     };
   },
   computed: {
@@ -201,6 +222,14 @@ export default {
           console.error("エラーが発生しました", error);
           $state.complete();
         });
+    },
+    imageLoaded(index, eventId) {
+      // 画像が読み込まれたら、ローディングステータスを更新
+      this.$set(this.imageLoadStatus, `${eventId}_${index}`, true);
+    },
+    isLoading(eventId, index) {
+      // 画像が読み込まれていない場合にtrueを返す
+      return !this.imageLoadStatus[`${eventId}_${index}`];
     },
     formatDatetime(datetimeString) {
       const datetime = new Date(datetimeString);
