@@ -1,15 +1,15 @@
 <template>
   <v-app-bar app :height="homeAppBarHeight" elevation="0" color="white">
-    <nuxt-link to="/" class="text-decoration-none" @click.native="clearSearch">
+    <nuxt-link to="/" class="text-decoration-none">
       <app-logo />
     </nuxt-link>
 
-    <nuxt-link to="/" class="text-decoration-none" @click.native="clearSearch">
+    <nuxt-link to="/" class="text-decoration-none">
       <app-title class="hidden-ipad-and-down primary--text font-weight-bold" />
     </nuxt-link>
     <v-spacer />
 
-    <event-search-bar v-if="showSearchBar" @search="handleSearch" />
+    <event-search-bar v-if="showSearchBar" />
     <v-spacer />
 
     <!-- スマホサイズでのみ表示されるメニュー -->
@@ -35,9 +35,8 @@
       </v-list>
     </v-menu>
 
-    <before-login-app-bar-login-button class="hidden-ipad-and-down"/>
-    <before-login-app-bar-signup-button class="hidden-ipad-and-down"/>
-
+    <before-login-app-bar-login-button class="hidden-ipad-and-down" />
+    <before-login-app-bar-signup-button class="hidden-ipad-and-down" />
   </v-app-bar>
 </template>
 
@@ -53,14 +52,6 @@ export default {
     return {
       homeAppBarHeight: $store.state.styles.homeAppBarHeight,
     };
-  },
-  methods: {
-    handleSearch(searchConditions) {
-      this.$emit("search", searchConditions);
-    },
-    clearSearch() {
-      this.$emit("clearSearch");
-    },
   },
 };
 </script>

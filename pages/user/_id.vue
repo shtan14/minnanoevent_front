@@ -1,10 +1,10 @@
 <template>
   <v-app>
     <template v-if="isUserLoggedIn">
-      <logged-in-app-bar @search="onSearch" />
+      <logged-in-app-bar />
     </template>
     <template v-else>
-      <before-login-app-bar @search="onSearch" />
+      <before-login-app-bar />
     </template>
     <v-main>
       <v-container>
@@ -143,17 +143,6 @@ export default {
     currentUser() {
       // Vuexストアから現在のユーザー情報を取得
       return this.$store.state.user.current || {};
-    },
-  },
-  methods: {
-    onSearch(searchConditions) {
-      this.$router.push({
-        path: "/",
-        query: {
-          keyword: searchConditions.keyword,
-          date: searchConditions.date,
-        },
-      });
     },
   },
 };

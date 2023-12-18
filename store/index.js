@@ -30,6 +30,7 @@ export const state = () => ({
   },
   events: [],
   comments: [],
+  searchResults: [],
   isLoadingComments: false,
 });
 
@@ -57,6 +58,9 @@ export const mutations = {
   },
   setEvents(state, events) {
     state.events = events;
+  },
+  setSearchResults(state, events) {
+    state.searchResults = events;
   },
   // 無限スクロール
   addEvents(state, newEvents) {
@@ -296,6 +300,16 @@ export const actions = {
         msg: "イベントの削除に失敗しました。",
         color: "error",
       });
+    }
+  },
+  async fetchEventsBySearch({ commit }, { keyword, date }) {
+    try {
+      const response = await this.$axios.get("/api/v1/events/search", {
+        params: { keyword, date },
+      });
+      commit("setSearchResults", response.data);
+    } catch (error) {
+      console.error("検索に失敗しました", error);
     }
   },
   updateFavourite({ commit }, payload) {
