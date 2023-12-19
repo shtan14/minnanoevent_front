@@ -30,8 +30,14 @@ export const state = () => ({
   },
   events: [],
   comments: [],
-  searchResults: [],
   isLoadingComments: false,
+  // 検索条件を保存
+  searchConditions: {
+    keyword: null,
+    date: null,
+  },
+  // 検索結果を保存
+  searchResults: [],
 });
 
 export const getters = {};
@@ -111,6 +117,10 @@ export const mutations = {
   },
   deleteEvent(state, eventId) {
     state.events = state.events.filter((event) => event.id !== eventId);
+  },
+  setSearchConditions(state, { keyword, date }) {
+    state.searchConditions.keyword = keyword;
+    state.searchConditions.date = date;
   },
 };
 
@@ -304,6 +314,9 @@ export const actions = {
   },
   async fetchEventsBySearch({ commit }, { keyword, date }) {
     try {
+      // パラメータが null または undefined の場合、空の文字列に置き換える
+      keyword = keyword || "";
+      date = date || "";
       const response = await this.$axios.get("/api/v1/events/search", {
         params: { keyword, date },
       });
@@ -311,6 +324,9 @@ export const actions = {
     } catch (error) {
       console.error("検索に失敗しました", error);
     }
+  },
+  saveSearchConditions({ commit }, { keyword, date }) {
+    commit("setSearchConditions", { keyword, date });
   },
   updateFavourite({ commit }, payload) {
     commit("updateFavourite", payload);

@@ -57,16 +57,15 @@ export default {
   methods: {
     searchEvents() {
       // 検索パラメータをVuexアクションに渡す
-      this.$store.dispatch("fetchEventsBySearch", {
+      this.$store.dispatch("saveSearchConditions", {
         keyword: this.searchKeyword,
         date: this.selectedDate,
       });
-      // this.$emit("search", {
-      //   keyword: this.searchKeyword,
-      //   date: this.selectedDate,
-      // });
-      // 検索結果ページに遷移
-      this.$router.push({ name: "event-search-results" });
+      // URLにクエリパラメータを追加してページを移動
+      this.$router.push({
+        name: "event-search-results",
+        query: { keyword: this.searchKeyword, date: this.selectedDate },
+      });
       this.menu = false;
       console.log(
         "検索キーワード:",

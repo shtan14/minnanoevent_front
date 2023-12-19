@@ -122,8 +122,29 @@ export default {
       return this.$store.state.searchResults;
     },
   },
+  // $route.queryの変更をwatchしクエリパラメータが変更されたときに検索結果を再取得
+  watch: {
+    "$route.query": {
+      immediate: true,
+      handler(newQuery) {
+        const keyword = newQuery.keyword || null;
+        const date = newQuery.date || null;
+        if (keyword || date) {
+          this.$store.dispatch("fetchEventsBySearch", { keyword, date });
+        }
+      },
+    },
+  },
   mounted() {
-    this.$store.dispatch("fetchEventsBySearch");
+    // URLクエリパラメータから検索条件を取得
+    const query = this.$route.query;
+    const keyword = query.keyword || null;
+    const date = query.date || null;
+
+    // 検索条件が存在する場合、検索を実行
+    if (keyword || date) {
+      this.$store.dispatch("fetchEventsBySearch", { keyword, date });
+    }
   },
   methods: {
     formatDatetime(datetimeString) {
