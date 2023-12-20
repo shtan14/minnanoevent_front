@@ -56,7 +56,15 @@ export const mutations = {
     }
   },
   updateFavourite(state, { id, isFavourite, favouriteId }) {
-    const event = state.events.find((e) => e.id === id);
+    // 検索結果の更新
+    const searchResult = state.searchResults.find((event) => event.id === id);
+    if (searchResult) {
+      searchResult.isFavourite = isFavourite;
+      searchResult.favouriteId = favouriteId;
+    }
+
+    // 通常のイベントリストの更新
+    const event = state.events.find((event) => event.id === id);
     if (event) {
       event.isFavourite = isFavourite;
       event.favouriteId = favouriteId;
@@ -320,6 +328,22 @@ export const actions = {
       const response = await this.$axios.get("/api/v1/events/search", {
         params: { keyword, date },
       });
+      let events = response.data;
+
+      // ログインしている場合、お気に入り情報を取得して統合
+      if (this.$auth.loggedIn()) {
+        const favResponse = await this.$axios.get("/api/v1/favourites");
+        const favourites = favResponse.data;
+
+        events = events.map((event) => {
+          const favourite = favourites.find((f) => f.event_id === event.id);
+          return {
+            ...event,
+            isFavourite: !!favourite,
+            favouriteId: favourite ? favourite.id : null,
+          };
+        });
+      }
       commit("setSearchResults", response.data);
     } catch (error) {
       console.error("検索に失敗しました", error);

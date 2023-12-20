@@ -87,10 +87,10 @@
               :src="event.event_images[0].event_image"
               class="single-image"
               alt="サムネイル写真"
-              @load="imageLoaded(index, event.id)"
+              @load="imageLoaded(0, event.id)"
             >
               <!-- ローディング中に表示するコンテンツ -->
-              <template v-if="isLoading(event.id, index)">
+              <template v-if="isLoading(event.id, 0)">
                 <div
                   style="
                     position: absolute;
