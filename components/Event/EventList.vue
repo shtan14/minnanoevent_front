@@ -2,7 +2,7 @@
   <div>
     <v-row class="mx-1">
       <v-col
-        v-for="event in filteredEvents"
+        v-for="event in allEvents"
         :key="event.id"
         cols="12"
         sm="6"
@@ -16,7 +16,7 @@
               class="custom-carousel-height"
               :show-arrows="false"
               cycle
-              :interval="8500"
+              :interval="10000"
               hide-delimiters
             >
               <v-carousel-item
@@ -27,7 +27,27 @@
                   :src="image.event_image"
                   alt="イベント画像"
                   style="border-radius: 10px; height: 250px"
-                ></v-img>
+                  @load="imageLoaded(index, event.id)"
+                >
+                  <!-- ローディング中に表示するコンテンツ -->
+                  <template v-if="isLoading(event.id, index)">
+                    <div
+                      style="
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                      "
+                    >
+                      <v-progress-circular
+                        indeterminate
+                        color="gray"
+                        :size="20"
+                        width="2"
+                      ></v-progress-circular>
+                    </div>
+                  </template>
+                </v-img>
               </v-carousel-item>
             </v-carousel>
             <v-card-title
@@ -82,13 +102,6 @@
         </v-card>
       </v-col>
     </v-row>
-    <!-- データのロードが完了しかつ検索結果が0件の場合に表示-->
-    <span
-      v-if="isAllLoaded && filteredResults.length === 0"
-      slot="no-results"
-      class="custom-no-results-message"
-      >検索結果はありません。</span
-    >
     <!-- 無限スクロール -->
     <infinite-loading
       class="custom-spinner"
@@ -106,66 +119,19 @@ export default {
   components: {
     InfiniteLoading,
   },
-  props: {
-    searchKeyword: {
-      type: String,
-      default: "",
-    },
-    selectedDate: {
-      type: String,
-      default: null,
-    },
-  },
   data() {
     return {
       page: 1, // 現在のページ番号
       isAllLoaded: false, // すべてのデータが読み込まれたかどうか
+      imageLoadStatus: {},
     };
   },
   computed: {
     // Vuexのstateからイベントデータを取得
-    eventsFromStore() {
+    allEvents() {
       return this.$store.state.events;
     },
-    filteredEvents() {
-      let filtered = this.eventsFromStore;
-
-      // キーワードによるフィルタリング
-      if (this.searchKeyword) {
-        const lowerCaseSearchTerm = this.searchKeyword.toLowerCase();
-        filtered = filtered.filter(
-          (event) =>
-            event.title.toLowerCase().includes(lowerCaseSearchTerm) ||
-            event.description.toLowerCase().includes(lowerCaseSearchTerm) ||
-            event.prefecture.toLowerCase().includes(lowerCaseSearchTerm) ||
-            event.city.toLowerCase().includes(lowerCaseSearchTerm) ||
-            event.location.toLowerCase().includes(lowerCaseSearchTerm) ||
-            event.categories.some((category) =>
-              category.category.toLowerCase().includes(lowerCaseSearchTerm)
-            )
-        );
-      }
-
-      // 日付によるフィルタリング
-      if (this.selectedDate) {
-        const selectedDateObj = new Date(this.selectedDate);
-        filtered = filtered.filter((event) => {
-          const eventDateObj = new Date(event.event_start_datetime);
-          return (
-            eventDateObj.getFullYear() === selectedDateObj.getFullYear() &&
-            eventDateObj.getMonth() === selectedDateObj.getMonth() &&
-            eventDateObj.getDate() === selectedDateObj.getDate()
-          );
-        });
-      }
-
-      return filtered;
-    },
-    filteredResults() {
-      return this.filteredEvents;
-    },
   },
-
   mounted() {
     this.fetchEvents();
   },
@@ -201,6 +167,14 @@ export default {
           console.error("エラーが発生しました", error);
           $state.complete();
         });
+    },
+    imageLoaded(index, eventId) {
+      // 画像が読み込まれたら、ローディングステータスを更新
+      this.$set(this.imageLoadStatus, `${eventId}_${index}`, true);
+    },
+    isLoading(eventId, index) {
+      // 画像が読み込まれていない場合にtrueを返す
+      return !this.imageLoadStatus[`${eventId}_${index}`];
     },
     formatDatetime(datetimeString) {
       const datetime = new Date(datetimeString);

@@ -49,16 +49,22 @@
 export default {
   data() {
     return {
-      searchKeyword: "",
-      selectedDate: null,
+      searchKeyword: "", // 検索キーワード
+      selectedDate: null, // 選択された日付
       menu: false,
     };
   },
   methods: {
     searchEvents() {
-      this.$emit("search", {
+      // 検索パラメータをVuexアクションに渡す
+      this.$store.dispatch("saveSearchConditions", {
         keyword: this.searchKeyword,
         date: this.selectedDate,
+      });
+      // URLにクエリパラメータを追加してページを移動
+      this.$router.push({
+        name: "event-search-results",
+        query: { keyword: this.searchKeyword, date: this.selectedDate },
       });
       this.menu = false;
       console.log(

@@ -346,7 +346,6 @@ export default {
       this.$refs.fileInput.click(); // ファイル選択ウィンドウを開く
     },
     handleImageChange(e) {
-      console.log("handleImageChange called");
       const file = e.target.files[0];
       if (file && file.type.startsWith("image/")) {
         this.createImagePreview(file, this.currentImageIndex); // 現在の画像インデックスを渡す
@@ -356,8 +355,6 @@ export default {
       }
     },
     createImagePreview(file, index) {
-      // TODO console.log削除
-      console.log("createImagePreview called", file, index);
       const reader = new FileReader();
       reader.onload = (e) => {
         // 新しい配列を作成して置き換える
@@ -461,8 +458,6 @@ export default {
 
           // イベントデータをバックエンドに送信
           const response = await this.$axios.post("/api/v1/events", eventData);
-          // TODO console.log削除
-          console.log("投稿成功");
           this.$store.dispatch("getToast", {
             msg: "イベントが投稿されました。",
             color: "success",

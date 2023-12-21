@@ -19,7 +19,7 @@
                     class="custom-carousel-height"
                     :show-arrows="false"
                     cycle
-                    :interval="8500"
+                    :interval="10000"
                     hide-delimiters
                   >
                     <v-carousel-item
@@ -34,7 +34,26 @@
                           position: relative;
                         "
                         alt="イベント画像"
+                        @load="imageLoaded(index, event.id)"
                       >
+                        <!-- ローディング中に表示するコンテンツ -->
+                        <template v-if="isLoading(event.id, index)">
+                          <div
+                            style="
+                              position: absolute;
+                              top: 50%;
+                              left: 50%;
+                              transform: translate(-50%, -50%);
+                            "
+                          >
+                            <v-progress-circular
+                              indeterminate
+                              color="gray"
+                              :size="20"
+                              width="2"
+                            ></v-progress-circular>
+                          </div>
+                        </template>
                       </v-img>
                     </v-carousel-item>
                   </v-carousel>
@@ -104,6 +123,11 @@ export default {
       required: true,
     },
   },
+  data() {
+    return {
+      imageLoadStatus: {},
+    };
+  },
   computed: {
     events() {
       // ユーザーIDに基づいてフィルタリングされたイベントデータを返す
@@ -117,6 +141,14 @@ export default {
     this.$store.dispatch("fetchEventsHostedByUser", this.userId);
   },
   methods: {
+    imageLoaded(index, eventId) {
+      // 画像が読み込まれたら、ローディングステータスを更新
+      this.$set(this.imageLoadStatus, `${eventId}_${index}`, true);
+    },
+    isLoading(eventId, index) {
+      // 画像が読み込まれていない場合にtrueを返す
+      return !this.imageLoadStatus[`${eventId}_${index}`];
+    },
     formatDatetime(datetimeString) {
       const datetime = new Date(datetimeString);
       const weekdays = ["日", "月", "火", "水", "木", "金", "土"];

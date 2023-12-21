@@ -31,6 +31,13 @@ export const state = () => ({
   events: [],
   comments: [],
   isLoadingComments: false,
+  // 検索条件を保存
+  searchConditions: {
+    keyword: null,
+    date: null,
+  },
+  // 検索結果を保存
+  searchResults: [],
 });
 
 export const getters = {};
@@ -49,7 +56,15 @@ export const mutations = {
     }
   },
   updateFavourite(state, { id, isFavourite, favouriteId }) {
-    const event = state.events.find((e) => e.id === id);
+    // 検索結果の更新
+    const searchResult = state.searchResults.find((event) => event.id === id);
+    if (searchResult) {
+      searchResult.isFavourite = isFavourite;
+      searchResult.favouriteId = favouriteId;
+    }
+
+    // 通常のイベントリストの更新
+    const event = state.events.find((event) => event.id === id);
     if (event) {
       event.isFavourite = isFavourite;
       event.favouriteId = favouriteId;
@@ -57,6 +72,9 @@ export const mutations = {
   },
   setEvents(state, events) {
     state.events = events;
+  },
+  setSearchResults(state, events) {
+    state.searchResults = events;
   },
   // 無限スクロール
   addEvents(state, newEvents) {
@@ -107,6 +125,10 @@ export const mutations = {
   },
   deleteEvent(state, eventId) {
     state.events = state.events.filter((event) => event.id !== eventId);
+  },
+  setSearchConditions(state, { keyword, date }) {
+    state.searchConditions.keyword = keyword;
+    state.searchConditions.date = date;
   },
 };
 
@@ -297,6 +319,44 @@ export const actions = {
         color: "error",
       });
     }
+  },
+  async fetchEventsBySearch({ commit }, { keyword, date }) {
+    try {
+      // パラメータが null または undefined の場合、空の文字列に置き換える
+      keyword = keyword || "";
+      date = date || "";
+      const response = await this.$axios.get("/api/v1/events/search", {
+        params: { keyword, date },
+      });
+      let events = response.data;
+      // 検索結果がない場合にトーストを表示
+      if (events.length === 0) {
+        this.dispatch("getToast", {
+          msg: "検索条件に一致するイベントはありません。",
+          color: "info",
+        });
+      }
+      // ログインしている場合、お気に入り情報を取得して統合
+      if (this.$auth.loggedIn()) {
+        const favResponse = await this.$axios.get("/api/v1/favourites");
+        const favourites = favResponse.data;
+
+        events = events.map((event) => {
+          const favourite = favourites.find((f) => f.event_id === event.id);
+          return {
+            ...event,
+            isFavourite: !!favourite,
+            favouriteId: favourite ? favourite.id : null,
+          };
+        });
+      }
+      commit("setSearchResults", response.data);
+    } catch (error) {
+      console.error("検索に失敗しました", error);
+    }
+  },
+  saveSearchConditions({ commit }, { keyword, date }) {
+    commit("setSearchConditions", { keyword, date });
   },
   updateFavourite({ commit }, payload) {
     commit("updateFavourite", payload);

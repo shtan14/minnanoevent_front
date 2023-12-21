@@ -5,20 +5,12 @@
         <v-col cols="3">
           <v-row no-gutters align="center">
             <v-col cols="auto">
-              <nuxt-link
-                to="/"
-                class="text-decoration-none"
-                @click.native="clearSearch"
-              >
+              <nuxt-link to="/" class="text-decoration-none">
                 <app-logo />
               </nuxt-link>
             </v-col>
             <v-col cols="auto">
-              <nuxt-link
-                to="/"
-                class="text-decoration-none"
-                @click.native="clearSearch"
-              >
+              <nuxt-link to="/" class="text-decoration-none">
                 <app-title
                   class="hidden-ipad-and-down primary--text font-weight-bold"
                 />
@@ -30,7 +22,7 @@
         <v-col cols="6">
           <v-row justify="center">
             <v-col cols="6" class="search-bar-container">
-              <event-search-bar v-if="showSearchBar" @search="handleSearch" />
+              <event-search-bar v-if="showSearchBar" />
             </v-col>
           </v-row>
         </v-col>
@@ -60,14 +52,6 @@ export default {
       homeAppBarHeight: $store.state.styles.homeAppBarHeight,
       homePath: $store.state.loggedIn.homePath,
     };
-  },
-  methods: {
-    handleSearch(searchConditions) {
-      this.$emit("search", searchConditions);
-    },
-    clearSearch() {
-      this.$emit("clearSearch");
-    },
   },
 };
 </script>

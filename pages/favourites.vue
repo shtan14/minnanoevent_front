@@ -21,7 +21,7 @@
                     class="custom-carousel-height"
                     :show-arrows="false"
                     cycle
-                    :interval="8500"
+                    :interval="10000"
                     hide-delimiters
                   >
                     <v-carousel-item
