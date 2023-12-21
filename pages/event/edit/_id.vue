@@ -354,7 +354,6 @@ export default {
       this.$refs.fileInput.click(); // ファイル選択ウィンドウを開く
     },
     handleImageChange(e) {
-      console.log("handleImageChange called");
       const file = e.target.files[0];
       if (file && file.type.startsWith("image/")) {
         this.createImagePreview(file, this.currentImageIndex); // 現在の画像インデックスを渡す
@@ -364,8 +363,6 @@ export default {
       }
     },
     createImagePreview(file, index) {
-      // TODO console.log削除
-      console.log("createImagePreview called", file, index);
       const reader = new FileReader();
       reader.onload = (e) => {
         // 新しい配列を作成して置き換える
@@ -539,11 +536,8 @@ export default {
             category_ids: this.selectedCategories,
           };
 
-          console.log("送信するイベントデータ:", eventData);
           // イベントデータをバックエンドに送信し、更新
           await this.$axios.put(`/api/v1/events/${eventId}`, eventData);
-          // TODO console.log削除
-          console.log("更新成功");
           this.$store.dispatch("getToast", {
             msg: "イベントが更新されました。",
             color: "success",

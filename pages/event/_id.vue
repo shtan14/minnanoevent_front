@@ -27,7 +27,6 @@ export default {
   computed: {
     isUserLoggedIn() {
       const loggedIn = this.$auth.loggedIn();
-      console.log("ログイン状態", loggedIn);
       return loggedIn;
     },
   },

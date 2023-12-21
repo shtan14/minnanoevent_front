@@ -329,7 +329,13 @@ export const actions = {
         params: { keyword, date },
       });
       let events = response.data;
-
+      // 検索結果がない場合にトーストを表示
+      if (events.length === 0) {
+        this.dispatch("getToast", {
+          msg: "検索条件に一致するイベントはありません。",
+          color: "info",
+        });
+      }
       // ログインしている場合、お気に入り情報を取得して統合
       if (this.$auth.loggedIn()) {
         const favResponse = await this.$axios.get("/api/v1/favourites");

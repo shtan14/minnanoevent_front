@@ -152,8 +152,6 @@ export default {
           ...this.$auth.user,
           name: this.name,
         });
-        // TODO console.log削除
-        console.log("更新成功");
         this.$store.dispatch("getToast", {
           msg: "プロフィールが更新されました。",
           color: "success",
@@ -197,7 +195,6 @@ export default {
           headers: { "Content-Type": file.type },
         });
         this.profile.avatar = publicUrl; // プロフィール情報を更新
-        console.log("Public URL:", publicUrl);
         await this.updateAvatar();
       } catch (error) {
         console.error("画像のアップロードに失敗しました", error);

@@ -47,7 +47,6 @@ export default {
           },
         });
 
-        console.log("登録成功", response);
         this.$store.dispatch("getToast", {
           msg: "メールを確認してアカウント認証をお願いいたします🙏",
           color: "info",
