@@ -181,6 +181,24 @@
 
       <div class="ml-4 mb-6">
         <div class="event-contact-title">
+          <v-icon class="mr-2">mdi-tag</v-icon>
+          カテゴリー
+        </div>
+        <v-card-actions class="category-actions-container">
+          <v-btn
+            v-for="(category, index) in event.categories"
+            :key="index"
+            :to="'/category/' + category.id"
+            class="category-button"
+            small
+          >
+            {{ category.category }}
+          </v-btn>
+        </v-card-actions>
+      </div>
+
+      <div class="ml-4 mb-6">
+        <div class="event-contact-title">
           <v-icon class="mr-2">mdi-phone</v-icon>
           連絡先
         </div>
@@ -435,5 +453,16 @@ export default {
   max-width: 50%; /* 画像の最大幅を指定 */
   max-height: 100%; /* 画像の最大高さを指定 */
   object-fit: contain; /* 画像の比率を保持 */
+}
+
+.category-actions-container {
+  padding-left: 0;
+  display: flex;
+  flex-wrap: wrap;
+  overflow-x: auto;
+}
+
+.category-button {
+  margin-bottom: 4px;
 }
 </style>
