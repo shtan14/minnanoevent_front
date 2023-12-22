@@ -291,6 +291,12 @@ export const actions = {
       );
       const favouriteEvents = eventResponses.map((res) => res.data);
 
+      // お気に入りイベントを開始日時が早い順にソート
+      favouriteEvents.sort(
+        (a, b) =>
+          new Date(a.event_start_datetime) - new Date(b.event_start_datetime)
+      );
+
       // お気に入りイベント情報をVuexストアのstateに保存
       commit(
         "setEvents",
