@@ -1,6 +1,6 @@
 <template>
   <v-avatar color="primary" size="34" class="my-app-log">
-    <span class="white--text text-subtitle-2"> Me </span>
+    <span class="white--text text-subtitle-1 custom-font"> み </span>
   </v-avatar>
 </template>
 
@@ -12,5 +12,9 @@ export default {};
 .my-app-log {
   margin-right: 8px;
   cursor: pointer;
+}
+
+.custom-font {
+  font-weight: bold;
 }
 </style>
