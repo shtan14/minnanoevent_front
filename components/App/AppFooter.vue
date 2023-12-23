@@ -5,11 +5,13 @@
         <div class="text-center text-caption">
           &copy;{{ copyRightYear }}
           <strong>{{ appName }}</strong>
-          <nuxt-link to="/terms-of-service" style="color: white"
+          <nuxt-link
+            to="/terms-of-service"
+            style="color: white; font-size: 10px"
             >利用規約</nuxt-link
           >
           |
-          <nuxt-link to="/privacy-policy" style="color: white"
+          <nuxt-link to="/privacy-policy" style="color: white; font-size: 10px"
             >プライバシーポリシー</nuxt-link
           >
         </div>
