@@ -461,22 +461,23 @@ export default {
         const eventData = response.data;
 
         // 編集ページで既存のイベントの開始日時を表示させるための処理
+        // サーバーからの日時文字列を直接処理
         if (eventData.event_start_datetime) {
-          const startDateTime = new Date(eventData.event_start_datetime);
-          this.event.start_date = startDateTime.toISOString().split("T")[0];
-          this.event.start_time =
-            startDateTime.toTimeString().split(":")[0] +
-            ":" +
-            startDateTime.toTimeString().split(":")[1];
+          const eventStartParts = eventData.event_start_datetime.split("T");
+          this.event.start_date = eventStartParts[0]; // 日付部分 ('YYYY-MM-DD')
+          this.event.start_time = eventStartParts[1]
+            .split(":")
+            .slice(0, 2)
+            .join(":"); // 時間部分 ('HH:MM')
         }
-        // 編集ページで既存のイベントの開始日時を表示させるための処理
+        // 編集ページで既存のイベントの終了日時を表示させるための処理
         if (eventData.event_end_datetime) {
-          const endDateTime = new Date(eventData.event_end_datetime);
-          this.event.end_date = endDateTime.toISOString().split("T")[0];
-          this.event.end_time =
-            endDateTime.toTimeString().split(":")[0] +
-            ":" +
-            endDateTime.toTimeString().split(":")[1];
+          const eventEndParts = eventData.event_end_datetime.split("T");
+          this.event.end_date = eventEndParts[0]; // 日付部分 ('YYYY-MM-DD')
+          this.event.end_time = eventEndParts[1]
+            .split(":")
+            .slice(0, 2)
+            .join(":"); // 時間部分 ('HH:MM')
         }
         this.event.title = eventData.title;
         this.event.description = eventData.description;
