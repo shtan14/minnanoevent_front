@@ -2,6 +2,7 @@ module.exports = {
   root: true,
   env: {
     browser: true,
+    "jest/globals": true,
     node: true,
   },
   parserOptions: {
@@ -9,7 +10,7 @@ module.exports = {
     requireConfigFile: false,
   },
   extends: ["@nuxtjs", "plugin:nuxt/recommended", "prettier"],
-  plugins: [],
+  plugins: ["jest"],
 
   rules: {
     quotes: ["error", "double"],
