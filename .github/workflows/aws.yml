@@ -16,8 +16,25 @@ permissions:
   contents: read
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.16.0"
+          cache: "yarn"
+          cache-dependency-path: "front/package.json"
+      - name: install dependencies
+        run: yarn install
+      - name: jest tests
+        run: yarn run test
+
+jobs:
   deploy:
     name: Deploy
+    needs: test
     runs-on: ubuntu-latest
     environment: production
 
