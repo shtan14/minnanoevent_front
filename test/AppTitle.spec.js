@@ -6,7 +6,7 @@ import AppTitle from "@/components/App/AppTitle.vue";
 Vue.use(Vuetify);
 
 describe("AppTitle.vue", () => {
-  it("renders the app name", () => {
+  it("正しくレンダリングされること", () => {
     // モックのコンフィグを作成
 
     const appName = "MyApp";
