@@ -27,9 +27,9 @@ jobs:
           cache: "yarn"
           cache-dependency-path: "front/package.json"
       - name: install dependencies
-        run: yarn install
+        run: yarn install --cwd front
       - name: jest tests
-        run: yarn run test
+        run: yarn run test --cwd front
 
   deploy:
     name: Deploy
