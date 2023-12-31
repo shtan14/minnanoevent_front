@@ -334,9 +334,27 @@ export default {
     // ページURLからイベントIDを取得
     const eventId = this.$route.params.id;
     if (eventId) {
-      this.loadEventDetails(eventId);
+      this.loadEventDetails(eventId)
+        .then(() => {
+          // ログインしているか、及びイベントの所有者か確認
+          if (
+            this.$auth.loggedIn() &&
+            this.event.user_id === this.$auth.user.id
+          ) {
+            // 現在のユーザーが所有者である場合はそのまま続行
+          } else {
+            // エラーページやホームページにリダイレクト
+            this.$router.push("/error");
+          }
+        })
+        .catch((error) => {
+          console.error("イベントの取得に失敗しました: ", error);
+          // 適切なエラーハンドリングを行う
+          this.$router.push("/error");
+        });
     } else {
       console.error("イベントIDが未定義です");
+      this.$router.push("/error");
     }
   },
   methods: {
@@ -479,6 +497,7 @@ export default {
             .slice(0, 2)
             .join(":"); // 時間部分 ('HH:MM')
         }
+        this.event.user_id = eventData.user_id;
         this.event.title = eventData.title;
         this.event.description = eventData.description;
         this.event.prefecture = eventData.prefecture;

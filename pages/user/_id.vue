@@ -130,9 +130,14 @@ import EventsHostedByUser from "../../components/Event/EventsHostedByUser.vue";
 export default {
   name: "PagesUserId",
   components: { EventsHostedByUser },
-  async asyncData({ params, $axios }) {
-    const userProfile = await $axios.$get(`/api/v1/users/${params.id}`);
-    return { userProfile };
+  async asyncData({ params, $axios, error }) {
+    try {
+      const userProfile = await $axios.$get(`/api/v1/users/${params.id}`);
+      return { userProfile };
+    } catch (err) {
+      // エラーが発生した場合、カスタムエラーを投げるか、特定のページにリダイレクトする
+      error({ statusCode: 404, message: "ユーザーが見つかりません" });
+    }
   },
   computed: {
     isUserLoggedIn() {
