@@ -24,6 +24,15 @@ import EventCommentForm from "../../components/Event/EventCommentForm.vue";
 export default {
   name: "EventPageId",
   components: { EventDetail, EventComments, EventCommentForm },
+  async asyncData({ params, $axios, error }) {
+    try {
+      // イベントIDに基づいてイベントデータを取得
+      const eventData = await $axios.$get(`/api/v1/events/${params.id}`);
+      return { eventData };
+    } catch (err) {
+      error({ statusCode: 404, message: "イベントが見つかりません" });
+    }
+  },
   computed: {
     isUserLoggedIn() {
       const loggedIn = this.$auth.loggedIn();

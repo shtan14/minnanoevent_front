@@ -135,7 +135,6 @@ export default {
       const userProfile = await $axios.$get(`/api/v1/users/${params.id}`);
       return { userProfile };
     } catch (err) {
-      // エラーが発生した場合、カスタムエラーを投げるか、特定のページにリダイレクトする
       error({ statusCode: 404, message: "ユーザーが見つかりません" });
     }
   },
