@@ -20,6 +20,7 @@
             >
               <nuxt-link
                 v-if="userProfile.id === currentUser.id"
+                class="no-link-decoration"
                 :to="'/account/settings'"
               >
                 <v-btn small>編集</v-btn>
@@ -215,5 +216,10 @@ export default {
   font-weight: bold;
   font-size: 15px;
   margin-bottom: 10px;
+}
+
+/* safariで編集ボタンに下線が表示されるのを非表示にする */
+.no-link-decoration {
+  text-decoration: none;
 }
 </style>

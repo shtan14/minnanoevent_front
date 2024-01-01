@@ -4,7 +4,7 @@
       <div class="ml-auto mb-4 d-flex justify-end" style="margin-right: 1rem">
         <nuxt-link
           v-if="event.user && event.user.id === currentUser.id"
-          class="mr-1"
+          class="mr-1 no-link-decoration"
           :to="`/event/edit/${event.id}`"
         >
           <v-btn small>編集</v-btn>
@@ -464,5 +464,10 @@ export default {
 
 .category-button {
   margin-bottom: 4px;
+}
+
+/* safariで編集ボタンに下線が表示されるのを非表示にする */
+.no-link-decoration {
+  text-decoration: none;
 }
 </style>
