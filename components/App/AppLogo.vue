@@ -1,6 +1,6 @@
 <template>
   <v-avatar color="primary" size="34" class="my-app-log">
-    <span class="white--text text-subtitle-1 custom-font"> み </span>
+    <v-img src="/favicon.ico" />
   </v-avatar>
 </template>
 
