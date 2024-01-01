@@ -33,7 +33,7 @@ describe("AppFooter.vue", () => {
     const currentYear = new Date().getFullYear();
     const expectedCopyRightYear =
       currentYear > 2023 ? `2023 - ${currentYear}` : "2023";
-    expect(wrapper.vm.copyRightYear).toBe(Number(expectedCopyRightYear));
+    expect(wrapper.vm.copyRightYear).toBe(expectedCopyRightYear);
 
     // DOM要素のテスト
     expect(wrapper.find(".text-caption").exists()).toBe(true);
