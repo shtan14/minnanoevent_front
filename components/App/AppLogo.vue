@@ -12,9 +12,10 @@ export default {};
 .my-app-log {
   margin-right: 8px;
   cursor: pointer;
+  border-radius: 0;
 }
 
-.custom-font {
-  font-weight: bold;
-}
+// .custom-font {
+//   font-weight: bold;
+// }
 </style>

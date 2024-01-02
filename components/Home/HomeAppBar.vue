@@ -1,7 +1,7 @@
 <template>
   <v-app-bar app color="white" elevation="0">
     <app-logo />
-    <app-title class="hidden-mobile-and-down primary--text font-weight-bold" />
+    <app-title class="hidden-mobile-and-down primary--text custom-app-title" />
 
     <v-spacer />
 
@@ -20,3 +20,10 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.custom-app-title {
+  font-size: 22px;
+  font-family: "Palette Mosaic", sans-serif;
+}
+</style>

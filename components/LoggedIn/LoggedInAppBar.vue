@@ -12,7 +12,7 @@
             <v-col cols="auto">
               <nuxt-link to="/" class="text-decoration-none">
                 <app-title
-                  class="hidden-ipad-and-down primary--text font-weight-bold"
+                  class="hidden-ipad-and-down primary--text custom-app-title"
                 />
               </nuxt-link>
             </v-col>
@@ -66,5 +66,9 @@ export default {
   align-items: center;
   padding: 0;
   min-width: 210px;
+}
+.custom-app-title {
+  font-size: 22px;
+  font-family: "Palette Mosaic", sans-serif;
 }
 </style>

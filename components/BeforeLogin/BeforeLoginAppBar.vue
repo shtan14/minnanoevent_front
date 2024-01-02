@@ -5,7 +5,9 @@
     </nuxt-link>
 
     <nuxt-link to="/" class="text-decoration-none">
-      <app-title class="hidden-ipad-and-down primary--text font-weight-bold" />
+      <app-title
+        class="hidden-ipad-and-down primary--text custom-app-title"
+      />
     </nuxt-link>
     <v-spacer />
 
@@ -55,3 +57,10 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.custom-app-title {
+  font-size: 22px;
+  font-family: "Palette Mosaic", sans-serif;
+}
+</style>
