@@ -20,10 +20,6 @@ export default {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Mochiy+Pop+P+One&family=Monomaniac+One&family=Palette+Mosaic&display=swap",
       },
-      // {
-      //   rel: "stylesheet",
-      //   href: "https://fonts.googleapis.com/css2?family=Mochiy+Pop+P+One&family=Monomaniac+One&display=swap",
-      // },
     ],
   },
 
