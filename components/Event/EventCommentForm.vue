@@ -38,6 +38,8 @@ export default {
       commentRules: [
         (v) =>
           !v || v.length <= 100 || "コメントは100文字以内で入力してください。",
+        (v) =>
+          /^\s*$/.test(v) === false || "空白文字のみではコメントできません。",
       ],
     };
   },
@@ -57,12 +59,16 @@ export default {
       // Vuexストアのアクションを使ってコメントを投稿
       this.$store.dispatch("postComment", {
         eventId,
-        commentText: this.newComment,
+        commentText: this.newComment, // テキスト、バリデーションをリセット
       });
-      this.newComment = ""; // コメントテキストをリセット
+      this.resetForm();
     },
     cancelComment() {
-      this.newComment = ""; // コメントテキストをリセット
+      this.resetForm();
+    },
+    resetForm() {
+      this.newComment = ""; // テキストをリセット
+      this.$refs.form.resetValidation(); // フォームのバリデーションをリセット
     },
   },
 };
