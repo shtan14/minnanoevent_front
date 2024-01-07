@@ -1,69 +1,76 @@
-# app
+# 概要
+### サービス名：みんなのイベント  
+* 「みんなのイベント」は、だれでも気軽に、簡単に、地域の身近なイベントが投稿でき、だれもがイベント情報にアクセスできる、そんなイベント情報共有サイトです。  
+本サイトを通じて、今まで知らなかった地域の催しが知れたり、参加してみることでコミュニティの輪が広がったり、地域の賑わいづくりの一助となれたら、という想いで制作しました。
+* サービスURL：https://minnanoevent.com/
+* かんたんログインで会員登録せずに機能をお試しいただけます。レスポンシブ対応のため、PCでもスマートフォンでもご利用いただけます。
 
-## Build Setup
+* バックエンドリポジトリはこちらです。  
+https://github.com/shtan14/minnanoevent_api
 
-```bash
-# install dependencies
-$ yarn install
+<br>
 
-# serve with hot reload at localhost:3000
-$ yarn dev
+# 主要機能
 
-# build for production and launch server
-$ yarn build
-$ yarn start
+| 一覧表示| かんたんログイン |
+| ---- | ---- |
+| ![イベント一覧](https://github.com/shtan14/myapp_api/assets/127017760/170db0d3-5444-4738-b37d-123f0b984ef9) | ![簡単ログイン](https://github.com/shtan14/myapp_api/assets/127017760/7673e79a-05b4-42f2-9afd-16f8b3d4820e) |
 
-# generate static project
-$ yarn generate
-```
+| プロフィール編集| 検索 |
+| ---- | ---- |
+| ![プロフィール編集](https://github.com/shtan14/myapp_api/assets/127017760/8fe9fd4d-3ac8-43e2-9ce3-f2db98dd9462) | ![検索](https://github.com/shtan14/myapp_api/assets/127017760/e995eefd-d916-4443-9da8-6532da548c59) |
 
-For detailed explanation on how things work, check out the [documentation](https://nuxtjs.org).
+| コメント投稿| イベント投稿 |
+| ---- | ---- |
+| ![コメント](https://github.com/shtan14/myapp_api/assets/127017760/d7403c7b-d98c-4009-8c43-4f33a7af38b1)| ![イベント投稿](https://github.com/shtan14/myapp_api/assets/127017760/da21a4b1-e036-42eb-b39a-e1ac80c7d057) |
 
-## Special Directories
+<br>
 
-You can create the following extra directories, some of which have special behaviors. Only `pages` is required; you can delete them if you don't want to use their functionality.
+# 機能一覧
+* 会員登録（メール認証） / 退会
+* ログイン（JWT認証） / かんたんログイン / ログアウト
+* イベント一覧表示 / カテゴリー別イベント一覧表示
+* 個別イベント詳細表示 / 個別イベントのコメント表示
+* ユーザー詳細ページ表示
+* ユーザーが主催するイベント一覧表示
+* フリーワード検索 / 日付検索
+* レスポンシブデザイン
+* トースト表示 / エラー画面表示
+* 無限スクロール（vue-infinite-loading）  
+* プロフィール編集（アバター画像、自己紹介文、SNSリンク）
+* お気に入り追加・削除
+* お気に入りに追加したイベント一覧表示
+* コメント投稿・削除
+* イベント投稿・編集・削除
 
-### `assets`
+<br>
 
-The assets directory contains your uncompiled assets such as Stylus or Sass files, images, or fonts.
+# 技術一覧
+* バックエンド
+  * Ruby 3.2.2
+  * Ruby on Rails 7.0.5
+  * RSpec / RuboCop
+  * nginx / puma
+* フロントエンド
+  * Nuxt.js 2.17.2
+  * Vue.js 2.7.15
+  * Vuetify
+  * JEST / eslint / prettier
+* インフラ
+  * AWS (ECS(Fargate) / VPC / ECR / RDS / Systems Manager / Certificate Manager / ALB / S3 / CloudWatch / Route 53 / IAM )
+* 環境構築
+  * Docker / docker-compose
+* CI/CD
+  * GitHub Actions
+* 認証
+  * JWT
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/assets).
-
-### `components`
-
-The components directory contains your Vue.js components. Components make up the different parts of your page and can be reused and imported into your pages, layouts and even other components.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/components).
-
-### `layouts`
-
-Layouts are a great help when you want to change the look and feel of your Nuxt app, whether you want to include a sidebar or have distinct layouts for mobile and desktop.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/layouts).
+<br>
 
 
-### `pages`
+# インフラ構成図
+![インフラ構成図](static/infra.png)
+<br>
 
-This directory contains your application views and routes. Nuxt will read all the `*.vue` files inside this directory and setup Vue Router automatically.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/get-started/routing).
-
-### `plugins`
-
-The plugins directory contains JavaScript plugins that you want to run before instantiating the root Vue.js Application. This is the place to add Vue plugins and to inject functions or constants. Every time you need to use `Vue.use()`, you should create a file in `plugins/` and add its path to plugins in `nuxt.config.js`.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/plugins).
-
-### `static`
-
-This directory contains your static files. Each file inside this directory is mapped to `/`.
-
-Example: `/static/robots.txt` is mapped as `/robots.txt`.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/static).
-
-### `store`
-
-This directory contains your Vuex store files. Creating a file in this directory automatically activates Vuex.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/store).
+# ER図
+![ER図](static/ER.jpg)
