@@ -39,9 +39,6 @@
                   alt="ユーザーのアバター"
                   class="avatar-image"
                 ></v-img>
-                <!-- <v-icon v-else class="avatar-image" style="font-size: 70px"
-                  >mdi-account-circle</v-icon
-                > -->
               </div>
               <div class="user-details">
                 <div class="user-name">{{ userProfile.name }}</div>

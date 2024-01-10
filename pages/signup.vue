@@ -39,7 +39,7 @@ export default {
 
       try {
         // APIエンドポイントへのPOSTリクエストを送信
-        const response = await this.$axios.post("/api/v1/users", {
+        await this.$axios.post("/api/v1/users", {
           user: {
             name: this.params.user.name,
             email: this.params.user.email,
