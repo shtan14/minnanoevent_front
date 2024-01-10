@@ -67,13 +67,6 @@ export default {
         query: { keyword: this.searchKeyword, date: this.selectedDate },
       });
       this.menu = false;
-      // 開発環境でのデバッグログをコメントアウト
-      // console.log(
-      //   "検索キーワード:",
-      //   this.searchKeyword,
-      //   "選択日付:",
-      //   this.selectedDate
-      // );
     },
     resetSearch() {
       this.searchKeyword = "";
