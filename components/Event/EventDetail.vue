@@ -226,7 +226,9 @@
                 ></v-img>
               </nuxt-link>
             </div>
-            <div class="bio-text">{{ user.user_profile.bio }}</div>
+            <template v-if="user && user.user_profile">
+              <div class="bio-text">{{ user.user_profile.bio }}</div>
+            </template>
           </div>
         </template>
         <template v-else> ユーザー情報を読み込んでいます... </template>
