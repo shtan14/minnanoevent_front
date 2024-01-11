@@ -110,8 +110,6 @@ export default {
   computed: {
     isUserLoggedIn() {
       const loggedIn = this.$auth.loggedIn();
-      // 開発環境でのデバッグログをコメントアウト
-      // console.log("ログイン状態", loggedIn);
       return loggedIn;
     },
     currentUser() {
