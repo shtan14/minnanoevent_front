@@ -32,7 +32,7 @@ export default {
   },
   computed: {
     isUserLoggedIn() {
-      const loggedIn = this.$auth.loggedIn(); // ログイン状態を呼び出し
+      const loggedIn = this.$auth.loggedIn();
       return loggedIn;
     },
   },
